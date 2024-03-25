@@ -23,6 +23,11 @@ struct TrackJetQAMakerConfig {
   bool doClustQA   = true;
   bool doTrackQA   = true;
 
+  // i/o parameters
+  std::string hitOutDir   = "HitQA";
+  std::string clustOutDir = "ClustQA";
+  std::string trackOutDir = "TrackQA";
+
 };  // end TrackJetQAMakerConfig
 
 #endif

@@ -16,15 +16,19 @@
 
 // ctor/dtor ------------------------------------------------------------------
 
-TracksInJetsQAMaker::TracksInJetsQAMaker(const std::string& name, const std::string& sOutFileName) : SubsysReco(name) {
+TracksInJetsQAMaker::TracksInJetsQAMaker(const std::string& name, const std::string& outFileName) : SubsysReco(name) {
 
   // print debug message
   if (m_config.doDebug && (m_config.verbose > 4)) {
-    std::cout << "TracksInJetsQAMaker::TracksInJetsQAMaker(const std::string &name) Calling ctor" << std::endl;
+    std::cout << "TracksInJetsQAMaker::TracksInJetsQAMaker(const std::string& name, const std::string& outFileName) Calling ctor" << std::endl;
   }
 
-  // set output file name
-  m_outFileName = sOutFileName;
+  // initialize output file
+  m_outFile = new TFile(outFileName.data(), "RECREATE");
+  if (!m_outFile) {
+    std::cerr << PHWHERE << ": PANIC: couldn't create output file!" << std::endl;
+    assert(m_outFile); 
+  }
 
 }  // end ctor(std::string, st::string)
 
@@ -74,9 +78,6 @@ int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
   if (m_config.doDebug && (m_config.verbose > 0)) {
     std::cout << "TracksInJetsQAMaker::Init(PHCompositeNode* topNode) Initializing" << std::endl;
   }
-
-  // initialize output file
-  m_outFile = new TFile(m_outFileName.data(), "RECREATE");
 
   // instantiate needed plugins
   if (m_config.doHitQA)   m_hitMaker   = new HitQAMaker();
@@ -157,7 +158,7 @@ int TracksInJetsQAMaker::End(PHCompositeNode* topNode) {
   }
 
   // terminate plugins
-  if (m_config.doHitQA)   m_hitMaker   -> End(m_outFile);
+  if (m_config.doHitQA)   m_hitMaker   -> End(m_outFile, m_config.hitOutDir);
   if (m_config.doClustQA) m_clustMaker -> End();
   if (m_config.doTrackQA) m_trackMaker -> End();
 
