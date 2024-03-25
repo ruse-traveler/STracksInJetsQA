@@ -1,4 +1,4 @@
-AC_INIT(stracksinjetsqamaker,[1.00])
+AC_INIT(tracksinjetsqamaker,[1.00])
 AC_CONFIG_SRCDIR([configure.ac])
 
 AM_INIT_AUTOMAKE

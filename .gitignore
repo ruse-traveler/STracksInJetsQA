@@ -2,8 +2,8 @@ reference/
 output/
 input/
 src/*
-!src/STracksInjetsQAMaker.cc
-!src/STracksInjetsQAMaker.h
+!src/TracksInJetsQAMaker.cc
+!src/TracksInJetsQAMaker.h
 !src/autogen.sh
 !src/configure.ac
 !src/Makefile.am

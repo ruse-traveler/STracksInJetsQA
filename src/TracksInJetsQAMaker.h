@@ -1,7 +1,7 @@
 // Tell emacs that this is a C++ source
 //  -*- C++ -*-.
 // ----------------------------------------------------------------------------
-// 'STracksInJetsQAMaker.h'
+// 'TracksInJetsQAMaker.h'
 // Derek Anderson
 // 03.25.2024
 //
@@ -9,8 +9,8 @@
 // hits, and more.
 // ----------------------------------------------------------------------------
 
-#ifndef STRACKSINJETSQAMAKER_H
-#define STRACKSINJETSQAMAKER_H
+#ifndef TRACKSINJETSQAMAKER_H
+#define TRACKSINJETSQAMAKER_H
 
 // c++ utilities
 #include <string>
@@ -27,15 +27,15 @@
 
 
 
-// STracksInJetsQAMaker definition --------------------------------------------
+// TracksInJetsQAMaker definition --------------------------------------------
 
-class STracksInJetsQAMaker : public SubsysReco {
+class TracksInJetsQAMaker : public SubsysReco {
 
   public:
 
     // ctor/dtor
-    STracksInJetsQAMaker(const std::string &name = "STracksInJetsQAMaker", const std::string& sOutFileName = "tracksinjets.root");
-    ~STracksInJetsQAMaker() override;
+    TracksInJetsQAMaker(const std::string &name = "TracksInJetsQAMaker", const std::string& sOutFileName = "tracksinjets.root");
+    ~TracksInJetsQAMaker() override;
 
     // f4a methods
     int  Init(PHCompositeNode* topNode)          override;
@@ -55,7 +55,7 @@ class STracksInJetsQAMaker : public SubsysReco {
      int64_t m_runNum = 0;
      int64_t m_evtNum = 0;
 
-};  // end STracksInJetsQAMaker
+};  // end TracksInJetsQAMaker
 
 #endif
 
