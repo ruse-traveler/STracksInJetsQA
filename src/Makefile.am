@@ -13,7 +13,12 @@ AM_CPPFLAGS = \
   -I$(ROOTSYS)/include
 
 pkginclude_HEADERS = \
-  TracksInJetsQAMaker.h
+  TracksInJetsQAMaker.h \
+  TrackJetQAMakerConfig.h \
+  TrackJetQAMakerHistDef.h \
+  HitQAMaker.h \
+  ClustQAMaker.h \
+  TrackQAMaker.h
 
 if ! MAKEROOT6
   ROOT5_DICTS = \
@@ -22,7 +27,10 @@ endif
 
 libtracksinjetsqamaker_la_SOURCES = \
   $(ROOT5_DICTS) \
-  TracksInJetsQAMaker.cc
+  TracksInJetsQAMaker.cc \
+  HitQAMaker.cc \
+  ClustQAMaker.cc \
+  TrackQAMaker.cc
 
 libtracksinjetsqamaker_la_LDFLAGS = \
   -L$(libdir) \
