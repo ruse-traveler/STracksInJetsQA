@@ -16,12 +16,12 @@
 
 struct TrackJetQAMakerConfig {
 
-    // system parameters
-    int  verbose     = 0;
-    bool doDebug     = false;
-    bool doHitQA     = true;
-    bool doClustQA   = true;
-    bool doTrackQA   = true;
+  // system parameters
+  int  verbose     = 0;
+  bool doDebug     = false;
+  bool doHitQA     = true;
+  bool doClustQA   = true;
+  bool doTrackQA   = true;
 
 };  // end TrackJetQAMakerConfig
 
