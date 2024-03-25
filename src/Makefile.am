@@ -13,16 +13,16 @@ AM_CPPFLAGS = \
   -I$(ROOTSYS)/include
 
 pkginclude_HEADERS = \
-  STracksInjetsQAMaker.h
+  STracksInJetsQAMaker.h
 
 if ! MAKEROOT6
   ROOT5_DICTS = \
-    STracksInjetsQAMaker_Dict.cc
+    STracksInJetsQAMaker_Dict.cc
 endif
 
 libstracksinjetsqamaker_la_SOURCES = \
   $(ROOT5_DICTS) \
-  STracksInjetsQAMaker.cc
+  STracksInJetsQAMaker.cc
 
 libstracksinjetsqamaker_la_LDFLAGS = \
   -L$(libdir) \
