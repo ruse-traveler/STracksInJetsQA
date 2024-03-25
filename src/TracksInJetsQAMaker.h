@@ -25,6 +25,7 @@
 #include <fun4all/Fun4AllReturnCodes.h>
 // module tools
 #include "TrackJetQAMakerConfig.h"
+#include "TrackJetQAMakerHelper.h"
 #include "TrackJetQAMakerHistDef.h"
 // plugin definitions
 #include "HitQAMaker.h"
@@ -68,6 +69,7 @@ class TracksInJetsQAMaker : public SubsysReco {
 
     // configurable parameters and histogram definitions
     TrackJetQAMakerConfig  m_config;
+    TrackJetQAMakerHelper  m_help;
     TrackJetQAMakerHistDef m_hist;
 
 };  // end TracksInJetsQAMaker

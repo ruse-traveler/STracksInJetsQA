@@ -15,6 +15,7 @@ AM_CPPFLAGS = \
 pkginclude_HEADERS = \
   TracksInJetsQAMaker.h \
   TrackJetQAMakerConfig.h \
+  TrackJetQAMakerHelper.h \
   TrackJetQAMakerHistDef.h \
   HitQAMaker.h \
   ClustQAMaker.h \

@@ -5,6 +5,7 @@ src/*
 !src/TracksInJetsQAMaker.cc
 !src/TracksInJetsQAMaker.h
 !src/TrackJetQAMakerConfig.h
+!src/TrackJetQAMakerHelper.h
 !src/TrackJetQAMakerHistDef.h
 !src/HitQAMaker.cc
 !src/HitQAMaker.h
