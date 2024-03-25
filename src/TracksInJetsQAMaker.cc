@@ -84,7 +84,7 @@ int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
   if (m_config.doTrackQA) m_trackMaker = new TrackQAMaker();
 
   // intialize plugins
-  if (m_config.doHitQA)   m_hitMaker   -> Init();
+  if (m_config.doHitQA)   m_hitMaker   -> Init(m_hist);
   if (m_config.doClustQA) m_clustMaker -> Init();
   if (m_config.doTrackQA) m_trackMaker -> Init();
   return Fun4AllReturnCodes::EVENT_OK;
@@ -157,7 +157,7 @@ int TracksInJetsQAMaker::End(PHCompositeNode* topNode) {
   }
 
   // terminate plugins
-  if (m_config.doHitQA)   m_hitMaker   -> End();
+  if (m_config.doHitQA)   m_hitMaker   -> End(m_outFile);
   if (m_config.doClustQA) m_clustMaker -> End();
   if (m_config.doTrackQA) m_trackMaker -> End();
 
