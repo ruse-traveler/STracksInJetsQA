@@ -28,6 +28,7 @@
 #include <jetbase/TrackJetInput.h>
 // module definition
 #include </sphenix/user/danderson/install/include/tracksinjetsqamaker/TracksInJetsQAMaker.h>
+#include </sphenix/user/danderson/install/include/tracksinjetsqamaker/TracksInJetsQAMakerConfig.h>
 
 // load libraries
 R__LOAD_LIBRARY(libg4dst.so)
@@ -35,11 +36,6 @@ R__LOAD_LIBRARY(libg4jets.so)
 R__LOAD_LIBRARY(libjetbase.so)
 R__LOAD_LIBRARY(libfun4all.so)
 R__LOAD_LIBRARY(/sphenix/user/danderson/install/lib/libtracksinjetsqamaker.so)
-
-// macro options
-namespace Opts {
-  /* options will go here */
-}
 
 
 
@@ -79,6 +75,15 @@ void Fun4All_MakeTracksInJetsQA(
 
   // initialize and register qa module
   TracksInJetsQAMaker* maker = new TracksInJetsQAMaker("TracksInJetsQAMaker", outFile);
+  maker -> Configure(
+    {
+      .verbose   = verb,
+      .doDebug   = true,
+      .doHitQA   = true,
+      .doClustQA = false,
+      .doTrackQA = false
+    }
+  );
   f4a -> registerSubsystem(maker);
 
   // run4all
