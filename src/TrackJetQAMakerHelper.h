@@ -38,7 +38,7 @@ class TrackJetQAMakerHelper {
     bool IsInIntt(const uint16_t layer) {
       return (
         (layer >= m_nMvtxLayer) &&
-        (layer <  m_nInttLayer + m_nTpcLayer)
+        (layer <  m_nInttLayer + m_nMvtxLayer)
       );
     }  // end 'IsInIntt(uint16_t)'
 
