@@ -3,11 +3,11 @@
 // Derek Anderson
 // 03.25.2024
 //
-// Small class to help calculations in the TracksInJetsQAMaker module.
+// Small class to help calculations in the TrackJetQAMaker module.
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKERHELPER_H
-#define TRACKSINJETSQAMAKERHELPER_H
+#ifndef TRACKJETQAMAKERHELPER_H
+#define TRACKJETQAMAKERHELPER_H
 
 
 

@@ -3,11 +3,11 @@
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TracksInJetsQAMaker module
+// A submodule for the TrackJetQAMaker module
 // to generate QA plots for track clusters
 // ----------------------------------------------------------------------------
 
-#define TRACKSINJETSQAMAKER_CLUSTQAMAKER_CC
+#define TRACKJETQAMAKER_CLUSTQAMAKER_CC
 
 // submodule definition
 #include "ClustQAMaker.h"

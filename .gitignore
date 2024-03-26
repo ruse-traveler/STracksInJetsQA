@@ -2,8 +2,8 @@ reference/
 output/
 input/
 src/*
-!src/TracksInJetsQAMaker.cc
-!src/TracksInJetsQAMaker.h
+!src/TrackJetQAMaker.cc
+!src/TrackJetQAMaker.h
 !src/TrackJetQAMakerConfig.h
 !src/TrackJetQAMakerHelper.h
 !src/TrackJetQAMakerHistDef.h

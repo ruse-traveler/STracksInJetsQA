@@ -4,11 +4,11 @@
 // 03.25.2024
 //
 // Configurable parameters for histograms (like binning, etc.)
-// for the TracksInJetsQAMaker module.
+// for the TrackJetQAMaker module.
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKERHISTDEF_H
-#define TRACKSINJETSQAMAKERHISTDEF_H
+#ifndef TRACKJETQAMAKERHISTDEF_H
+#define TRACKJETQAMAKERHISTDEF_H
 
 // c++ utilities
 #include <string>

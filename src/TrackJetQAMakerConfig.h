@@ -3,11 +3,11 @@
 // Derek Anderson
 // 03.25.2024
 //
-// Configurable parameters for the TracksInJetsQAMaker module.
+// Configurable parameters for the TrackJetQAMaker module.
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKERCONFIG_H
-#define TRACKSINJETSQAMAKERCONFIG_H
+#ifndef TRACKJETQAMAKERCONFIG_H
+#define TRACKJETQAMAKERCONFIG_H
 
 // c++ utilities
 #include <string>
@@ -32,7 +32,6 @@ struct TrackJetQAMakerConfig {
   uint16_t nMvtxLayer = 3;
   uint16_t nInttLayer = 4;
   uint16_t nTpcLayer  = 48;
-
 
 };  // end TrackJetQAMakerConfig
 

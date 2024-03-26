@@ -3,11 +3,11 @@
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TracksInJetsQAMaker module
+// A submodule for the TrackJetQAMaker module
 // to generate QA plots for track hits
 // ----------------------------------------------------------------------------
 
-#define TRACKSINJETSQAMAKER_HITQAMAKER_CC
+#define TRACKJETQAMAKER_HITQAMAKER_CC
 
 // submodule definition
 #include "HitQAMaker.h"

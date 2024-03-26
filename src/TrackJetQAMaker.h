@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------------------
-// 'TracksInJetsQAMaker.h'
+// 'TrackJetQAMaker.h'
 // Derek Anderson
 // 03.25.2024
 //
@@ -7,8 +7,8 @@
 // hits, and more.
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKER_H
-#define TRACKSINJETSQAMAKER_H
+#ifndef TRACKJETQAMAKER_H
+#define TRACKJETQAMAKER_H
 
 // c++ utilities
 #include <string>
@@ -34,15 +34,15 @@
 
 
 
-// TracksInJetsQAMaker definition --------------------------------------------
+// TrackJetQAMaker definition --------------------------------------------
 
-class TracksInJetsQAMaker : public SubsysReco {
+class TrackJetQAMaker : public SubsysReco {
 
   public:
 
     // ctor/dtor
-    TracksInJetsQAMaker(const std::string &name = "TracksInJetsQAMaker", const std::string& sOutFileName = "tracksinjets.root");
-    ~TracksInJetsQAMaker() override;
+    TrackJetQAMaker(const std::string &name = "TrackJetQAMaker", const std::string& sOutFileName = "tracksinjets.root");
+    ~TrackJetQAMaker() override;
 
     // public methods
     void Configure(TrackJetQAMakerConfig config, std::optional<TrackJetQAMakerHistDef> hist = std::nullopt);
@@ -68,7 +68,7 @@ class TracksInJetsQAMaker : public SubsysReco {
     TrackJetQAMakerHelper  m_help;
     TrackJetQAMakerHistDef m_hist;
 
-};  // end TracksInJetsQAMaker
+};  // end TrackJetQAMaker
 
 #endif
 

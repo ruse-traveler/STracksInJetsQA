@@ -3,13 +3,13 @@
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TracksInJetsQAMaker module
+// A submodule for the TrackJetQAMaker module
 // to generate QA plots for tracks, inclusive
 // and in jets
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKER_TRACKQAMAKER_H
-#define TRACKSINJETSQAMAKER_TRACKQAMAKER_H
+#ifndef TRACKJETQAMAKER_TRACKQAMAKER_H
+#define TRACKJETQAMAKER_TRACKQAMAKER_H
 
 // c++ utilities
 #include <string>

@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------------
-// 'Fun4All_MakeTracksInJetsQA.C'
+// 'Fun4All_MakeTrackJetQA.C'
 // Derek Anderson
 // 03.25.2024
 //
-// A Fun4All macro to run the TracksInJetsQAMaker module.
+// A Fun4All macro to run the TrackJetQAMaker module.
 // ----------------------------------------------------------------------------
 
 #define FUN4ALL_MAKETRACKSINJETSQA_C
@@ -27,21 +27,21 @@
 #include <jetbase/FastJetAlgo.h>
 #include <jetbase/TrackJetInput.h>
 // module definition
-#include </sphenix/user/danderson/install/include/tracksinjetsqamaker/TracksInJetsQAMaker.h>
-#include </sphenix/user/danderson/install/include/tracksinjetsqamaker/TracksInJetsQAMakerConfig.h>
+#include </sphenix/user/danderson/install/include/trackjetqamaker/TrackJetQAMaker.h>
+#include </sphenix/user/danderson/install/include/trackjetqamaker/TrackJetQAMakerConfig.h>
 
 // load libraries
 R__LOAD_LIBRARY(libg4dst.so)
 R__LOAD_LIBRARY(libg4jets.so)
 R__LOAD_LIBRARY(libjetbase.so)
 R__LOAD_LIBRARY(libfun4all.so)
-R__LOAD_LIBRARY(/sphenix/user/danderson/install/lib/libtracksinjetsqamaker.so)
+R__LOAD_LIBRARY(/sphenix/user/danderson/install/lib/libtrackjetqamaker.so)
 
 
 
 // macro body -----------------------------------------------------------------
 
-void Fun4All_MakeTracksInJetsQA(
+void Fun4All_MakeTrackJetQA(
   const int         verb           = 0,
   const int64_t     nEvts          = 1,
   const std::string outFile        = "test.root",
@@ -58,7 +58,7 @@ void Fun4All_MakeTracksInJetsQA(
   reco -> add_input(new TrackJetInput(Jet::SRC::TRACK));
   reco -> add_algo(new FastJetAlgo(Jet::ALGO::ANTIKT, 0.4), "AntiKt_Track_r04");
   reco -> set_algo_node("ANTIKT");
-  reco -> set_input_node("TRUTH");
+  reco -> set_input_node("TRACK");
   reco -> Verbosity(verb);
   f4a  -> registerSubsystem(reco);
 
@@ -74,7 +74,7 @@ void Fun4All_MakeTracksInJetsQA(
   f4a -> registerInputManager(clustManager);
 
   // initialize and register qa module
-  TracksInJetsQAMaker* maker = new TracksInJetsQAMaker("TracksInJetsQAMaker", outFile);
+  TrackJetQAMaker* maker = new TrackJetQAMaker("TrackJetQAMaker", outFile);
   maker -> Configure(
     {
       .verbose   = verb,
