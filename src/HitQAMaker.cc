@@ -26,7 +26,7 @@ void HitQAMaker::Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& help)
   BuildHistograms();
   return;
 
-}  // end 'Init(TrackJetQAMakerHistDef& hist)'
+}  // end 'Init(TrackJetQAMakerHistDef&, TrackJetQAMakerHelper&)'
 
 
 
