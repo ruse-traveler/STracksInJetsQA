@@ -17,16 +17,22 @@
 struct TrackJetQAMakerConfig {
 
   // system parameters
-  int  verbose     = 0;
-  bool doDebug     = false;
-  bool doHitQA     = true;
-  bool doClustQA   = true;
-  bool doTrackQA   = true;
+  int  verbose   = 0;
+  bool doDebug   = false;
+  bool doHitQA   = true;
+  bool doClustQA = true;
+  bool doTrackQA = true;
 
   // i/o parameters
   std::string hitOutDir   = "HitQA";
   std::string clustOutDir = "ClustQA";
   std::string trackOutDir = "TrackQA";
+
+  // tracker parameters
+  uint16_t nMvtxLayer = 3;
+  uint16_t nInttLayer = 4;
+  uint16_t nTpcLayer  = 48;
+
 
 };  // end TrackJetQAMakerConfig
 
