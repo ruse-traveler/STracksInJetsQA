@@ -1,4 +1,4 @@
-# TrackJetsQAMaker
+# TrackJetQAMaker
 
 A Fun4All module to generate QA plots for track jets and related objects. Reads
 in three DSTs (`DST_TRACKS`, `DST_TRKR_HIT`, and `DST_TRKR_CLUSTER`), reconstructs
