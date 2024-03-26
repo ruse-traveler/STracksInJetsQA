@@ -42,7 +42,7 @@ R__LOAD_LIBRARY(/sphenix/user/danderson/install/lib/libtrackjetqamaker.so)
 // macro body -----------------------------------------------------------------
 
 void Fun4All_MakeTrackJetQA(
-  const int         verb           = 0,
+  const int         verb           = 1,
   const int64_t     nEvts          = 1,
   const std::string outFile        = "test.root",
   const std::string inTrkDSTs      = "input/lists/dst_tracks.list",
@@ -80,7 +80,7 @@ void Fun4All_MakeTrackJetQA(
       .verbose   = verb,
       .doDebug   = true,
       .doHitQA   = true,
-      .doClustQA = false,
+      .doClustQA = true,
       .doTrackQA = false
     }
   );
