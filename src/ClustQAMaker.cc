@@ -32,6 +32,75 @@ void ClustQAMaker::Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& hel
 
 void ClustQAMaker::Process(PHCompositeNode* topNode) {
 
+  // grab acts geometry from node tree
+  m_actsGeom = findNode::getClass<ActsGeometry>(topNode, "ActsGeometry");
+  if (!m_actsGeom) {
+    std::cerr << PHWHERE << ": PANIC: couldn't grab ACTS geometry from node tree!" << std::endl;
+    assert(m_actsGeom);
+  }
+
+  // grab hit map from node tree
+  m_hitMap = findNode::getClass<TrkrHitSetContainer>(topNode, "TRKR_HITSET");
+  if (!m_hitMap) {
+    std::cerr << PHWHERE << ": PANIC: couldn't grab hit map from node tree!" << std::endl;
+    assert(m_hitMap);
+  }
+
+  m_clustMap = findNode::getClass<TrkrClusterContainer>(topNode, "TRKR_CLUSTER");
+  if (!m_clustMap) {
+    std::cerr << PHWHERE << ": PANIC: couldn't grab cluster map from node tree!" << std::endl;
+    assert(m_clustMap);
+  }
+
+  // loop over hit sets
+  TrkrHitSetContainer::ConstRange hitSets = m_hitMap -> getHitSets();
+  for (
+    TrkrHitSetContainer::ConstIterator itSet = hitSets.first;
+    itSet != hitSets.second;
+    ++itSet
+  ) {
+
+    // loop over clusters associated w/ hit set
+    TrkrDefs::hitsetkey              setKey   = itSet      -> first;
+    TrkrClusterContainer::ConstRange clusters = m_clustMap -> getClusters(setKey);
+    for (
+      TrkrClusterContainer::ConstIterator itClust = clusters.first;
+      itClust != clusters.second;
+      ++itClust
+    ) {
+
+      // grab cluster
+      TrkrDefs::cluskey clustKey = itClust    -> first;
+      TrkrCluster*      cluster  = m_clustMap -> findCluster(clustKey);
+
+      // check which subsystem cluster is in
+      const uint16_t layer  = TrkrDefs::getLayer(clustKey);
+      const bool     isMvtx = m_help.IsInMvtx(layer);
+      const bool     isIntt = m_help.IsInIntt(layer);
+      const bool     isTpc  = m_help.IsInTpc(layer);
+
+      // get cluster position
+      Acts::Vector3 actsPos = m_actsGeom -> getGlobalPosition(clustKey, cluster);
+
+      // collect cluster infor
+      ClustQAContent content {
+        .x = actsPos(0),
+        .y = actsPos(1),
+        .z = actsPos(2),
+        .r = std::hypot( actsPos(0), actsPos(1) )
+      };
+
+      // fill histograms
+      FillHistograms(Type::All, content);
+      if (isMvtx) {
+        FillHistograms(Type::Mvtx, content);
+      } else if (isIntt) {
+        FillHistograms(Type::Intt, content);
+      } else if (isTpc) {
+        FillHistograms(Type::Tpc, content);
+      }
+    }  // end cluster loop
+  }  // end hit set loop
   return;
 
 }  // end 'Process(PHCompositeNode*)'

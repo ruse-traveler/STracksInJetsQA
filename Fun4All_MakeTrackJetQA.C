@@ -18,6 +18,9 @@
 #include <fun4all/Fun4AllOutputManager.h>
 #include <fun4all/Fun4AllDstInputManager.h>
 #include <fun4all/Fun4AllDstOutputManager.h>
+#include <fun4all/Fun4AllRunNodeInputManager.h>
+// f4a modules
+#include <ffamodules/CDBInterface.h>
 // phool libraries
 #include <phool/recoConsts.h>
 #include <phool/PHRandomSeed.h>
@@ -29,12 +32,18 @@
 // module definition
 #include </sphenix/user/danderson/install/include/trackjetqamaker/TrackJetQAMaker.h>
 #include </sphenix/user/danderson/install/include/trackjetqamaker/TrackJetQAMakerConfig.h>
+// f4a macros
+#include <G4_Magnet.C>
+#include <G4_ActsGeom.C>
+#include <GlobalVariables.C>
+#include <Trkr_Clustering.C>
 
 // load libraries
 R__LOAD_LIBRARY(libg4dst.so)
 R__LOAD_LIBRARY(libg4jets.so)
 R__LOAD_LIBRARY(libjetbase.so)
 R__LOAD_LIBRARY(libfun4all.so)
+R__LOAD_LIBRARY(libffamodules.so)
 R__LOAD_LIBRARY(/sphenix/user/danderson/install/lib/libtrackjetqamaker.so)
 
 
@@ -50,8 +59,40 @@ void Fun4All_MakeTrackJetQA(
   const std::string inTrkClustDSTs = "input/lists/dst_trkr_cluster.list"
 ) {
 
-  // initialize f4a server etc
+  // grab instances of fun4all, etc
   Fun4AllServer* f4a = Fun4AllServer::instance();
+  CDBInterface*  cdb = CDBInterface::instance();
+  recoConsts*    rc  = recoConsts::instance();
+
+  // turn on cdb
+  Enable::CDB = true;
+
+  // set cdb tags
+  rc -> set_StringFlag("CDB_GLOBALTAG", "ProdA_2023");
+  rc -> set_uint64Flag("TIMESTAMP", 6);
+
+  // get url of geo file
+  const std::string inGeoFile = cdb -> getUrl("Tracking_Geometry");
+
+  // set up input managers
+  Fun4AllDstInputManager*     trkManager   = new Fun4AllDstInputManager("TrackDstManager");
+  Fun4AllDstInputManager*     hitManager   = new Fun4AllDstInputManager("TrackHitDstManager");
+  Fun4AllDstInputManager*     clustManager = new Fun4AllDstInputManager("TrackClusterDstManager");
+  Fun4AllRunNodeInputManager* geoManager   = new Fun4AllRunNodeInputManager("GeometryManager");
+  trkManager   -> AddListFile(inTrkDSTs.data(), 1);
+  hitManager   -> AddListFile(inTrkHitDSTs.data(), 1);
+  clustManager -> AddListFile(inTrkClustDSTs.data(), 1);
+  geoManager   -> AddFile(inGeoFile.data());
+  f4a -> registerInputManager(trkManager);
+  f4a -> registerInputManager(hitManager);
+  f4a -> registerInputManager(clustManager);
+  f4a -> registerInputManager(geoManager);
+
+  // initialize acts geometry
+  G4TPC::tpc_drift_velocity_reco = (8.0 / 1000) * 107.0 / 105.0;
+  G4MAGNET::magfield = "0.01";
+  G4MAGNET::magfield_rescale = 1;
+  ACTSGEOM::ActsGeomInit();
 
   // run jet reconstruction
   JetReco* reco = new JetReco();
@@ -61,17 +102,6 @@ void Fun4All_MakeTrackJetQA(
   reco -> set_input_node("TRACK");
   reco -> Verbosity(verb);
   f4a  -> registerSubsystem(reco);
-
-  // set up input managers
-  Fun4AllDstInputManager* trkManager   = new Fun4AllDstInputManager("TrackDstManager");
-  Fun4AllDstInputManager* hitManager   = new Fun4AllDstInputManager("TrackHitDstManager");
-  Fun4AllDstInputManager* clustManager = new Fun4AllDstInputManager("TrackClusterDstManager");
-  trkManager   -> AddListFile(inTrkDSTs.data(), 1);
-  hitManager   -> AddListFile(inTrkHitDSTs.data(), 1);
-  clustManager -> AddListFile(inTrkClustDSTs.data(), 1);
-  f4a -> registerInputManager(trkManager);
-  f4a -> registerInputManager(hitManager);
-  f4a -> registerInputManager(clustManager);
 
   // initialize and register qa module
   TrackJetQAMaker* maker = new TrackJetQAMaker("TrackJetQAMaker", outFile);

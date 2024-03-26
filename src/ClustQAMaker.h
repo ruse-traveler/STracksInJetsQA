@@ -28,10 +28,10 @@
 #include <phool/phool.h>
 #include <phool/getClass.h>
 // tracking libraries
-#include <trackbase/TpcDefs.h>
 #include <trackbase/TrkrDefs.h>
-#include <trackbase/InttDefs.h>
-#include <trackbase/MvtxDefs.h>
+#include <trackbase/TrkrHitSet.h>
+#include <trackbase/TrkrCluster.h>
+#include <trackbase/ActsGeometry.h>
 #include <trackbase/TrkrHitSetContainer.h>
 #include <trackbase/TrkrClusterContainer.h>
 // module tools
@@ -75,6 +75,7 @@ class ClustQAMaker {
     void FillHistograms(Type type, ClustQAContent& content);
 
     // necessary dst nodes
+    ActsGeometry*         m_actsGeom = NULL;
     TrkrHitSetContainer*  m_hitMap   = NULL;
     TrkrClusterContainer* m_clustMap = NULL;
 
