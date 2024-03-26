@@ -27,7 +27,7 @@
 #include "TrackJetQAMakerConfig.h"
 #include "TrackJetQAMakerHelper.h"
 #include "TrackJetQAMakerHistDef.h"
-// plugin definitions
+// submodule definitions
 #include "HitQAMaker.h"
 #include "ClustQAMaker.h"
 #include "TrackQAMaker.h"
@@ -49,12 +49,8 @@ class TracksInJetsQAMaker : public SubsysReco {
 
     // f4a methods
     int Init(PHCompositeNode* topNode)          override;
-    int InitRun(PHCompositeNode* topNode)       override;
     int process_event(PHCompositeNode* topNode) override;
-    int ResetEvent(PHCompositeNode* topNode)    override;
-    int EndRun(const int runnumber)             override;
     int End(PHCompositeNode* topNode)           override;
-    int Reset(PHCompositeNode*  /*topNode*/)    override;
 
   private:
 
@@ -62,7 +58,7 @@ class TracksInJetsQAMaker : public SubsysReco {
     TFile*      m_outFile     = NULL;
     std::string m_outFileName = "";
 
-    // plugins to run
+    // submodules to run
     HitQAMaker*   m_hitMaker   = NULL;
     ClustQAMaker* m_clustMaker = NULL;
     TrackQAMaker* m_trackMaker = NULL;

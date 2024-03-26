@@ -79,31 +79,18 @@ int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
     std::cout << "TracksInJetsQAMaker::Init(PHCompositeNode* topNode) Initializing" << std::endl;
   }
 
-  // instantiate needed plugins
+  // instantiate needed submodules
   if (m_config.doHitQA)   m_hitMaker   = new HitQAMaker();
   if (m_config.doClustQA) m_clustMaker = new ClustQAMaker();
   if (m_config.doTrackQA) m_trackMaker = new TrackQAMaker();
 
-  // intialize plugins
-  if (m_config.doHitQA)   m_hitMaker   -> Init(m_hist);
+  // intialize submodules
+  if (m_config.doHitQA)   m_hitMaker   -> Init(m_hist, m_help);
   if (m_config.doClustQA) m_clustMaker -> Init();
   if (m_config.doTrackQA) m_trackMaker -> Init();
   return Fun4AllReturnCodes::EVENT_OK;
 
 }  // end 'Init(PHCompositeNode*)'
-
-
-
-int TracksInJetsQAMaker::InitRun(PHCompositeNode* topNode) {
-
-  // print debug message
-  if (m_config.doDebug && (m_config.verbose > 1)) {
-    std::cout << "TracksInJetsQAMaker::InitRun(PHCompositeNode* topNode) Initializing for Run XXX" << std::endl;
-  }
-
-  return Fun4AllReturnCodes::EVENT_OK;
-
-}  // end 'InitRun(PHCompositeNode*)'
 
 
 
@@ -114,39 +101,13 @@ int TracksInJetsQAMaker::process_event(PHCompositeNode* topNode) {
     std::cout << "TracksInJetsQAMaker::process_event(PHCompositeNode* topNode) Processing Event" << std::endl;
   }
 
-  // run plugins
+  // run submodules
   if (m_config.doHitQA)   m_hitMaker   -> Process(topNode);
   if (m_config.doClustQA) m_clustMaker -> Process(topNode);
   if (m_config.doTrackQA) m_trackMaker -> Process(topNode);
   return Fun4AllReturnCodes::EVENT_OK;
 
 }  // end 'process_event(PHCompositeNode*)'
-
-
-
-int TracksInJetsQAMaker::ResetEvent(PHCompositeNode* topNode) {
-
-  // print debug message
-  if (m_config.doDebug && (m_config.verbose > 3)) {
-    std::cout << "TracksInJetsQAMaker::ResetEvent(PHCompositeNode* topNode) Resetting internal structures, prepare for next event" << std::endl;
-  }
-
-  return Fun4AllReturnCodes::EVENT_OK;
-
-}  // end 'ResetEvent(PHCompositeNode*)'
-
-
-
-int TracksInJetsQAMaker::EndRun(const int runnumber) {
-
-  // print debug message
-  if (m_config.doDebug && (m_config.verbose > 1)) {
-    std::cout << "TracksInJetsQAMaker::EndRun(const int runnumber) Ending Run for Run " << runnumber << std::endl;
-  }
-
-  return Fun4AllReturnCodes::EVENT_OK;
-
-}  // end 'EndRun(int)'
 
 
 
@@ -157,7 +118,7 @@ int TracksInJetsQAMaker::End(PHCompositeNode* topNode) {
     std::cout << "TracksInJetsQAMaker::End(PHCompositeNode* topNode) This is the End..." << std::endl;
   }
 
-  // terminate plugins
+  // terminate submodules
   if (m_config.doHitQA)   m_hitMaker   -> End(m_outFile, m_config.hitOutDir);
   if (m_config.doClustQA) m_clustMaker -> End();
   if (m_config.doTrackQA) m_trackMaker -> End();
@@ -168,18 +129,5 @@ int TracksInJetsQAMaker::End(PHCompositeNode* topNode) {
   return Fun4AllReturnCodes::EVENT_OK;
 
 }  // end 'End(PHCompositeNode*)'
-
-
-
-int TracksInJetsQAMaker::Reset(PHCompositeNode* topNode) {
-
-  // print debug message
-  if (m_config.doDebug && (m_config.verbose > 3)) {
-    std::cout << "TracksInJetsQAMaker::Reset(PHCompositeNode* topNode) being Reset" << std::endl;
-  }
-
-  return Fun4AllReturnCodes::EVENT_OK;
-
-}  // end 'Reset(PHCompositeNode*)'
 
 // end ------------------------------------------------------------------------
