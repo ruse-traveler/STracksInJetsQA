@@ -22,11 +22,13 @@ struct TrackJetQAMakerConfig {
   bool doHitQA   = true;
   bool doClustQA = true;
   bool doTrackQA = true;
+  bool doJetQA   = true;
 
   // i/o parameters
   std::string hitOutDir   = "HitQA";
   std::string clustOutDir = "ClustQA";
   std::string trackOutDir = "TrackQA";
+  std::string jetOutDir   = "JetQA";
 
   // tracker parameters
   uint16_t nMvtxLayer = 3;

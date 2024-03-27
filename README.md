@@ -10,15 +10,15 @@ There are four categories of plots it can produce: tracker hits, tracker cluster
 tracks, and tracks in jets. Each category is then split up into subsystems (MVTX,
 INTT, TPC).
 
-The actual routines used to fill each histogram are consolidated into three "sub-modules:"
+The actual routines used to fill each histogram are consolidated into four "sub-modules:"
 
   1. `HitQAMaker,` which histograms low-level hit information;
   2. `ClustQAMaker,` which histograms cluster information; and
-  3. `TrackQAMaker,` which histograms both information on both tracks (inclusive) and
-     tracks in jets.
+  3. `TrackQAMaker,` which histograms information on tracks (inclusive); and
+  4. `JetQAMaker,` which histograms information on jets and the tracks in them.
 
 Each sub-module can be turned on or off by setting the options `.doHitQA`, `.doClustQA`,
-and `.doTrackQA` to true/false respectively.
+`.doTrackQA`, and `.doJetQA` to true/false respectively.
 
 The module is compiled in the usual way:
 
@@ -39,4 +39,4 @@ of helper objects used to streamline the code and centralize related information
   - `TrackJetQAMakerHelper.h:` consolidates a variety of useful methods and information (e.g.
     checks on whether or not a particular hit/cluster is in a given subsystem).
   - `TrackJetQAMakerHistDef.h:` consoldiates the binning schemes used across all three sub-modules,
-     and defines some useful types for automating histogram creation.
+    and defines some useful types for automating histogram creation.

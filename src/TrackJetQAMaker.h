@@ -31,6 +31,7 @@
 #include "HitQAMaker.h"
 #include "ClustQAMaker.h"
 #include "TrackQAMaker.h"
+#include "JetQAMaker.h"
 
 
 
@@ -62,8 +63,9 @@ class TrackJetQAMaker : public SubsysReco {
     HitQAMaker*   m_hitMaker   = NULL;
     ClustQAMaker* m_clustMaker = NULL;
     TrackQAMaker* m_trackMaker = NULL;
+    JetQAMaker*   m_jetMaker   = NULL;
 
-    // configurable parameters and histogram definitions
+    // module utilities
     TrackJetQAMakerConfig  m_config;
     TrackJetQAMakerHelper  m_help;
     TrackJetQAMakerHistDef m_hist;

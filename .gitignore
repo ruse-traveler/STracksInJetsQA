@@ -13,6 +13,8 @@ src/*
 !src/ClustQAMaker.h
 !src/TrackQAMaker.cc
 !src/TrackQAMaker.h
+!src/JetQAMaker.cc
+!src/JetQAMaker.h
 !src/autogen.sh
 !src/configure.ac
 !src/Makefile.am

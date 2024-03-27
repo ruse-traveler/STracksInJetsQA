@@ -111,7 +111,8 @@ void Fun4All_MakeTrackJetQA(
       .doDebug   = true,
       .doHitQA   = true,
       .doClustQA = true,
-      .doTrackQA = false
+      .doTrackQA = false,
+      .doJetQA   = true
     }
   );
   f4a -> registerSubsystem(maker);

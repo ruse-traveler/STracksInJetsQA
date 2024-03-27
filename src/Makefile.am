@@ -19,7 +19,8 @@ pkginclude_HEADERS = \
   TrackJetQAMakerHistDef.h \
   HitQAMaker.h \
   ClustQAMaker.h \
-  TrackQAMaker.h
+  TrackQAMaker.h \
+  JetQAMaker.h
 
 if ! MAKEROOT6
   ROOT5_DICTS = \
@@ -31,7 +32,8 @@ libtrackjetqamaker_la_SOURCES = \
   TrackJetQAMaker.cc \
   HitQAMaker.cc \
   ClustQAMaker.cc \
-  TrackQAMaker.cc
+  TrackQAMaker.cc \
+  JetQAMaker.cc
 
 libtrackjetqamaker_la_LDFLAGS = \
   -L$(libdir) \

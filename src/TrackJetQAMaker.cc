@@ -46,6 +46,7 @@ TrackJetQAMaker::~TrackJetQAMaker() {
   if (m_hitMaker)   delete m_hitMaker;
   if (m_clustMaker) delete m_clustMaker;
   if (m_trackMaker) delete m_trackMaker;
+  if (m_jetMaker)   delete m_jetMaker;
 
 }  // end dtor
 
@@ -83,11 +84,13 @@ int TrackJetQAMaker::Init(PHCompositeNode* topNode) {
   if (m_config.doHitQA)   m_hitMaker   = new HitQAMaker();
   if (m_config.doClustQA) m_clustMaker = new ClustQAMaker();
   if (m_config.doTrackQA) m_trackMaker = new TrackQAMaker();
+  if (m_config.doJetQA)   m_jetMaker   = new JetQAMaker();
 
   // intialize submodules
   if (m_config.doHitQA)   m_hitMaker   -> Init(m_hist, m_help);
   if (m_config.doClustQA) m_clustMaker -> Init(m_hist, m_help);
   if (m_config.doTrackQA) m_trackMaker -> Init();
+  if (m_config.doJetQA)   m_jetMaker   -> Init(m_hist, m_help);
   return Fun4AllReturnCodes::EVENT_OK;
 
 }  // end 'Init(PHCompositeNode*)'
@@ -105,6 +108,7 @@ int TrackJetQAMaker::process_event(PHCompositeNode* topNode) {
   if (m_config.doHitQA)   m_hitMaker   -> Process(topNode);
   if (m_config.doClustQA) m_clustMaker -> Process(topNode);
   if (m_config.doTrackQA) m_trackMaker -> Process(topNode);
+  if (m_config.doJetQA)   m_jetMaker   -> Process(topNode);
   return Fun4AllReturnCodes::EVENT_OK;
 
 }  // end 'process_event(PHCompositeNode*)'
@@ -122,6 +126,7 @@ int TrackJetQAMaker::End(PHCompositeNode* topNode) {
   if (m_config.doHitQA)   m_hitMaker   -> End(m_outFile, m_config.hitOutDir);
   if (m_config.doClustQA) m_clustMaker -> End(m_outFile, m_config.clustOutDir);
   if (m_config.doTrackQA) m_trackMaker -> End();
+  if (m_config.doJetQA)   m_jetMaker   -> End(m_outFile, m_config.jetOutDir);
 
   // close file
   m_outFile -> cd();
