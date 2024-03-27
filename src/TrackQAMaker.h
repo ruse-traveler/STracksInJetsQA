@@ -73,7 +73,7 @@ class TrackQAMaker {
     void FillHistograms(Type type, TrackQAContent& content);
 
     // necessary dst nodes
-    SvtxTrackMap* m_trkMap;
+    SvtxTrackMap* m_trkMap = NULL;
 
     // histograms
     std::vector<std::vector<TH1D*>> vecHist1D;
