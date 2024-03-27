@@ -235,4 +235,3 @@ void ClustQAMaker::FillHistograms(Type type, ClustQAContent& content) {
 }  //  end 'FillHistograms(Type, ClustQAContent&)'
 
 // end ------------------------------------------------------------------------
-
