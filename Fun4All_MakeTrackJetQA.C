@@ -52,7 +52,7 @@ R__LOAD_LIBRARY(/sphenix/user/danderson/install/lib/libtrackjetqamaker.so)
 
 void Fun4All_MakeTrackJetQA(
   const int         verb           = 1,
-  const int64_t     nEvts          = 1,
+  const int64_t     nEvts          = 1000,
   const std::string outFile        = "test.root",
   const std::string inTrkDSTs      = "input/dst_tracks.list",
   const std::string inTrkHitDSTs   = "input/dst_trkr_hit.list",
