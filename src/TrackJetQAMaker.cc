@@ -89,7 +89,7 @@ int TrackJetQAMaker::Init(PHCompositeNode* topNode) {
   // intialize submodules
   if (m_config.doHitQA)   m_hitMaker   -> Init(m_hist, m_help);
   if (m_config.doClustQA) m_clustMaker -> Init(m_hist, m_help);
-  if (m_config.doTrackQA) m_trackMaker -> Init();
+  if (m_config.doTrackQA) m_trackMaker -> Init(m_hist, m_help);
   if (m_config.doJetQA)   m_jetMaker   -> Init(m_hist, m_help);
   return Fun4AllReturnCodes::EVENT_OK;
 
@@ -125,7 +125,7 @@ int TrackJetQAMaker::End(PHCompositeNode* topNode) {
   // terminate submodules
   if (m_config.doHitQA)   m_hitMaker   -> End(m_outFile, m_config.hitOutDir);
   if (m_config.doClustQA) m_clustMaker -> End(m_outFile, m_config.clustOutDir);
-  if (m_config.doTrackQA) m_trackMaker -> End();
+  if (m_config.doTrackQA) m_trackMaker -> End(m_outFile, m_config.trackOutDir);
   if (m_config.doJetQA)   m_jetMaker   -> End(m_outFile, m_config.jetOutDir);
 
   // close file

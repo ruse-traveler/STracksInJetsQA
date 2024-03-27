@@ -39,7 +39,8 @@ struct TrackJetQAMakerHistDef {
     PosR,
     Phi,
     Eta,
-    Ene
+    Ene,
+    Qual
   };
 
   // no. of bins
@@ -56,6 +57,7 @@ struct TrackJetQAMakerHistDef {
   uint32_t nPhiBins    = 180;
   uint32_t nEtaBins    = 180;
   uint32_t nEneBins    = 505;
+  uint32_t nQualBins   = 22;
 
   // bin ranges
   BinRange rAdcBins    = {-0.5, (float) nAdcBins + 0.5};
@@ -68,6 +70,7 @@ struct TrackJetQAMakerHistDef {
   BinRange rPhiBins    = {-3.15, 3.15};
   BinRange rEtaBins    = {-4.0, 4.0};
   BinRange rEneBins    = {-0.5, 100.5};
+  BinRange rQualBins   = {-0.5, 10.5};
 
   // construct list of binnings
   std::vector<BinDef> GetVecHistBins() {
@@ -82,7 +85,8 @@ struct TrackJetQAMakerHistDef {
       std::make_pair(nPosRBins,   rPosRBins),
       std::make_pair(nPhiBins,    rPhiBins),
       std::make_pair(nEtaBins,    rEtaBins),
-      std::make_pair(nEneBins,    rEneBins)
+      std::make_pair(nEneBins,    rEneBins),
+      std::make_pair(nQualBins,   rQualBins)
     };
     return vecHistBins;
 
