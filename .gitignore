@@ -1,6 +1,5 @@
 reference/
 output/
-input/
 src/*
 !src/TrackJetQAMaker.cc
 !src/TrackJetQAMaker.h

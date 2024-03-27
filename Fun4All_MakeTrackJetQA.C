@@ -54,9 +54,9 @@ void Fun4All_MakeTrackJetQA(
   const int         verb           = 1,
   const int64_t     nEvts          = 1,
   const std::string outFile        = "test.root",
-  const std::string inTrkDSTs      = "input/lists/dst_tracks.list",
-  const std::string inTrkHitDSTs   = "input/lists/dst_trkr_hit.list",
-  const std::string inTrkClustDSTs = "input/lists/dst_trkr_cluster.list"
+  const std::string inTrkDSTs      = "input/dst_tracks.list",
+  const std::string inTrkHitDSTs   = "input/dst_trkr_hit.list",
+  const std::string inTrkClustDSTs = "input/dst_trkr_cluster.list"
 ) {
 
   // grab instances of fun4all, etc
