@@ -29,6 +29,7 @@ struct TrackJetQAMakerConfig {
   std::string clustOutDir = "ClustQA";
   std::string trackOutDir = "TrackQA";
   std::string jetOutDir   = "JetQA";
+  std::string cstOutDir   = "CstQA";
 
   // tracker parameters
   uint16_t nMvtxLayer = 3;

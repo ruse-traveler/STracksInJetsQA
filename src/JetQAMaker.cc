@@ -39,6 +39,13 @@ void JetQAMaker::Process(PHCompositeNode* topNode) {
     assert(m_jetMap);
   }
 
+  // grab track map off the node tree
+  m_trkMap = findNode::getClass<SvtxTrackMap>(topNode, "SvtxTrackMap");
+  if (!m_trkMap) {
+    std::cerr << PHWHERE << ": PANIC: couldn't grab track map from node tree!" << std::endl;
+    assert(m_trkMap);
+  }
+
   // loop over jets
   for (
     uint64_t iJet = 0;
@@ -48,6 +55,32 @@ void JetQAMaker::Process(PHCompositeNode* topNode) {
 
     // grab jet
     Jet* jet = m_jetMap -> get_jet(iJet);
+
+    // loop over jet constituents
+    auto csts = jet -> get_comp_vec();
+    for (
+      auto cst = csts.begin();
+      cst != csts.end();
+      ++cst
+    ) {
+
+      // skip if cst is not a track
+      uint32_t src = cst -> first;
+      if (src != Jet::SRC::TRACK) continue;
+
+      // grab track
+      SvtxTrack* track = m_trkMap -> get(cst -> second);
+
+      // collect cst info
+      CstQAContent cstContent {
+        .ptCst   = track -> get_pt(),
+        .qualCst = track -> get_quality()
+      };
+
+      // fill histograms
+      FillHistograms(Type::All, cstContent);
+
+    }  // end cst loop
 
     // collect jet info
     JetQAContent jetContent {
@@ -67,28 +100,48 @@ void JetQAMaker::Process(PHCompositeNode* topNode) {
 
 
 
-void JetQAMaker::End(TFile* outFile, std::string outDirName) {
+void JetQAMaker::End(TFile* outFile, std::string jetDirName, std::string cstDirName) {
 
-  TDirectory* outDir = outFile -> mkdir(outDirName.data());
-  if (!outDir) {
-    std::cerr << PHWHERE << ": PANIC: unable to make output directory!" << std::endl;
-    assert(outDir);
+  TDirectory* jetDir = outFile -> mkdir(jetDirName.data());
+  if (!jetDir) {
+    std::cerr << PHWHERE << ": PANIC: unable to make jet output directory!" << std::endl;
+    assert(jetDir);
   }
 
-  outDir -> cd();
-  for (auto hist1Ds : vecHist1D) {
+  TDirectory* cstDir = outFile -> mkdir(cstDirName.data());
+  if (!cstDir) {
+    std::cerr << PHWHERE << ": PANIC: unable to make constituent output directory!" << std::endl;
+    assert(cstDir);
+  }
+
+  // save jet histograms
+  jetDir -> cd();
+  for (auto hist1Ds : vecJetHist1D) {
     for (TH1D* hist1D : hist1Ds) {
       hist1D -> Write();
     }
   }
-  for (auto hist2Ds : vecHist2D) {
+  for (auto hist2Ds : vecJetHist2D) {
+    for (TH2D* hist2D : hist2Ds) {
+      hist2D -> Write();
+    }
+  }
+
+  // save constituent histograms
+  cstDir -> cd();
+  for (auto hist1Ds : vecCstHist1D) {
+    for (TH1D* hist1D : hist1Ds) {
+      hist1D -> Write();
+    }
+  }
+  for (auto hist2Ds : vecCstHist2D) {
     for (TH2D* hist2D : hist2Ds) {
       hist2D -> Write();
     }
   }
   return;
 
-}  // end 'End()'
+}  // end 'End(TFile*, std::string, std::string)'
 
 
 
@@ -99,17 +152,25 @@ void JetQAMaker::BuildHistograms() {
   // grab binning schemes
   std::vector<BinDef> vecBins = m_hist.GetVecHistBins();
 
-  // histogram labels/definitions
+  // histogram labels
   const std::vector<std::string> vecHistTypes  = {
     "All"
   };
-  const std::vector<HistDef1D> vecHistDef1D = {
+
+  // 1d histogram definitions
+  const std::vector<HistDef1D> vecJetHistDef1D = {
     std::make_tuple( "JetEta", vecBins.at(TrackJetQAMakerHistDef::Var::Eta) ),
     std::make_tuple( "JetPhi", vecBins.at(TrackJetQAMakerHistDef::Var::Phi) ),
     std::make_tuple( "JetPt",  vecBins.at(TrackJetQAMakerHistDef::Var::Ene) ),
     std::make_tuple( "SumPt",  vecBins.at(TrackJetQAMakerHistDef::Var::Ene) )
   };
-  const std::vector<HistDef2D> vecHistDef2D = {
+  const std::vector<HistDef1D> vecCstHistDef1D = {
+    std::make_tuple( "CstPt",   vecBins.at(TrackJetQAMakerHistDef::Var::Ene) ),
+    std::make_tuple( "CstQual", vecBins.at(TrackJetQAMakerHistDef::Var::Qual) )
+  };
+
+  // 2d histogram definitions
+  const std::vector<HistDef2D> vecJetHistDef2D = {
     std::make_tuple(
       "JetPtVsEta",
       vecBins.at(TrackJetQAMakerHistDef::Var::Eta),
@@ -121,54 +182,110 @@ void JetQAMaker::BuildHistograms() {
       vecBins.at(TrackJetQAMakerHistDef::Var::Ene)
     )
   };
+  const std::vector<HistDef2D> vecCstHistDef2D = {
+    std::make_tuple(
+      "CstQualVsPt",
+      vecBins.at(TrackJetQAMakerHistDef::Var::Ene),
+      vecBins.at(TrackJetQAMakerHistDef::Var::Qual)
+    ),
+  };
 
   // build 1d histograms
-  vecHist1D.resize( vecHistTypes.size() );
+  vecJetHist1D.resize( vecHistTypes.size() );
+  vecCstHist1D.resize( vecHistTypes.size() );
   for (size_t iType = 0; iType < vecHistTypes.size(); iType++) {
-    for (HistDef1D histDef1D : vecHistDef1D) {
+ 
+    // build jet histograms
+    for (HistDef1D jetHistDef1D : vecJetHistDef1D) {
 
       // make name
       std::string sHistName("h");
       sHistName += vecHistTypes.at(iType);
-      sHistName += std::get<0>(histDef1D);
+      sHistName += std::get<0>(jetHistDef1D);
 
       // create histogram
-      vecHist1D.at(iType).push_back(
+      vecJetHist1D.at(iType).push_back(
         new TH1D(
           sHistName.data(),
           "",
-          std::get<1>(histDef1D).first,
-          std::get<1>(histDef1D).second.first,
-          std::get<1>(histDef1D).second.second
+          std::get<1>(jetHistDef1D).first,
+          std::get<1>(jetHistDef1D).second.first,
+          std::get<1>(jetHistDef1D).second.second
         )
       );
-    }  // end hist loop
-  }  // end type loop
+    }  // end jet hist loop
 
-  // build 2d histograms
-  vecHist2D.resize( vecHistTypes.size() );
-  for (size_t iType = 0; iType < vecHistTypes.size(); iType++) {
-    for (HistDef2D histDef2D : vecHistDef2D) {
+    // build constituent histograms
+    for (HistDef1D cstHistDef1D : vecCstHistDef1D) {
 
       // make name
       std::string sHistName("h");
       sHistName += vecHistTypes.at(iType);
-      sHistName += std::get<0>(histDef2D);
+      sHistName += std::get<0>(cstHistDef1D);
 
       // create histogram
-      vecHist2D.at(iType).push_back(
+      vecCstHist1D.at(iType).push_back(
+        new TH1D(
+          sHistName.data(),
+          "",
+          std::get<1>(cstHistDef1D).first,
+          std::get<1>(cstHistDef1D).second.first,
+          std::get<1>(cstHistDef1D).second.second
+        )
+      );
+    }  // end cst hist loop
+  }  // end type loop
+
+  // build 2d histograms
+  vecJetHist2D.resize( vecHistTypes.size() );
+  vecCstHist2D.resize( vecHistTypes.size() );
+  for (size_t iType = 0; iType < vecHistTypes.size(); iType++) {
+
+    // build jet histograms
+    for (HistDef2D jetHistDef2D : vecJetHistDef2D) {
+
+      // make name
+      std::string sHistName("h");
+      sHistName += vecHistTypes.at(iType);
+      sHistName += std::get<0>(jetHistDef2D);
+
+      // create histogram
+      vecJetHist2D.at(iType).push_back(
         new TH2D(
           sHistName.data(),
           "",
-          std::get<1>(histDef2D).first,
-          std::get<1>(histDef2D).second.first,
-          std::get<1>(histDef2D).second.second,
-          std::get<2>(histDef2D).first,
-          std::get<2>(histDef2D).second.first,
-          std::get<2>(histDef2D).second.second
+          std::get<1>(jetHistDef2D).first,
+          std::get<1>(jetHistDef2D).second.first,
+          std::get<1>(jetHistDef2D).second.second,
+          std::get<2>(jetHistDef2D).first,
+          std::get<2>(jetHistDef2D).second.first,
+          std::get<2>(jetHistDef2D).second.second
         )
       );
-    }  // end hist loop
+    }  // end jet hist loop
+
+    // build constituent histograms
+    for (HistDef2D cstHistDef2D : vecCstHistDef2D) {
+
+      // make name
+      std::string sHistName("h");
+      sHistName += vecHistTypes.at(iType);
+      sHistName += std::get<0>(cstHistDef2D);
+
+      // create histogram
+      vecCstHist2D.at(iType).push_back(
+        new TH2D(
+          sHistName.data(),
+          "",
+          std::get<1>(cstHistDef2D).first,
+          std::get<1>(cstHistDef2D).second.first,
+          std::get<1>(cstHistDef2D).second.second,
+          std::get<2>(cstHistDef2D).first,
+          std::get<2>(cstHistDef2D).second.first,
+          std::get<2>(cstHistDef2D).second.second
+        )
+      );
+    }  // end cst hist loop
   }  // end type loop
   return;
 
@@ -179,17 +296,31 @@ void JetQAMaker::BuildHistograms() {
 void JetQAMaker::FillHistograms(Type type, JetQAContent& content) {
 
   // fill 1d histograms
-  vecHist1D.at(type).at(H1D::JetEta) -> Fill(content.etaJet);
-  vecHist1D.at(type).at(H1D::JetPhi) -> Fill(content.phiJet);
-  vecHist1D.at(type).at(H1D::JetPt)  -> Fill(content.ptJet);
-  vecHist1D.at(type).at(H1D::SumPt)  -> Fill(content.ptSum);
+  vecJetHist1D.at(type).at(J1D::JetEta) -> Fill(content.etaJet);
+  vecJetHist1D.at(type).at(J1D::JetPhi) -> Fill(content.phiJet);
+  vecJetHist1D.at(type).at(J1D::JetPt)  -> Fill(content.ptJet);
+  vecJetHist1D.at(type).at(J1D::SumPt)  -> Fill(content.ptSum);
 
   // fill 2d histograms
-  vecHist2D.at(type).at(H2D::JetPtVsEta) -> Fill(content.etaJet, content.ptJet);
-  vecHist2D.at(type).at(H2D::JetVsSumPt) -> Fill(content.ptSum, content.ptJet);
+  vecJetHist2D.at(type).at(J2D::JetPtVsEta) -> Fill(content.etaJet, content.ptJet);
+  vecJetHist2D.at(type).at(J2D::JetVsSumPt) -> Fill(content.ptSum, content.ptJet);
   return;
 
 }  //  end 'FillHistograms(Type, JetQAContent&)'
+
+
+
+void JetQAMaker::FillHistograms(Type type, CstQAContent& content) {
+
+  // fill 1d histograms
+  vecCstHist1D.at(type).at(C1D::CstPt)   -> Fill(content.ptCst);
+  vecCstHist1D.at(type).at(C1D::CstQual) -> Fill(content.qualCst);
+
+  // fill 2d histograms
+  vecCstHist2D.at(type).at(C2D::CstQualVsPt) -> Fill(content.ptCst, content.qualCst);
+  return;
+
+}  //  end 'FillHistograms(Type, CstQAContent&)'
 
 // end ------------------------------------------------------------------------
 

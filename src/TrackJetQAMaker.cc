@@ -126,7 +126,7 @@ int TrackJetQAMaker::End(PHCompositeNode* topNode) {
   if (m_config.doHitQA)   m_hitMaker   -> End(m_outFile, m_config.hitOutDir);
   if (m_config.doClustQA) m_clustMaker -> End(m_outFile, m_config.clustOutDir);
   if (m_config.doTrackQA) m_trackMaker -> End(m_outFile, m_config.trackOutDir);
-  if (m_config.doJetQA)   m_jetMaker   -> End(m_outFile, m_config.jetOutDir);
+  if (m_config.doJetQA)   m_jetMaker   -> End(m_outFile, m_config.jetOutDir, m_config.cstOutDir);
 
   // close file
   m_outFile -> cd();
