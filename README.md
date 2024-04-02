@@ -1,4 +1,4 @@
-# TrackJetQAMaker
+# TracksInJetsQAMaker
 
 A Fun4All module to generate QA plots for track jets and related objects. Reads
 in three DSTs (`DST_TRACKS`, `DST_TRKR_HIT`, and `DST_TRKR_CLUSTER`), reconstructs
@@ -35,8 +35,8 @@ make install
 Alongside the definitions of the top-level module and its sub-modules, there are a collection
 of helper objects used to streamline the code and centralize related information.
 
-  - `TrackJetQAMakerConfig.h:` defines the struct used to collect **all** user-configurable options.
-  - `TrackJetQAMakerHelper.h:` consolidates a variety of useful methods and information (e.g.
+  - `TracksInJetsQAMakerConfig.h:` defines the struct used to collect **all** user-configurable options.
+  - `TracksInJetsQAMakerHelper.h:` consolidates a variety of useful methods and information (e.g.
     checks on whether or not a particular hit/cluster is in a given subsystem).
-  - `TrackJetQAMakerHistDef.h:` consoldiates the binning schemes used across all three sub-modules,
+  - `TracksInJetsQAMakerHistDef.h:` consoldiates the binning schemes used across all three sub-modules,
     and defines some useful types for automating histogram creation.
