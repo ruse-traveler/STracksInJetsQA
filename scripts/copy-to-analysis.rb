@@ -13,12 +13,12 @@ require 'fileutils'
 
 # top directory to copy from/to
 copy_from = "/sphenix/user/danderson/tracking/TracksInJetQA"
-copy_to   = "/sphenix/user/danderson/sphenix/analysis/JS-Jet/TrackJetQAMaker"
+copy_to   = "/sphenix/user/danderson/sphenix/analysis/JS-Jet/TracksInJetsQAMaker"
 
 # what files to copy
 to_copy = [
   "README.md",
-  "Fun4All_MakeTrackJetQA.C",
+  "Fun4All_MakeTracksInJetsQA.C",
   "input/dst_global.list",
   "input/dst_tracks.list",
   "input/dst_trkr_cluster.list",
@@ -33,11 +33,11 @@ to_copy = [
   "src/JetQAMaker.h",
   "src/TrackQAMaker.cc",
   "src/TrackQAMaker.h",
-  "src/TrackJetQAMaker.cc",
-  "src/TrackJetQAMaker.h",
-  "src/TrackJetQAMakerConfig.h",
-  "src/TrackJetQAMakerHelper.h",
-  "src/TrackJetQAMakerHistDef.h",
+  "src/TracksInJetsQAMaker.cc",
+  "src/TracksInJetsQAMaker.h",
+  "src/TracksInJetsQAMakerConfig.h",
+  "src/TracksInJetsQAMakerHelper.h",
+  "src/TracksInJetsQAMakerHistDef.h",
   "src/autogen.sh",
   "src/configure.ac",
   "src/Makefile.am",

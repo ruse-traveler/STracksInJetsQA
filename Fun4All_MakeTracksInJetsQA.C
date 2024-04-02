@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------------
-// 'Fun4All_MakeTrackJetQA.C'
+// 'Fun4All_MakeTracksInJetsQA.C'
 // Derek Anderson
 // 03.25.2024
 //
-// A Fun4All macro to run the TrackJetQAMaker module.
+// A Fun4All macro to run the TracksInJetsQAMaker module.
 // ----------------------------------------------------------------------------
 
 #define FUN4ALL_MAKETRACKSINJETSQA_C
@@ -28,10 +28,10 @@
 #include <jetbase/Jet.h>
 #include <jetbase/JetReco.h>
 #include <jetbase/FastJetAlgo.h>
-#include <jetbase/TrackJetInput.h>
+#include <jetbase/TracksInJetsInput.h>
 // module definition
-#include </sphenix/user/danderson/install/include/trackjetqamaker/TrackJetQAMaker.h>
-#include </sphenix/user/danderson/install/include/trackjetqamaker/TrackJetQAMakerConfig.h>
+#include </sphenix/user/danderson/install/include/tracksinjetsqamaker/TracksInJetsQAMaker.h>
+#include </sphenix/user/danderson/install/include/tracksinjetsqamaker/TracksInJetsQAMakerConfig.h>
 // f4a macros
 #include <G4_Magnet.C>
 #include <G4_ActsGeom.C>
@@ -44,13 +44,13 @@ R__LOAD_LIBRARY(libg4jets.so)
 R__LOAD_LIBRARY(libjetbase.so)
 R__LOAD_LIBRARY(libfun4all.so)
 R__LOAD_LIBRARY(libffamodules.so)
-R__LOAD_LIBRARY(/sphenix/user/danderson/install/lib/libtrackjetqamaker.so)
+R__LOAD_LIBRARY(/sphenix/user/danderson/install/lib/libtracksinjetsqamaker.so)
 
 
 
 // macro body -----------------------------------------------------------------
 
-void Fun4All_MakeTrackJetQA(
+void Fun4All_MakeTracksInJetsQA(
   const int         verb           = 1,
   const int64_t     nEvts          = 1000,
   const std::string outFile        = "test.root",
@@ -96,7 +96,7 @@ void Fun4All_MakeTrackJetQA(
 
   // run jet reconstruction
   JetReco* reco = new JetReco();
-  reco -> add_input(new TrackJetInput(Jet::SRC::TRACK));
+  reco -> add_input(new TracksInJetsInput(Jet::SRC::TRACK));
   reco -> add_algo(new FastJetAlgo(Jet::ALGO::ANTIKT, 0.4), "AntiKt_Track_r04");
   reco -> set_algo_node("ANTIKT");
   reco -> set_input_node("TRACK");
@@ -104,7 +104,7 @@ void Fun4All_MakeTrackJetQA(
   f4a  -> registerSubsystem(reco);
 
   // initialize and register qa module
-  TrackJetQAMaker* maker = new TrackJetQAMaker("TrackJetQAMaker", outFile);
+  TracksInJetsQAMaker* maker = new TracksInJetsQAMaker("TracksInJetsQAMaker", outFile);
   maker -> Configure(
     {
       .verbose   = verb,

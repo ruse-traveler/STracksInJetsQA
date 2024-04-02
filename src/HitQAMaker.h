@@ -3,12 +3,12 @@
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TrackJetQAMaker module
+// A submodule for the TracksInJetsQAMaker module
 // to generate QA plots for track hits
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKJETQAMAKER_HITQAMAKER_H
-#define TRACKJETQAMAKER_HITQAMAKER_H
+#ifndef TRACKSINJETSQAMAKER_HITQAMAKER_H
+#define TRACKSINJETSQAMAKER_HITQAMAKER_H
 
 // c++ utilities
 #include <limits>
@@ -36,8 +36,8 @@
 #include <trackbase/TrkrHitSet.h>
 #include <trackbase/TrkrHitSetContainer.h>
 // module tools
-#include "TrackJetQAMakerHelper.h"
-#include "TrackJetQAMakerHistDef.h"
+#include "TracksInJetsQAMakerHelper.h"
+#include "TracksInJetsQAMakerHistDef.h"
 
 
 
@@ -66,7 +66,7 @@ class HitQAMaker {
     ~HitQAMaker() {};
 
     // public methods
-    void Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& help);
+    void Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHelper& help);
     void Process(PHCompositeNode* topNode);
     void End(TFile* outFile, std::string outDirName);
 
@@ -85,8 +85,8 @@ class HitQAMaker {
     std::vector<std::vector<TH2D*>> vecHist2D;
 
     // module utilities
-    TrackJetQAMakerHelper  m_help;
-    TrackJetQAMakerHistDef m_hist;
+    TracksInJetsQAMakerHelper  m_help;
+    TracksInJetsQAMakerHistDef m_hist;
 
 };  // end HitQAMaker
 

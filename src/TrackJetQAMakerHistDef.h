@@ -1,14 +1,14 @@
 // ----------------------------------------------------------------------------
-// 'TrackJetQAMakerHistDef.h'
+// 'TracksInJetsQAMakerHistDef.h'
 // Derek Anderson
 // 03.25.2024
 //
 // Configurable parameters for histograms (like binning, etc.)
-// for the TrackJetQAMaker module.
+// for the TracksInJetsQAMaker module.
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKJETQAMAKERHISTDEF_H
-#define TRACKJETQAMAKERHISTDEF_H
+#ifndef TRACKSINJETSQAMAKERHISTDEF_H
+#define TRACKSINJETSQAMAKERHISTDEF_H
 
 // c++ utilities
 #include <string>
@@ -25,9 +25,9 @@ typedef std::tuple<std::string, BinDef, BinDef> HistDef2D;
 
 
 
-// TrackJetQAMakerHistDef definition ------------------------------------------
+// TracksInJetsQAMakerHistDef definition --------------------------------------
 
-struct TrackJetQAMakerHistDef {
+struct TracksInJetsQAMakerHistDef {
 
   enum Var {
     Adc,
@@ -92,7 +92,7 @@ struct TrackJetQAMakerHistDef {
 
   }  // end 'GetVecHistBins()'
 
-};  // end TrackJetQAMakerHistDef
+};  // end TracksInJetsQAMakerHistDef
 
 #endif
 

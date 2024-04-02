@@ -3,11 +3,11 @@
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TrackJetQAMaker module
+// A submodule for the TracksInJetsQAMaker module
 // to generate QA plots for track jets
 // ----------------------------------------------------------------------------
 
-#define TRACKJETQAMAKER_JETQAMAKER_CC
+#define TRACKSINJETSQAMAKER_JETQAMAKER_CC
 
 // submodule definition
 #include "JetQAMaker.h"
@@ -16,7 +16,7 @@
 
 // public methods -------------------------------------------------------------
 
-void JetQAMaker::Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& help) {
+void JetQAMaker::Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHelper& help) {
 
   // grab module utilities
   m_help = help;
@@ -26,7 +26,7 @@ void JetQAMaker::Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& help)
   BuildHistograms();
   return;
 
-}  // end 'Init(TrackJetQAMakerHistDef&, TrackJetQAMakerHelper&)'
+}  // end 'Init(TracksInJetsQAMakerHistDef&, TracksInJetsQAMakerHelper&)'
 
 
 
@@ -159,34 +159,34 @@ void JetQAMaker::BuildHistograms() {
 
   // 1d histogram definitions
   const std::vector<HistDef1D> vecJetHistDef1D = {
-    std::make_tuple( "JetEta", vecBins.at(TrackJetQAMakerHistDef::Var::Eta) ),
-    std::make_tuple( "JetPhi", vecBins.at(TrackJetQAMakerHistDef::Var::Phi) ),
-    std::make_tuple( "JetPt",  vecBins.at(TrackJetQAMakerHistDef::Var::Ene) ),
-    std::make_tuple( "SumPt",  vecBins.at(TrackJetQAMakerHistDef::Var::Ene) )
+    std::make_tuple( "JetEta", vecBins.at(TracksInJetsQAMakerHistDef::Var::Eta) ),
+    std::make_tuple( "JetPhi", vecBins.at(TracksInJetsQAMakerHistDef::Var::Phi) ),
+    std::make_tuple( "JetPt",  vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene) ),
+    std::make_tuple( "SumPt",  vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene) )
   };
   const std::vector<HistDef1D> vecCstHistDef1D = {
-    std::make_tuple( "CstPt",   vecBins.at(TrackJetQAMakerHistDef::Var::Ene) ),
-    std::make_tuple( "CstQual", vecBins.at(TrackJetQAMakerHistDef::Var::Qual) )
+    std::make_tuple( "CstPt",   vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene) ),
+    std::make_tuple( "CstQual", vecBins.at(TracksInJetsQAMakerHistDef::Var::Qual) )
   };
 
   // 2d histogram definitions
   const std::vector<HistDef2D> vecJetHistDef2D = {
     std::make_tuple(
       "JetPtVsEta",
-      vecBins.at(TrackJetQAMakerHistDef::Var::Eta),
-      vecBins.at(TrackJetQAMakerHistDef::Var::Ene)
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Eta),
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene)
     ),
     std::make_tuple(
       "JetVsSumPt",
-      vecBins.at(TrackJetQAMakerHistDef::Var::Ene),
-      vecBins.at(TrackJetQAMakerHistDef::Var::Ene)
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene),
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene)
     )
   };
   const std::vector<HistDef2D> vecCstHistDef2D = {
     std::make_tuple(
       "CstQualVsPt",
-      vecBins.at(TrackJetQAMakerHistDef::Var::Ene),
-      vecBins.at(TrackJetQAMakerHistDef::Var::Qual)
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene),
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Qual)
     ),
   };
 

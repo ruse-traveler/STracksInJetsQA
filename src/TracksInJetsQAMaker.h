@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------------------
-// 'TrackJetQAMaker.h'
+// 'TracksInJetsQAMaker.h'
 // Derek Anderson
 // 03.25.2024
 //
@@ -7,8 +7,8 @@
 // hits, and more.
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKJETQAMAKER_H
-#define TRACKJETQAMAKER_H
+#ifndef TRACKSINJETSQAMAKER_H
+#define TRACKSINJETSQAMAKER_H
 
 // c++ utilities
 #include <string>
@@ -24,9 +24,9 @@
 #include <phool/PHCompositeNode.h>
 #include <fun4all/Fun4AllReturnCodes.h>
 // module tools
-#include "TrackJetQAMakerConfig.h"
-#include "TrackJetQAMakerHelper.h"
-#include "TrackJetQAMakerHistDef.h"
+#include "TracksInJetsQAMakerConfig.h"
+#include "TracksInJetsQAMakerHelper.h"
+#include "TracksInJetsQAMakerHistDef.h"
 // submodule definitions
 #include "HitQAMaker.h"
 #include "ClustQAMaker.h"
@@ -35,18 +35,18 @@
 
 
 
-// TrackJetQAMaker definition --------------------------------------------
+// TracksInJetsQAMaker definition ---------------------------------------------
 
-class TrackJetQAMaker : public SubsysReco {
+class TracksInJetsQAMaker : public SubsysReco {
 
   public:
 
     // ctor/dtor
-    TrackJetQAMaker(const std::string &name = "TrackJetQAMaker", const std::string& sOutFileName = "tracksinjets.root");
-    ~TrackJetQAMaker() override;
+    TracksInJetsQAMaker(const std::string &name = "TracksInJetsQAMaker", const std::string& sOutFileName = "tracksinjets.root");
+    ~TracksInJetsQAMaker() override;
 
     // public methods
-    void Configure(TrackJetQAMakerConfig config, std::optional<TrackJetQAMakerHistDef> hist = std::nullopt);
+    void Configure(TracksInJetsQAMakerConfig config, std::optional<TracksInJetsQAMakerHistDef> hist = std::nullopt);
 
     // f4a methods
     int Init(PHCompositeNode* topNode)          override;
@@ -66,11 +66,11 @@ class TrackJetQAMaker : public SubsysReco {
     JetQAMaker*   m_jetMaker   = NULL;
 
     // module utilities
-    TrackJetQAMakerConfig  m_config;
-    TrackJetQAMakerHelper  m_help;
-    TrackJetQAMakerHistDef m_hist;
+    TracksInJetsQAMakerConfig  m_config;
+    TracksInJetsQAMakerHelper  m_help;
+    TracksInJetsQAMakerHistDef m_hist;
 
-};  // end TrackJetQAMaker
+};  // end TracksInJetsQAMaker
 
 #endif
 

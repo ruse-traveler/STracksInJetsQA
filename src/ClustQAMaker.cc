@@ -3,11 +3,11 @@
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TrackJetQAMaker module
+// A submodule for the TracksInJetsQAMaker module
 // to generate QA plots for track clusters
 // ----------------------------------------------------------------------------
 
-#define TRACKJETQAMAKER_CLUSTQAMAKER_CC
+#define TRACKSINJETSQAMAKER_CLUSTQAMAKER_CC
 
 // submodule definition
 #include "ClustQAMaker.h"
@@ -16,7 +16,7 @@
 
 // public methods -------------------------------------------------------------
 
-void ClustQAMaker::Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& help) {
+void ClustQAMaker::Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHelper& help) {
 
   // grab module utilities
   m_help = help;
@@ -26,7 +26,7 @@ void ClustQAMaker::Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& hel
   BuildHistograms();
   return;
 
-}  // end 'Init(TrackJetQAMakerHistDef&, TrackJetQAMakerHelper&)'
+}  // end 'Init(TracksInJetsQAMakerHistDef&, TracksInJetsQAMakerHelper&)'
 
 
 
@@ -147,21 +147,21 @@ void ClustQAMaker::BuildHistograms() {
     "All"
   };
   const std::vector<HistDef1D> vecHistDef1D = {
-    std::make_tuple( "ClustPosX", vecBins.at(TrackJetQAMakerHistDef::Var::PosXY) ),
-    std::make_tuple( "ClustPosY", vecBins.at(TrackJetQAMakerHistDef::Var::PosXY) ),
-    std::make_tuple( "ClustPosZ", vecBins.at(TrackJetQAMakerHistDef::Var::PosZ) ),
-    std::make_tuple( "ClustPosR", vecBins.at(TrackJetQAMakerHistDef::Var::PosR) )
+    std::make_tuple( "ClustPosX", vecBins.at(TracksInJetsQAMakerHistDef::Var::PosXY) ),
+    std::make_tuple( "ClustPosY", vecBins.at(TracksInJetsQAMakerHistDef::Var::PosXY) ),
+    std::make_tuple( "ClustPosZ", vecBins.at(TracksInJetsQAMakerHistDef::Var::PosZ) ),
+    std::make_tuple( "ClustPosR", vecBins.at(TracksInJetsQAMakerHistDef::Var::PosR) )
   };
   const std::vector<HistDef2D> vecHistDef2D = {
     std::make_tuple(
       "ClustPosYvsX",
-      vecBins.at(TrackJetQAMakerHistDef::Var::PosXY),
-      vecBins.at(TrackJetQAMakerHistDef::Var::PosXY)
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::PosXY),
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::PosXY)
     ),
     std::make_tuple(
       "ClustPosRvsZ",
-      vecBins.at(TrackJetQAMakerHistDef::Var::PosZ),
-      vecBins.at(TrackJetQAMakerHistDef::Var::PosR)
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::PosZ),
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::PosR)
     )
   };
 

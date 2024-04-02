@@ -1,20 +1,22 @@
 // ----------------------------------------------------------------------------
-// 'TrackJetQAMakerConfig.h'
+// 'TracksInJetsQAMakerConfig.h'
 // Derek Anderson
 // 03.25.2024
 //
-// Configurable parameters for the TrackJetQAMaker module.
+// Configurable parameters for the TracksInJetsQAMaker module.
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKJETQAMAKERCONFIG_H
-#define TRACKJETQAMAKERCONFIG_H
+#ifndef TRACKSINJETSQAMAKERCONFIG_H
+#define TRACKSINJETSQAMAKERCONFIG_H
 
 // c++ utilities
 #include <string>
 
 
 
-struct TrackJetQAMakerConfig {
+// TracksInJetsQAMakerConfig definition ---------------------------------------
+
+struct TracksInJetsQAMakerConfig {
 
   // system parameters
   int  verbose   = 0;
@@ -36,7 +38,7 @@ struct TrackJetQAMakerConfig {
   uint16_t nInttLayer = 4;
   uint16_t nTpcLayer  = 48;
 
-};  // end TrackJetQAMakerConfig
+};  // end TracksInJetsQAMakerConfig
 
 #endif
 

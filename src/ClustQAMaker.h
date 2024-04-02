@@ -3,12 +3,12 @@
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TrackJetQAMaker module
+// A submodule for the TracksInJetsQAMaker module
 // to generate QA plots for track clusters
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKJETQAMAKER_CLUSTQAMAKER_H
-#define TRACKJETQAMAKER_CLUSTQAMAKER_H
+#ifndef TRACKSINJETSQAMAKER_CLUSTQAMAKER_H
+#define TRACKSINJETSQAMAKER_CLUSTQAMAKER_H
 
 // c++ utilities
 #include <limits>
@@ -35,8 +35,8 @@
 #include <trackbase/TrkrHitSetContainer.h>
 #include <trackbase/TrkrClusterContainer.h>
 // module tools
-#include "TrackJetQAMakerHelper.h"
-#include "TrackJetQAMakerHistDef.h"
+#include "TracksInJetsQAMakerHelper.h"
+#include "TracksInJetsQAMakerHistDef.h"
 
 
 
@@ -64,7 +64,7 @@ class ClustQAMaker {
     ~ClustQAMaker() {};
 
     // public methods
-    void Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& help);
+    void Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHelper& help);
     void Process(PHCompositeNode* topNode);
     void End(TFile* outFile, std::string outDirName);
 
@@ -84,8 +84,8 @@ class ClustQAMaker {
     std::vector<std::vector<TH2D*>> vecHist2D;
 
     // module utilities
-    TrackJetQAMakerHelper  m_help;
-    TrackJetQAMakerHistDef m_hist;
+    TracksInJetsQAMakerHelper  m_help;
+    TracksInJetsQAMakerHistDef m_hist;
 
 };  // end ClustQAMaker
 

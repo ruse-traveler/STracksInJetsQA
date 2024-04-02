@@ -1,17 +1,19 @@
 // ----------------------------------------------------------------------------
-// 'TrackJetQAMakerHelper.h'
+// 'TracksInJetsQAMakerHelper.h'
 // Derek Anderson
 // 03.25.2024
 //
-// Small class to help calculations in the TrackJetQAMaker module.
+// Small class to help calculations in the TracksInJetsQAMaker module.
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKJETQAMAKERHELPER_H
-#define TRACKJETQAMAKERHELPER_H
+#ifndef TRACKSINJETSQAMAKERHELPER_H
+#define TRACKSINJETSQAMAKERHELPER_H
 
 
 
-class TrackJetQAMakerHelper {
+// TracksInJetsQAMakerHelper definition ---------------------------------------
+
+class TracksInJetsQAMakerHelper {
 
   private:
 
@@ -21,8 +23,8 @@ class TrackJetQAMakerHelper {
 
   public:
 
-    TrackJetQAMakerHelper()  {};
-    ~TrackJetQAMakerHelper() {};
+    TracksInJetsQAMakerHelper()  {};
+    ~TracksInJetsQAMakerHelper() {};
 
     // setters
     void SetNMvtxLayer(const uint16_t num) {m_nMvtxLayer = num;}
@@ -46,7 +48,7 @@ class TrackJetQAMakerHelper {
       return (layer >= m_nMvtxLayer + m_nInttLayer);
     }  // end 'IsInTpc(uint16_t)'
 
-};  // end TrackJetQAMakerHelper
+};  // end TracksInJetsQAMakerHelper
 
 #endif
 

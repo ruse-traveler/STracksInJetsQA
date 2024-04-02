@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------------------
-// 'TrackJetQAMaker.cc'
+// 'TracksInJetsQAMaker.cc'
 // Derek Anderson
 // 03.25.2024
 //
@@ -7,20 +7,20 @@
 // hits, and more.
 // ----------------------------------------------------------------------------
 
-#define TRACKJETQAMAKER_CC
+#define TRACKSINJETSQAMAKER_CC
 
 // module defintion
-#include "TrackJetQAMaker.h"
+#include "TracksInJetsQAMaker.h"
 
 
 
 // ctor/dtor ------------------------------------------------------------------
 
-TrackJetQAMaker::TrackJetQAMaker(const std::string& name, const std::string& outFileName) : SubsysReco(name) {
+TracksInJetsQAMaker::TracksInJetsQAMaker(const std::string& name, const std::string& outFileName) : SubsysReco(name) {
 
   // print debug message
   if (m_config.doDebug && (m_config.verbose > 4)) {
-    std::cout << "TrackJetQAMaker::TrackJetQAMaker(const std::string& name, const std::string& outFileName) Calling ctor" << std::endl;
+    std::cout << "TracksInJetsQAMaker::TracksInJetsQAMaker(const std::string& name, const std::string& outFileName) Calling ctor" << std::endl;
   }
 
   // initialize output file
@@ -34,11 +34,11 @@ TrackJetQAMaker::TrackJetQAMaker(const std::string& name, const std::string& out
 
 
 
-TrackJetQAMaker::~TrackJetQAMaker() {
+TracksInJetsQAMaker::~TracksInJetsQAMaker() {
 
   // print debug messages
   if (m_config.doDebug && (m_config.verbose > 4)) {
-    std::cout << "TrackJetQAMaker::~TrackJetQAMaker() Calling dtor" << std::endl;
+    std::cout << "TracksInJetsQAMaker::~TracksInJetsQAMaker() Calling dtor" << std::endl;
   }
 
   // clean up any dangling pointers
@@ -54,11 +54,11 @@ TrackJetQAMaker::~TrackJetQAMaker() {
 
 // public methods -------------------------------------------------------------
 
-void TrackJetQAMaker::Configure(TrackJetQAMakerConfig config, std::optional<TrackJetQAMakerHistDef> hist) {
+void TracksInJetsQAMaker::Configure(TracksInJetsQAMakerConfig config, std::optional<TracksInJetsQAMakerHistDef> hist) {
 
   // print debug messages
   if (m_config.doDebug && (m_config.verbose > 3)) {
-    std::cout << "TrackJetQAMaker::~TrackJetQAMaker() Calling dtor" << std::endl;
+    std::cout << "TracksInJetsQAMaker::~TracksInJetsQAMaker() Calling dtor" << std::endl;
   }
 
   m_config = config;
@@ -67,17 +67,17 @@ void TrackJetQAMaker::Configure(TrackJetQAMakerConfig config, std::optional<Trac
   }
   return;
 
-}  // end 'Configure(TrackJetQAMakerConfig, std::optional<TrackJetQAMakerHistDef>)'
+}  // end 'Configure(TracksInJetsQAMakerConfig, std::optional<TracksInJetsQAMakerHistDef>)'
 
 
 
 // fun4all methods ------------------------------------------------------------
 
-int TrackJetQAMaker::Init(PHCompositeNode* topNode) {
+int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
 
   // print debug message
   if (m_config.doDebug && (m_config.verbose > 0)) {
-    std::cout << "TrackJetQAMaker::Init(PHCompositeNode* topNode) Initializing" << std::endl;
+    std::cout << "TracksInJetsQAMaker::Init(PHCompositeNode* topNode) Initializing" << std::endl;
   }
 
   // instantiate needed submodules
@@ -97,11 +97,11 @@ int TrackJetQAMaker::Init(PHCompositeNode* topNode) {
 
 
 
-int TrackJetQAMaker::process_event(PHCompositeNode* topNode) {
+int TracksInJetsQAMaker::process_event(PHCompositeNode* topNode) {
 
   // print debug message
   if (m_config.doDebug && (m_config.verbose > 2)) {
-    std::cout << "TrackJetQAMaker::process_event(PHCompositeNode* topNode) Processing Event" << std::endl;
+    std::cout << "TracksInJetsQAMaker::process_event(PHCompositeNode* topNode) Processing Event" << std::endl;
   }
 
   // run submodules
@@ -115,11 +115,11 @@ int TrackJetQAMaker::process_event(PHCompositeNode* topNode) {
 
 
 
-int TrackJetQAMaker::End(PHCompositeNode* topNode) {
+int TracksInJetsQAMaker::End(PHCompositeNode* topNode) {
 
   // print debug message
   if (m_config.doDebug && (m_config.verbose > 0)) {
-    std::cout << "TrackJetQAMaker::End(PHCompositeNode* topNode) This is the End..." << std::endl;
+    std::cout << "TracksInJetsQAMaker::End(PHCompositeNode* topNode) This is the End..." << std::endl;
   }
 
   // terminate submodules

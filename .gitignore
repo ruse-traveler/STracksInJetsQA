@@ -2,11 +2,11 @@ reference/
 backup/
 output/
 src/*
-!src/TrackJetQAMaker.cc
-!src/TrackJetQAMaker.h
-!src/TrackJetQAMakerConfig.h
-!src/TrackJetQAMakerHelper.h
-!src/TrackJetQAMakerHistDef.h
+!src/TracksInJetsQAMaker.cc
+!src/TracksInJetsQAMaker.h
+!src/TracksInJetsQAMakerConfig.h
+!src/TracksInJetsQAMakerHelper.h
+!src/TracksInJetsQAMakerHistDef.h
 !src/HitQAMaker.cc
 !src/HitQAMaker.h
 !src/ClustQAMaker.cc

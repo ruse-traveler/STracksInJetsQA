@@ -3,11 +3,11 @@
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TrackJetQAMaker module
+// A submodule for the TracksInJetsQAMaker module
 // to generate QA plots for track hits
 // ----------------------------------------------------------------------------
 
-#define TRACKJETQAMAKER_HITQAMAKER_CC
+#define TRACKSINJETSQAMAKER_HITQAMAKER_CC
 
 // submodule definition
 #include "HitQAMaker.h"
@@ -16,7 +16,7 @@
 
 // public methods -------------------------------------------------------------
 
-void HitQAMaker::Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& help) {
+void HitQAMaker::Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHelper& help) {
 
   // grab module utilities
   m_help = help;
@@ -26,7 +26,7 @@ void HitQAMaker::Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& help)
   BuildHistograms();
   return;
 
-}  // end 'Init(TrackJetQAMakerHistDef&, TrackJetQAMakerHelper&)'
+}  // end 'Init(TracksInJetsQAMakerHistDef&, TracksInJetsQAMakerHelper&)'
 
 
 
@@ -153,27 +153,27 @@ void HitQAMaker::BuildHistograms() {
     "All"
   };
   const std::vector<HistDef1D> vecHistDef1D = {
-    std::make_tuple( "HitEne",    vecBins.at(TrackJetQAMakerHistDef::Var::Ene) ),
-    std::make_tuple( "HitAdc",    vecBins.at(TrackJetQAMakerHistDef::Var::Adc) ),
-    std::make_tuple( "HitLayer",  vecBins.at(TrackJetQAMakerHistDef::Var::Layer) ),
-    std::make_tuple( "HitPhiBin", vecBins.at(TrackJetQAMakerHistDef::Var::PhiBin) ),
-    std::make_tuple( "HitZBin",   vecBins.at(TrackJetQAMakerHistDef::Var::ZBin) )
+    std::make_tuple( "HitEne",    vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene) ),
+    std::make_tuple( "HitAdc",    vecBins.at(TracksInJetsQAMakerHistDef::Var::Adc) ),
+    std::make_tuple( "HitLayer",  vecBins.at(TracksInJetsQAMakerHistDef::Var::Layer) ),
+    std::make_tuple( "HitPhiBin", vecBins.at(TracksInJetsQAMakerHistDef::Var::PhiBin) ),
+    std::make_tuple( "HitZBin",   vecBins.at(TracksInJetsQAMakerHistDef::Var::ZBin) )
   };
   const std::vector<HistDef2D> vecHistDef2D = {
     std::make_tuple(
       "HitEneVsLayer",
-      vecBins.at(TrackJetQAMakerHistDef::Var::Layer),
-      vecBins.at(TrackJetQAMakerHistDef::Var::Ene)
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Layer),
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene)
     ),
     std::make_tuple(
       "HitEneVsADC",
-      vecBins.at(TrackJetQAMakerHistDef::Var::Adc),
-      vecBins.at(TrackJetQAMakerHistDef::Var::Ene)
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Adc),
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene)
     ),
     std::make_tuple(
       "HitPhiVsZBin",
-      vecBins.at(TrackJetQAMakerHistDef::Var::ZBin),
-      vecBins.at(TrackJetQAMakerHistDef::Var::PhiBin)
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::ZBin),
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::PhiBin)
     )
   };
 

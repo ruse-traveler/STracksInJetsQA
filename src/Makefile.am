@@ -1,7 +1,7 @@
 AUTOMAKE_OPTIONS = foreign
 
 lib_LTLIBRARIES = \
-    libtrackjetqamaker.la
+    libtracksinjetsqamaker.la
 
 AM_LDFLAGS = \
   -L$(libdir) \
@@ -13,10 +13,10 @@ AM_CPPFLAGS = \
   -I$(ROOTSYS)/include
 
 pkginclude_HEADERS = \
-  TrackJetQAMaker.h \
-  TrackJetQAMakerConfig.h \
-  TrackJetQAMakerHelper.h \
-  TrackJetQAMakerHistDef.h \
+  TracksInJetsQAMaker.h \
+  TracksInJetsQAMakerConfig.h \
+  TracksInJetsQAMakerHelper.h \
+  TracksInJetsQAMakerHistDef.h \
   HitQAMaker.h \
   ClustQAMaker.h \
   TrackQAMaker.h \
@@ -24,18 +24,18 @@ pkginclude_HEADERS = \
 
 if ! MAKEROOT6
   ROOT5_DICTS = \
-    TrackJetQAMaker_Dict.cc
+    TracksInJetsQAMaker_Dict.cc
 endif
 
-libtrackjetqamaker_la_SOURCES = \
+libtracksinjetsqamaker_la_SOURCES = \
   $(ROOT5_DICTS) \
-  TrackJetQAMaker.cc \
+  TracksInJetsQAMaker.cc \
   HitQAMaker.cc \
   ClustQAMaker.cc \
   TrackQAMaker.cc \
   JetQAMaker.cc
 
-libtrackjetqamaker_la_LDFLAGS = \
+libtracksinjetsqamaker_la_LDFLAGS = \
   -L$(libdir) \
   -L$(OFFLINE_MAIN)/lib \
   -lcalo_io \
@@ -54,7 +54,7 @@ noinst_PROGRAMS = \
   testexternals
 
 testexternals_SOURCES = testexternals.C
-testexternals_LDADD = libtrackjetqamaker.la
+testexternals_LDADD = libtracksinjetsqamaker.la
 
 testexternals.C:
 	echo "//*** this is a generated file. Do not commit, do not edit" > $@
