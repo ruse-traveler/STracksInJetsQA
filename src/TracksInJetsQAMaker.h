@@ -28,10 +28,8 @@
 #include "TracksInJetsQAMakerHelper.h"
 #include "TracksInJetsQAMakerHistDef.h"
 // submodule definitions
-#include "HitQAMaker.h"
-#include "ClustQAMaker.h"
-#include "TrackQAMaker.h"
-#include "JetQAMaker.h"
+#include "InJetQAHistFiller.h"
+#include "InclusiveQAHistFIller.h"
 
 
 
