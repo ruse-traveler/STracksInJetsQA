@@ -22,6 +22,8 @@ typedef std::pair<float, float>                 BinRange;
 typedef std::pair<uint32_t, BinRange>           BinDef;
 typedef std::tuple<std::string, BinDef>         HistDef1D;
 typedef std::tuple<std::string, BinDef, BinDef> HistDef2D;
+typedef std::vector<HistDef1D>                  VecHistDef1D;
+typedef std::vector<HistDef2D>                  VecHistDef2D;
 
 
 
