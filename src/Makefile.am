@@ -17,6 +17,9 @@ pkginclude_HEADERS = \
   TracksInJetsQAMakerConfig.h \
   TracksInJetsQAMakerHelper.h \
   TracksInJetsQAMakerHistDef.h \
+  InJetQAHistFiller.h \
+  InclusiveQAHistFiller.h \
+  BaseQAHistManager.h \
   HitQAMaker.h \
   ClustQAMaker.h \
   TrackQAMaker.h \
@@ -30,6 +33,9 @@ endif
 libtracksinjetsqamaker_la_SOURCES = \
   $(ROOT5_DICTS) \
   TracksInJetsQAMaker.cc \
+  InJetQAHistFiller.cc \
+  InclusiveQAHistFiller.cc \
+  BaseQAHistManager.cc \
   HitQAMaker.cc \
   ClustQAMaker.cc \
   TrackQAMaker.cc \
