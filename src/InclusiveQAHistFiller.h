@@ -23,11 +23,15 @@
 // tracking libraries
 #include <trackbase/TrkrHit.h>
 #include <trackbase/TpcDefs.h>
-#include <trackbase/TrkrDefs.h>
 #include <trackbase/InttDefs.h>
 #include <trackbase/MvtxDefs.h>
+#include <trackbase/TrkrDefs.h>
 #include <trackbase/TrkrHitSet.h>
+#include <trackbase/TrkrCluster.h>
+#include <trackbase/ActsGeometry.h>
 #include <trackbase/TrkrHitSetContainer.h>
+#include <trackbase/TrkrHitSetContainer.h>
+#include <trackbase/TrkrClusterContainer.h>
 // submodule definitions
 #include "HitQAHistManager.h"
 #include "ClustQAHistManager.h"
@@ -53,18 +57,21 @@ class InclusiveQAHistFiller {
 
   private:
 
+    // internal methods
+    GetNodes(PHCompositeNode* topNode);
+    FillHitQAHists(PHCompositeNode* topNode);
+    FillClustQAHists(PHCompositeNode* topNode);
+
     // submodules to use
     std::unique_ptr<HitQAHistManager>   m_hitManager   = NULL;
     std::unique_ptr<ClustQAHistManager> m_clustManager = NULL;
     std::unique_ptr<TrackQAHistManager> m_trackManager = NULL;
     std::unique_ptr<JetQAHistManager>   m_jetManager   = NULL;
 
-    // internal methods
-    FillHitQAHists(PHCompositeNode* topNode);
-
     // necessary dst nodes
-    TrkrHitSetContainer* m_hitMap = NULL;
-    /* TODO add TPC geometry container */
+    ActsGeometry*         m_actsGeom = NULL;
+    TrkrHitSetContainer*  m_hitMap   = NULL;
+    TrkrClusterContainer* m_clustMap = NULL;
 
 };  // end InclusiveQAHistFiller
 

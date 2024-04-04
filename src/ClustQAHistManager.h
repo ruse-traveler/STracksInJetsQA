@@ -22,27 +22,20 @@
 #include <TH2.h>
 #include <TFile.h>
 #include <TDirectory.h>
-// f4a libraries
-#include <phool/PHCompositeNode.h>
-// phool libraries
-#include <phool/phool.h>
-#include <phool/getClass.h>
 // tracking libraries
 #include <trackbase/TrkrDefs.h>
 #include <trackbase/TrkrHitSet.h>
 #include <trackbase/TrkrCluster.h>
 #include <trackbase/ActsGeometry.h>
-#include <trackbase/TrkrHitSetContainer.h>
-#include <trackbase/TrkrClusterContainer.h>
 // module tools
 #include "TracksInJetsQAMakerHelper.h"
 #include "TracksInJetsQAMakerHistDef.h"
 
 
 
-// ClustQAHistManager definition ------------------------------------------------------
+// ClustQAHistManager definition ----------------------------------------------
 
-class ClustQAHistManager {
+class ClustQAHistManager : public BaseQAHistManager {
 
   public:
 
@@ -60,32 +53,19 @@ class ClustQAHistManager {
     };
 
     // ctor/dtor
-    ClustQAHistManager() {};
-    ~ClustQAHistManager() {};
+    ClustQAHistManager() : BaseQAHistManager() {};
+    ~ClustQAHistManager() : BaseQAHistManager() {};
 
-    // public methods
-    void Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHelper& help);
-    void Process(PHCompositeNode* topNode);
-    void End(TFile* outFile, std::string outDirName);
+    // external methods
+    void GetInfo(const TrkrCluster* cluster, const TrkrDefs::clustkey& clustKey, const ActsGeometry* actsGeom);
 
   private:
 
-    // private methods
-    void BuildHistograms();
+    // internal methods
     void FillHistograms(Type type, ClustQAContent& content);
 
-    // necessary dst nodes
-    ActsGeometry*         m_actsGeom = NULL;
-    TrkrHitSetContainer*  m_hitMap   = NULL;
-    TrkrClusterContainer* m_clustMap = NULL;
-
-    // histograms
-    std::vector<std::vector<TH1D*>> vecHist1D;
-    std::vector<std::vector<TH2D*>> vecHist2D;
-
-    // module utilities
-    TracksInJetsQAMakerHelper  m_help;
-    TracksInJetsQAMakerHistDef m_hist;
+    // inherited internal methods
+    void DefineHistograms() override;
 
 };  // end ClustQAHistManager
 
