@@ -51,6 +51,13 @@ void InclusiveQAHistFiller::GetNodes(PHCompositeNode* topNode) {
     std::cerr << PHWHERE << ": PANIC: couldn't grab cluster map from node tree!" << std::endl;
     assert(m_clustMap);
   }
+
+  // grab track map off the node tree
+  m_trkMap = findNode::getClass<SvtxTrackMap>(topNode, "SvtxTrackMap");
+  if (!m_trkMap) {
+    std::cerr << PHWHERE << ": PANIC: couldn't grab track map from node tree!" << std::endl;
+    assert(m_trkMap);
+  }
   return;
 
 }  // end 'GetNodes(PHCompositeNode*)'
@@ -122,6 +129,28 @@ void InclusiveQAHistFiller::FillClustQAHists(PHCompositeNode* topNode) {
 
     }  // end cluster loop
   }  // end hit set loop
+  return;
+
+}  // end 'Process(PHCompositeNode*)'
+
+
+
+void TrackQAHistManager::FillTrackQAHists(PHCompositeNode* topNode) {
+
+  // loop over tracks
+  for (
+    SvtxTrackMap::Iter itTrk = m_trkMap -> begin();
+    itTrk != m_trkMap -> end();
+    ++itTrk
+  ) {
+
+    // grab track
+    SvtxTrack* track = itTrk -> second;
+
+    // grab info and fill histograms
+    m_trackManager -> GetInfo(track);
+
+  }  // end track loop
   return;
 
 }  // end 'Process(PHCompositeNode*)'

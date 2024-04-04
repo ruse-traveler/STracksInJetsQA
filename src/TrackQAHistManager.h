@@ -13,24 +13,13 @@
 
 // c++ utilities
 #include <limits>
-#include <string>
 #include <vector>
-#include <cassert>
 #include <utility>
-#include <optional>
 // root libraries
 #include <TH1.h>
 #include <TH2.h>
-#include <TFile.h>
-#include <TDirectory.h>
-// f4a libraries
-#include <phool/PHCompositeNode.h>
-// phool libraries
-#include <phool/phool.h>
-#include <phool/getClass.h>
 // tracking libraries
 #include <trackbase_historic/SvtxTrack.h>
-#include <trackbase_historic/SvtxTrackMap.h>
 // module tools
 #include "TrackJetQAMakerHelper.h"
 #include "TrackJetQAMakerHistDef.h"
@@ -39,7 +28,7 @@
 
 // TrackQAHistManager definition ----------------------------------------------
 
-class TrackQAHistManager {
+class TrackQAHistManager : public BaseQAHistManager {
 
   public:
 
@@ -58,30 +47,19 @@ class TrackQAHistManager {
     };
 
     // ctor/dtor
-    TrackQAHistManager() {};
-    ~TrackQAHistManager() {};
+    TrackQAHistManager() : BaseQAHistManager() {};
+    ~TrackQAHistManager() : ~BaseQAHistManager() {};
 
-    // public methods
-    void Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& help);
-    void Process(PHCompositeNode* topNode);
-    void End(TFile* outFile, std::string outDirName);
+    // external methods
+    void GetInfo(const SvtxTrack* track);
 
   private:
 
-    // private methods
-    void BuildHistograms();
-    void FillHistograms(Type type, TrackQAContent& content);
+    // internal methods
+    void FillHistograms(const int type, TrackQAContent& content);
 
-    // necessary dst nodes
-    SvtxTrackMap* m_trkMap = NULL;
-
-    // histograms
-    std::vector<std::vector<TH1D*>> vecHist1D;
-    std::vector<std::vector<TH2D*>> vecHist2D;
-
-    // module utilities
-    TrackJetQAMakerHelper  m_help;
-    TrackJetQAMakerHistDef m_hist;
+    // inherited internal methods
+    void DefineHistograms();
 
 };  // end TrackQAHistManager
 

@@ -32,6 +32,8 @@
 #include <trackbase/TrkrHitSetContainer.h>
 #include <trackbase/TrkrHitSetContainer.h>
 #include <trackbase/TrkrClusterContainer.h>
+#include <trackbase_historic/SvtxTrack.h>
+#include <trackbase_historic/SvtxTrackMap.h>
 // submodule definitions
 #include "HitQAHistManager.h"
 #include "ClustQAHistManager.h"
@@ -58,9 +60,11 @@ class InclusiveQAHistFiller {
   private:
 
     // internal methods
+    //   - FIXME the hist fillers probably don't need PHCompositeNode
     GetNodes(PHCompositeNode* topNode);
     FillHitQAHists(PHCompositeNode* topNode);
     FillClustQAHists(PHCompositeNode* topNode);
+    FillTrackQAHists(PHCompositeNode* topNode);
 
     // submodules to use
     std::unique_ptr<HitQAHistManager>   m_hitManager   = NULL;
@@ -72,6 +76,7 @@ class InclusiveQAHistFiller {
     ActsGeometry*         m_actsGeom = NULL;
     TrkrHitSetContainer*  m_hitMap   = NULL;
     TrkrClusterContainer* m_clustMap = NULL;
+    SvtxTrackMap*         m_trkMap   = NULL;
 
 };  // end InclusiveQAHistFiller
 
