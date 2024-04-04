@@ -12,16 +12,11 @@
 
 // c++ utilities
 #include <limits>
-#include <string>
 #include <vector>
-#include <cassert>
 #include <utility>
-#include <optional>
 // root libraries
 #include <TH1.h>
 #include <TH2.h>
-#include <TFile.h>
-#include <TDirectory.h>
 // tracking libraries
 #include <trackbase/TrkrDefs.h>
 #include <trackbase/TrkrHitSet.h>
@@ -54,7 +49,7 @@ class ClustQAHistManager : public BaseQAHistManager {
 
     // ctor/dtor
     ClustQAHistManager() : BaseQAHistManager() {};
-    ~ClustQAHistManager() : BaseQAHistManager() {};
+    ~ClustQAHistManager() : ~BaseQAHistManager() {};
 
     // external methods
     void GetInfo(const TrkrCluster* cluster, const TrkrDefs::clustkey& clustKey, const ActsGeometry* actsGeom);
@@ -62,7 +57,7 @@ class ClustQAHistManager : public BaseQAHistManager {
   private:
 
     // internal methods
-    void FillHistograms(Type type, ClustQAContent& content);
+    void FillHistograms(const int type, ClustQAContent& content);
 
     // inherited internal methods
     void DefineHistograms() override;

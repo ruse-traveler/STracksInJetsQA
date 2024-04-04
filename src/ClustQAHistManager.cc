@@ -51,7 +51,7 @@ void ClustQAHistManager::GetInfo(const TrkrCluster* cluster, const TrkrDefs::clu
 
 // internal methods -----------------------------------------------------------
 
-void ClustQAHistManager::FillHistograms(Type type, ClustQAContent& content) {
+void ClustQAHistManager::FillHistograms(const int type, ClustQAContent& content) {
 
   // fill 1d histograms
   vecHist1D.at(type).at(H1D::PosX) -> Fill(content.x);
@@ -64,7 +64,7 @@ void ClustQAHistManager::FillHistograms(Type type, ClustQAContent& content) {
   vecHist2D.at(type).at(H2D::PosRvsZ) -> Fill(content.z, content.r);
   return;
 
-}  //  end 'FillHistograms(Type, ClustQAContent&)'
+}  //  end 'FillHistograms(int, ClustQAContent&)'
 
 
 
