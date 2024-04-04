@@ -14,9 +14,9 @@
 
 
 
-// public methods -------------------------------------------------------------
+// external methods -----------------------------------------------------------
 
-void GetInfo(const TrkrHit* hit) {
+void GetInfo(const TrkrHit* hit, const TrkrDefs::hitsetkey& setKey, const TrkrDefs::hitkey& hitKey) {
 
   // check which subsystem hit is in
   const uint16_t layer  = TrkrDefs::getLayer(setKey);
@@ -59,11 +59,11 @@ void GetInfo(const TrkrHit* hit) {
     FillHistograms(Type::Tpc, content);
   }
 
-}  // end 'GetInfo(TrkrHit*, int)'
+}  // end 'GetInfo(TrkrHit*, TrkrDefs::hitsetkey&, TrkrDefs::hitkey&)'
 
 
 
-// private methods ------------------------------------------------------------
+// internal methods -----------------------------------------------------------
 
 void HitQAHistManager::FillHistograms(const int type, const HitQAContent& content) {
 

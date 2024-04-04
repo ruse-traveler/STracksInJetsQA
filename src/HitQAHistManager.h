@@ -12,22 +12,17 @@
 
 // c++ utilities
 #include <limits>
-#include <string>
 #include <vector>
-#include <cassert>
 #include <utility>
-#include <optional>
 // root libraries
 #include <TH1.h>
 #include <TH2.h>
-#include <TFile.h>
-#include <TDirectory.h>
 // tracking libraries
 #include <trackbase/TrkrHit.h>
 #include <trackbase/TpcDefs.h>
-#include <trackbase/TrkrDefs.h>
 #include <trackbase/InttDefs.h>
 #include <trackbase/MvtxDefs.h>
+#include <trackbase/TrkrDefs.h>
 // module tools
 #include "BaseQAHistManager.h"
 #include "TracksInJetsQAMakerHelper.h"
@@ -60,7 +55,7 @@ class HitQAHistManager : public BaseQAHistManager {
     ~HitQAHistManager() : ~BaseQAHistManager() {};
 
     // external methods
-    void GetInfo(const TrkrHit* hit, const TrkrDefs::hitsetkey setKey, const TrkrDefs::hitkey hitKey);
+    void GetInfo(const TrkrHit* hit, const TrkrDefs::hitsetkey& setKey, const TrkrDefs::hitkey& hitKey);
 
   private:
 
