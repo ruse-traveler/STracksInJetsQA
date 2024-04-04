@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------------------
-// 'JetQAMaker.cc'
+// 'JetQAHistManager.cc'
 // Derek Anderson
 // 03.25.2024
 //
@@ -7,16 +7,16 @@
 // to generate QA plots for track jets
 // ----------------------------------------------------------------------------
 
-#define TRACKSINJETSQAMAKER_JETQAMAKER_CC
+#define TRACKSINJETSQAMAKER_JETQAHISTMANAGER_CC
 
 // submodule definition
-#include "JetQAMaker.h"
+#include "JetQAHistManager.h"
 
 
 
 // public methods -------------------------------------------------------------
 
-void JetQAMaker::Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHelper& help) {
+void JetQAHistManager::Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHelper& help) {
 
   // grab module utilities
   m_help = help;
@@ -30,7 +30,7 @@ void JetQAMaker::Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHelpe
 
 
 
-void JetQAMaker::Process(PHCompositeNode* topNode) {
+void JetQAHistManager::Process(PHCompositeNode* topNode) {
 
   // grab jet map from node tree
   m_jetMap = findNode::getClass<JetContainer>(topNode, "AntiKt_Track_r04");
@@ -100,7 +100,7 @@ void JetQAMaker::Process(PHCompositeNode* topNode) {
 
 
 
-void JetQAMaker::End(TFile* outFile, std::string jetDirName, std::string cstDirName) {
+void JetQAHistManager::End(TFile* outFile, std::string jetDirName, std::string cstDirName) {
 
   TDirectory* jetDir = outFile -> mkdir(jetDirName.data());
   if (!jetDir) {
@@ -147,7 +147,7 @@ void JetQAMaker::End(TFile* outFile, std::string jetDirName, std::string cstDirN
 
 // private methods ------------------------------------------------------------
 
-void JetQAMaker::BuildHistograms() {
+void JetQAHistManager::BuildHistograms() {
 
   // grab binning schemes
   std::vector<BinDef> vecBins = m_hist.GetVecHistBins();
@@ -293,7 +293,7 @@ void JetQAMaker::BuildHistograms() {
 
 
 
-void JetQAMaker::FillHistograms(Type type, JetQAContent& content) {
+void JetQAHistManager::FillHistograms(Type type, JetQAContent& content) {
 
   // fill 1d histograms
   vecJetHist1D.at(type).at(J1D::JetEta) -> Fill(content.etaJet);
@@ -310,7 +310,7 @@ void JetQAMaker::FillHistograms(Type type, JetQAContent& content) {
 
 
 
-void JetQAMaker::FillHistograms(Type type, CstQAContent& content) {
+void JetQAHistManager::FillHistograms(Type type, CstQAContent& content) {
 
   // fill 1d histograms
   vecCstHist1D.at(type).at(C1D::CstPt)   -> Fill(content.ptCst);

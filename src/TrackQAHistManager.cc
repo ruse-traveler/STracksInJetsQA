@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------------------
-// 'TrackQAMaker.cc'
+// 'TrackQAHistManager.cc'
 // Derek Anderson
 // 03.25.2024
 //
@@ -7,16 +7,16 @@
 // to generate QA plots for track hits
 // ----------------------------------------------------------------------------
 
-#define TRACKJETQAMAKER_TRACKQAMAKER_CC
+#define TRACKJETQAMAKER_TRACKQAHISTMANAGER_CC
 
 // submodule definition
-#include "TrackQAMaker.h"
+#include "TrackQAHistManager.h"
 
 
 
 // public methods -------------------------------------------------------------
 
-void TrackQAMaker::Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& help) {
+void TrackQAHistManager::Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& help) {
 
   // grab module utilities
   m_help = help;
@@ -30,7 +30,7 @@ void TrackQAMaker::Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& hel
 
 
 
-void TrackQAMaker::Process(PHCompositeNode* topNode) {
+void TrackQAHistManager::Process(PHCompositeNode* topNode) {
 
   // grab track map off the node tree
   m_trkMap = findNode::getClass<SvtxTrackMap>(topNode, "SvtxTrackMap");
@@ -67,7 +67,7 @@ void TrackQAMaker::Process(PHCompositeNode* topNode) {
 
 
 
-void TrackQAMaker::End(TFile* outFile, std::string outDirName) {
+void TrackQAHistManager::End(TFile* outFile, std::string outDirName) {
 
   TDirectory* outDir = outFile -> mkdir(outDirName.data());
   if (!outDir) {
@@ -94,7 +94,7 @@ void TrackQAMaker::End(TFile* outFile, std::string outDirName) {
 
 // private methods ------------------------------------------------------------
 
-void TrackQAMaker::BuildHistograms() {
+void TrackQAHistManager::BuildHistograms() {
 
   // grab binning schemes
   std::vector<BinDef> vecBins = m_hist.GetVecHistBins();
@@ -176,7 +176,7 @@ void TrackQAMaker::BuildHistograms() {
 
 
 
-void TrackQAMaker::FillHistograms(Type type, TrackQAContent& content) {
+void TrackQAHistManager::FillHistograms(Type type, TrackQAContent& content) {
 
   // fill 1d histograms
   vecHist1D.at(type).at(H1D::Eta)  -> Fill(content.eta);

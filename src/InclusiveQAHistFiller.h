@@ -13,13 +13,14 @@
 
 // c+ utilities
 #include <string>
+#include <utility>
 // f4a libraries
-#include <
+#include <fun4all/PHCompositeNode.h>
 // submodule definitions
-#include "HitQAMaker.h"
-#include "ClustQAMaker.h"
-#include "TrackQAMaker.h"
-#include "JetQAMaker.h"
+#include "HitQAHistManager.h"
+#include "ClustQAHistManager.h"
+#include "TrackQAHistManager.h"
+#include "JetQAHistManager.h"
 
 
 
@@ -43,10 +44,10 @@ class InclusiveQAHistFiller {
   private:
 
     // submodules to use
-    HitQAMaker*   m_hitMaker   = NULL;
-    ClustQAMaker* m_clustMaker = NULL;
-    TrackQAMaker* m_trackMaker = NULL;
-    JetQAMaker*   m_jetMaker   = NULL;
+    std::unique_ptr<HitQAHistManager>   m_hitManager   = NULL;
+    std::unique_ptr<ClustQAHistManager> m_clustManager = NULL;
+    std::unique_ptr<TrackQAHistManager> m_trackManager = NULL;
+    std::unique_ptr<JetQAHistManager>   m_jetManager   = NULL;
 
     // internal methods
     /* TODO fill in */

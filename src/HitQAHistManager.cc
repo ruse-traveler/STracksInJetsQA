@@ -1,22 +1,22 @@
 // ----------------------------------------------------------------------------
-// 'ClustQAMaker.cc'
+// 'HitQAHistManager.cc'
 // Derek Anderson
 // 03.25.2024
 //
 // A submodule for the TracksInJetsQAMaker module
-// to generate QA plots for track clusters
+// to generate QA plots for track hits
 // ----------------------------------------------------------------------------
 
-#define TRACKSINJETSQAMAKER_CLUSTQAMAKER_CC
+#define TRACKSINJETSQAMAKER_HITQAHISTMANAGER_CC
 
 // submodule definition
-#include "ClustQAMaker.h"
+#include "HitQAHistManager.h"
 
 
 
 // public methods -------------------------------------------------------------
 
-void ClustQAMaker::Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHelper& help) {
+void HitQAHistManager::Init(TracksInJetsQAMakerDef& hist, TracksInJetsQAMakerHelper& help) {
 
   // grab module utilities
   m_help = help;
@@ -30,26 +30,15 @@ void ClustQAMaker::Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHel
 
 
 
-void ClustQAMaker::Process(PHCompositeNode* topNode) {
+void HitQAHistManager::Process(PHCompositeNode* topNode) {
 
-  // grab acts geometry from node tree
-  m_actsGeom = findNode::getClass<ActsGeometry>(topNode, "ActsGeometry");
-  if (!m_actsGeom) {
-    std::cerr << PHWHERE << ": PANIC: couldn't grab ACTS geometry from node tree!" << std::endl;
-    assert(m_actsGeom);
-  }
+  /* TODO grab TPC geometry here */
 
   // grab hit map from node tree
   m_hitMap = findNode::getClass<TrkrHitSetContainer>(topNode, "TRKR_HITSET");
   if (!m_hitMap) {
     std::cerr << PHWHERE << ": PANIC: couldn't grab hit map from node tree!" << std::endl;
     assert(m_hitMap);
-  }
-
-  m_clustMap = findNode::getClass<TrkrClusterContainer>(topNode, "TRKR_CLUSTER");
-  if (!m_clustMap) {
-    std::cerr << PHWHERE << ": PANIC: couldn't grab cluster map from node tree!" << std::endl;
-    assert(m_clustMap);
   }
 
   // loop over hit sets
@@ -60,34 +49,51 @@ void ClustQAMaker::Process(PHCompositeNode* topNode) {
     ++itSet
   ) {
 
-    // loop over clusters associated w/ hit set
-    TrkrDefs::hitsetkey              setKey   = itSet      -> first;
-    TrkrClusterContainer::ConstRange clusters = m_clustMap -> getClusters(setKey);
+    // grab hit set
+    TrkrDefs::hitsetkey setKey = itSet -> first;
+    TrkrHitSet*         set    = itSet -> second;
+
+    // loop over all hits in hit set
+    TrkrHitSet::ConstRange hits = set -> getHits();
     for (
-      TrkrClusterContainer::ConstIterator itClust = clusters.first;
-      itClust != clusters.second;
-      ++itClust
+      TrkrHitSet::ConstIterator itHit = hits.first;
+      itHit != hits.second;
+      ++itHit
     ) {
 
-      // grab cluster
-      TrkrDefs::cluskey clustKey = itClust    -> first;
-      TrkrCluster*      cluster  = m_clustMap -> findCluster(clustKey);
+      // grab hit
+      TrkrDefs::hitkey hitKey = itHit -> first;
+      TrkrHit*         hit    = itHit -> second;
 
-      // check which subsystem cluster is in
-      const uint16_t layer  = TrkrDefs::getLayer(clustKey);
+      // check which subsystem hit is in
+      const uint16_t layer  = TrkrDefs::getLayer(setKey);
       const bool     isMvtx = m_help.IsInMvtx(layer);
       const bool     isIntt = m_help.IsInIntt(layer);
       const bool     isTpc  = m_help.IsInTpc(layer);
 
-      // get cluster position
-      Acts::Vector3 actsPos = m_actsGeom -> getGlobalPosition(clustKey, cluster);
+      // get phi and z values
+      //   - FIXME should be more explicit about
+      //     row/column vs. z/phi...
+      uint16_t phiBin = std::numeric_limits<uint16_t>::max();
+      uint16_t zBin   = std::numeric_limits<uint16_t>::max();
+      if (isMvtx) {
+        phiBin = MvtxDefs::getCol(hitKey);
+        zBin   = MvtxDefs::getRow(hitKey);
+      } else if (isIntt) {
+        phiBin = InttDefs::getCol(hitKey);
+        zBin   = InttDefs::getRow(hitKey);
+      } else if (isTpc) {
+        phiBin = TpcDefs::getPad(hitKey);
+        /* TODO put in z calculation */
+      }
 
-      // collect cluster infor
-      ClustQAContent content {
-        .x = actsPos(0),
-        .y = actsPos(1),
-        .z = actsPos(2),
-        .r = std::hypot( actsPos(0), actsPos(1) )
+      // collect hit info
+      HitQAContent content {
+        .ene    = hit -> getEnergy(),
+        .adc    = hit -> getAdc(),
+        .layer  = layer,
+        .phiBin = phiBin,
+        .zBin   = zBin
       };
 
       // fill histograms
@@ -99,7 +105,7 @@ void ClustQAMaker::Process(PHCompositeNode* topNode) {
       } else if (isTpc) {
         FillHistograms(Type::Tpc, content);
       }
-    }  // end cluster loop
+    }  // end hit loop
   }  // end hit set loop
   return;
 
@@ -107,7 +113,7 @@ void ClustQAMaker::Process(PHCompositeNode* topNode) {
 
 
 
-void ClustQAMaker::End(TFile* outFile, std::string outDirName) {
+void HitQAHistManager::End(TFile* outFile, std::string outDirName) {
 
   TDirectory* outDir = outFile -> mkdir(outDirName.data());
   if (!outDir) {
@@ -128,13 +134,13 @@ void ClustQAMaker::End(TFile* outFile, std::string outDirName) {
   }
   return;
 
-}  // end 'End()'
+}  // end 'End(TFile*, std::string)'
 
 
 
 // private methods ------------------------------------------------------------
 
-void ClustQAMaker::BuildHistograms() {
+void HitQAHistManager::BuildHistograms() {
 
   // grab binning schemes
   std::vector<BinDef> vecBins = m_hist.GetVecHistBins();
@@ -147,21 +153,27 @@ void ClustQAMaker::BuildHistograms() {
     "All"
   };
   const std::vector<HistDef1D> vecHistDef1D = {
-    std::make_tuple( "ClustPosX", vecBins.at(TracksInJetsQAMakerHistDef::Var::PosXY) ),
-    std::make_tuple( "ClustPosY", vecBins.at(TracksInJetsQAMakerHistDef::Var::PosXY) ),
-    std::make_tuple( "ClustPosZ", vecBins.at(TracksInJetsQAMakerHistDef::Var::PosZ) ),
-    std::make_tuple( "ClustPosR", vecBins.at(TracksInJetsQAMakerHistDef::Var::PosR) )
+    std::make_tuple( "HitEne",    vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene) ),
+    std::make_tuple( "HitAdc",    vecBins.at(TracksInJetsQAMakerHistDef::Var::Adc) ),
+    std::make_tuple( "HitLayer",  vecBins.at(TracksInJetsQAMakerHistDef::Var::Layer) ),
+    std::make_tuple( "HitPhiBin", vecBins.at(TracksInJetsQAMakerHistDef::Var::PhiBin) ),
+    std::make_tuple( "HitZBin",   vecBins.at(TracksInJetsQAMakerHistDef::Var::ZBin) )
   };
   const std::vector<HistDef2D> vecHistDef2D = {
     std::make_tuple(
-      "ClustPosYvsX",
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::PosXY),
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::PosXY)
+      "HitEneVsLayer",
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Layer),
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene)
     ),
     std::make_tuple(
-      "ClustPosRvsZ",
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::PosZ),
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::PosR)
+      "HitEneVsADC",
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Adc),
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene)
+    ),
+    std::make_tuple(
+      "HitPhiVsZBin",
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::ZBin),
+      vecBins.at(TracksInJetsQAMakerHistDef::Var::PhiBin)
     )
   };
 
@@ -219,19 +231,21 @@ void ClustQAMaker::BuildHistograms() {
 
 
 
-void ClustQAMaker::FillHistograms(Type type, ClustQAContent& content) {
+void HitQAHistManager::FillHistograms(Type type, HitQAContent& content) {
 
   // fill 1d histograms
-  vecHist1D.at(type).at(H1D::PosX) -> Fill(content.x);
-  vecHist1D.at(type).at(H1D::PosY) -> Fill(content.y);
-  vecHist1D.at(type).at(H1D::PosZ) -> Fill(content.z);
-  vecHist1D.at(type).at(H1D::PosR) -> Fill(content.r);
+  vecHist1D.at(type).at(H1D::Ene)    -> Fill(content.ene);
+  vecHist1D.at(type).at(H1D::ADC)    -> Fill(content.adc);
+  vecHist1D.at(type).at(H1D::Layer)  -> Fill(content.layer);
+  vecHist1D.at(type).at(H1D::PhiBin) -> Fill(content.phiBin);
+  vecHist1D.at(type).at(H1D::ZBin)   -> Fill(content.zBin);
 
   // fill 2d histograms
-  vecHist2D.at(type).at(H2D::PosYvsX) -> Fill(content.x, content.y);
-  vecHist2D.at(type).at(H2D::PosRvsZ) -> Fill(content.z, content.r);
+  vecHist2D.at(type).at(H2D::EneVsLayer) -> Fill(content.layer, content.ene);
+  vecHist2D.at(type).at(H2D::EneVsADC)   -> Fill(content.adc, content.ene);
+  vecHist2D.at(type).at(H2D::PhiVsZBin)  -> Fill(content.zBin, content.phiBin);
   return;
 
-}  //  end 'FillHistograms(Type, ClustQAContent&)'
+}  //  end 'FillHistograms(Type, HitQAContent&)'
 
 // end ------------------------------------------------------------------------

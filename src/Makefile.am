@@ -20,10 +20,10 @@ pkginclude_HEADERS = \
   InJetQAHistFiller.h \
   InclusiveQAHistFiller.h \
   BaseQAHistManager.h \
-  HitQAMaker.h \
-  ClustQAMaker.h \
-  TrackQAMaker.h \
-  JetQAMaker.h
+  HitQAHistManager.h \
+  ClustQAHistManager.h \
+  TrackQAHistManager.h \
+  JetQAHistManager.h
 
 if ! MAKEROOT6
   ROOT5_DICTS = \
@@ -36,10 +36,10 @@ libtracksinjetsqamaker_la_SOURCES = \
   InJetQAHistFiller.cc \
   InclusiveQAHistFiller.cc \
   BaseQAHistManager.cc \
-  HitQAMaker.cc \
-  ClustQAMaker.cc \
-  TrackQAMaker.cc \
-  JetQAMaker.cc
+  HitQAHistManager.cc \
+  ClustQAHistManager.cc \
+  TrackQAHistManager.cc \
+  JetQAHistManager.cc
 
 libtracksinjetsqamaker_la_LDFLAGS = \
   -L$(libdir) \

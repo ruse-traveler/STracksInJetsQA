@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------------------
-// 'TrackQAMaker.h'
+// 'TrackQAHistManager.h'
 // Derek Anderson
 // 03.25.2024
 //
@@ -8,8 +8,8 @@
 // and in jets
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKJETQAMAKER_TRACKQAMAKER_H
-#define TRACKJETQAMAKER_TRACKQAMAKER_H
+#ifndef TRACKJETQAMAKER_TRACKQAHISTMANAGER_H
+#define TRACKJETQAMAKER_TRACKQAHISTMANAGER_H
 
 // c++ utilities
 #include <limits>
@@ -37,9 +37,9 @@
 
 
 
-// TrackQAMaker definition ------------------------------------------------------
+// TrackQAHistManager definition ----------------------------------------------
 
-class TrackQAMaker {
+class TrackQAHistManager {
 
   public:
 
@@ -58,8 +58,8 @@ class TrackQAMaker {
     };
 
     // ctor/dtor
-    TrackQAMaker() {};
-    ~TrackQAMaker() {};
+    TrackQAHistManager() {};
+    ~TrackQAHistManager() {};
 
     // public methods
     void Init(TrackJetQAMakerHistDef& hist, TrackJetQAMakerHelper& help);
@@ -83,7 +83,7 @@ class TrackQAMaker {
     TrackJetQAMakerHelper  m_help;
     TrackJetQAMakerHistDef m_hist;
 
-};  // end TrackQAMaker
+};  // end TrackQAHistManager
 
 #endif
 

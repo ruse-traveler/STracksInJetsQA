@@ -1,14 +1,14 @@
 // ----------------------------------------------------------------------------
-// 'HitQAMaker.h'
+// 'ClustQAHistManager.h'
 // Derek Anderson
 // 03.25.2024
 //
 // A submodule for the TracksInJetsQAMaker module
-// to generate QA plots for track hits
+// to generate QA plots for track clusters
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKER_HITQAMAKER_H
-#define TRACKSINJETSQAMAKER_HITQAMAKER_H
+#ifndef TRACKSINJETSQAMAKER_CLUSTQAHISTMANAGER_H
+#define TRACKSINJETSQAMAKER_CLUSTQAHISTMANAGER_H
 
 // c++ utilities
 #include <limits>
@@ -28,42 +28,40 @@
 #include <phool/phool.h>
 #include <phool/getClass.h>
 // tracking libraries
-#include <trackbase/TrkrHit.h>
-#include <trackbase/TpcDefs.h>
 #include <trackbase/TrkrDefs.h>
-#include <trackbase/InttDefs.h>
-#include <trackbase/MvtxDefs.h>
 #include <trackbase/TrkrHitSet.h>
+#include <trackbase/TrkrCluster.h>
+#include <trackbase/ActsGeometry.h>
 #include <trackbase/TrkrHitSetContainer.h>
+#include <trackbase/TrkrClusterContainer.h>
 // module tools
 #include "TracksInJetsQAMakerHelper.h"
 #include "TracksInJetsQAMakerHistDef.h"
 
 
 
-// HitQAMaker definition ------------------------------------------------------
+// ClustQAHistManager definition ------------------------------------------------------
 
-class HitQAMaker {
+class ClustQAHistManager {
 
   public:
 
     // histogram accessors
     enum Type {Mvtx, Intt, Tpc, All};
-    enum H1D  {Ene, ADC, Layer, PhiBin, ZBin};
-    enum H2D  {EneVsLayer, EneVsADC, PhiVsZBin};
+    enum H1D  {PosX, PosY, PosZ, PosR};
+    enum H2D  {PosYvsX, PosRvsZ};
 
     // histogram content
-    struct HitQAContent {
-      double   ene    = std::numeric_limits<double>::max();
-      uint64_t adc    = std::numeric_limits<uint64_t>::max();
-      uint16_t layer  = std::numeric_limits<uint16_t>::max();
-      uint16_t phiBin = std::numeric_limits<uint16_t>::max();
-      uint16_t zBin   = std::numeric_limits<uint16_t>::max();
+    struct ClustQAContent {
+      double x = std::numeric_limits<double>::max();
+      double y = std::numeric_limits<double>::max();
+      double z = std::numeric_limits<double>::max();
+      double r = std::numeric_limits<double>::max();
     };
 
     // ctor/dtor
-    HitQAMaker() {};
-    ~HitQAMaker() {};
+    ClustQAHistManager() {};
+    ~ClustQAHistManager() {};
 
     // public methods
     void Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHelper& help);
@@ -74,11 +72,12 @@ class HitQAMaker {
 
     // private methods
     void BuildHistograms();
-    void FillHistograms(Type type, HitQAContent& content);
+    void FillHistograms(Type type, ClustQAContent& content);
 
     // necessary dst nodes
-    TrkrHitSetContainer* m_hitMap = NULL;
-    /* TODO add TPC geometry container */
+    ActsGeometry*         m_actsGeom = NULL;
+    TrkrHitSetContainer*  m_hitMap   = NULL;
+    TrkrClusterContainer* m_clustMap = NULL;
 
     // histograms
     std::vector<std::vector<TH1D*>> vecHist1D;
@@ -88,8 +87,9 @@ class HitQAMaker {
     TracksInJetsQAMakerHelper  m_help;
     TracksInJetsQAMakerHistDef m_hist;
 
-};  // end HitQAMaker
+};  // end ClustQAHistManager
 
 #endif
 
 // end ------------------------------------------------------------------------
+

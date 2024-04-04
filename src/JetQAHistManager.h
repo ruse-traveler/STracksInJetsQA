@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------------------
-// 'JetQAMaker.h'
+// 'JetQAHistManager.h'
 // Derek Anderson
 // 03.26.2024
 //
@@ -7,8 +7,8 @@
 // to generate QA plots for track jets
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKER_JETQAMAKER_H
-#define TRACKSINJETSQAMAKER_JETQAMAKER_H
+#ifndef TRACKSINJETSQAMAKER_JETQAHISTMANAGER_H
+#define TRACKSINJETSQAMAKER_JETQAHISTMANAGER_H
 
 // c++ utilities
 #include <limits>
@@ -39,9 +39,9 @@
 
 
 
-// JetQAMaker definition ------------------------------------------------------
+// JetQAHistManager definition ------------------------------------------------------
 
-class JetQAMaker {
+class JetQAHistManager {
 
   public:
 
@@ -65,8 +65,8 @@ class JetQAMaker {
     };
 
     // ctor/dtor
-    JetQAMaker() {};
-    ~JetQAMaker() {};
+    JetQAHistManager() {};
+    ~JetQAHistManager() {};
 
     // public methods
     void Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHelper& help);
@@ -94,7 +94,7 @@ class JetQAMaker {
     TracksInJetsQAMakerHelper  m_help;
     TracksInJetsQAMakerHistDef m_hist;
 
-};  // end JetQAMaker
+};  // end JetQAHistManager
 
 #endif
 
