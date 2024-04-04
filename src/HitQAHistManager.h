@@ -22,20 +22,14 @@
 #include <TH2.h>
 #include <TFile.h>
 #include <TDirectory.h>
-// f4a libraries
-#include <phool/PHCompositeNode.h>
-// phool libraries
-#include <phool/phool.h>
-#include <phool/getClass.h>
 // tracking libraries
 #include <trackbase/TrkrHit.h>
 #include <trackbase/TpcDefs.h>
 #include <trackbase/TrkrDefs.h>
 #include <trackbase/InttDefs.h>
 #include <trackbase/MvtxDefs.h>
-#include <trackbase/TrkrHitSet.h>
-#include <trackbase/TrkrHitSetContainer.h>
 // module tools
+#include "BaseQAHistManager.h"
 #include "TracksInJetsQAMakerHelper.h"
 #include "TracksInJetsQAMakerHistDef.h"
 
@@ -43,7 +37,7 @@
 
 // HitQAHistManager definition ------------------------------------------------
 
-class HitQAHistManager {
+class HitQAHistManager : public BaseQAHistManager {
 
   public:
 
@@ -62,31 +56,19 @@ class HitQAHistManager {
     };
 
     // ctor/dtor
-    HitQAHistManager() {};
-    ~HitQAHistManager() {};
+    HitQAHistManager() : BaseQAHistManager() {};
+    ~HitQAHistManager() : ~BaseQAHistManager() {};
 
-    // public methods
-    void Init(TracksInJetsQAMakerHistDef& hist, TracksInJetsQAMakerHelper& help);
-    void Process(PHCompositeNode* topNode);
-    void End(TFile* outFile, std::string outDirName);
+    // external methods
+    void GetInfo(const TrkrHit* hit, const TrkrDefs::hitsetkey setKey, const TrkrDefs::hitkey hitKey);
 
   private:
 
-    // private methods
-    void BuildHistograms();
-    void FillHistograms(Type type, HitQAContent& content);
+    // internal methods
+    void FillHistograms(const int type, const HitQAContent& content);
 
-    // necessary dst nodes
-    TrkrHitSetContainer* m_hitMap = NULL;
-    /* TODO add TPC geometry container */
-
-    // histograms
-    std::vector<std::vector<TH1D*>> vecHist1D;
-    std::vector<std::vector<TH2D*>> vecHist2D;
-
-    // module utilities
-    TracksInJetsQAMakerHelper  m_help;
-    TracksInJetsQAMakerHistDef m_hist;
+    // inherited internal methods
+    void DefineHistograms() override;
 
 };  // end HitQAHistManager
 

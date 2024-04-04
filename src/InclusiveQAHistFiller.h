@@ -13,9 +13,21 @@
 
 // c+ utilities
 #include <string>
+#include <cassert>
 #include <utility>
 // f4a libraries
-#include <fun4all/PHCompositeNode.h>
+#include <phool/PHCompositeNode.h>
+// phool libraries
+#include <phool/phool.h>
+#include <phool/getClass.h>
+// tracking libraries
+#include <trackbase/TrkrHit.h>
+#include <trackbase/TpcDefs.h>
+#include <trackbase/TrkrDefs.h>
+#include <trackbase/InttDefs.h>
+#include <trackbase/MvtxDefs.h>
+#include <trackbase/TrkrHitSet.h>
+#include <trackbase/TrkrHitSetContainer.h>
 // submodule definitions
 #include "HitQAHistManager.h"
 #include "ClustQAHistManager.h"
@@ -29,8 +41,6 @@
 class InclusiveQAHistFiller {
 
   public:
-
-    enum JetType {Trk, Full, Calo};
 
     // ctor/dtor
     InclusiveQAHistFiller()  {};
@@ -50,7 +60,11 @@ class InclusiveQAHistFiller {
     std::unique_ptr<JetQAHistManager>   m_jetManager   = NULL;
 
     // internal methods
-    /* TODO fill in */
+    FillHitQAHists(PHCompositeNode* topNode);
+
+    // necessary dst nodes
+    TrkrHitSetContainer* m_hitMap = NULL;
+    /* TODO add TPC geometry container */
 
 };  // end InclusiveQAHistFiller
 
