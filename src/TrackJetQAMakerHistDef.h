@@ -32,6 +32,7 @@ typedef std::vector<HistDef2D>                  VecHistDef2D;
 struct TracksInJetsQAMakerHistDef {
 
   enum Var {
+    Num,
     Adc,
     ZBin,
     PhiBin,
@@ -49,6 +50,7 @@ struct TracksInJetsQAMakerHistDef {
   //   - FIXME the phi/z bin binning needs
   //     some more thought...
   //   - FIXME same with the ADC...
+  uint32_t nNumBins    = 101;
   uint32_t nAdcBins    = 101;
   uint32_t nZBinBins   = 101;
   uint32_t nPhiBinBins = 101;
@@ -62,6 +64,7 @@ struct TracksInJetsQAMakerHistDef {
   uint32_t nQualBins   = 22;
 
   // bin ranges
+  BinRange rNumBins    = {-0.5, (float) nNumBins + 0.5};
   BinRange rAdcBins    = {-0.5, (float) nAdcBins + 0.5};
   BinRange rZBinBins   = {-0.5, (float) nZBinBins + 0.5};
   BinRange rPhiBinBins = {-0.5, (float) nPhiBinBins + 0.5};
@@ -78,6 +81,7 @@ struct TracksInJetsQAMakerHistDef {
   std::vector<BinDef> GetVecHistBins() {
 
     std::vector<BinDef> vecHistBins = {
+      std::make_pair(nNumBins,    rNumBins),
       std::make_pair(nAdcBins,    rAdcBins),
       std::make_pair(nZBinBins,   rZBinBins),
       std::make_pair(nPhiBinBins, rPhiBinBins),
