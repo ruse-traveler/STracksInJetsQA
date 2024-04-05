@@ -16,6 +16,15 @@
 
 // external methods -----------------------------------------------------------
 
+void Init() {
+
+  /* TODO fill in */
+  return;
+
+}  // end 'Init()'
+
+
+
 void Fill(PHCompositeNode* topNode) {
 
   GetNodes();
@@ -24,6 +33,15 @@ void Fill(PHCompositeNode* topNode) {
   return;
 
 }  // end 'Fill(PHCompositeNode* topNode)'
+
+
+
+void End() {
+
+  /* TODO fill in */
+  return;
+
+}  // end 'End()'
 
 
 
@@ -45,18 +63,25 @@ void InclusiveQAHistFiller::GetNodes(PHCompositeNode* topNode) {
     assert(m_hitMap);
   }
 
-  // grab cluster map
+  // grab cluster map from node tree
   m_clustMap = findNode::getClass<TrkrClusterContainer>(topNode, "TRKR_CLUSTER");
   if (!m_clustMap) {
     std::cerr << PHWHERE << ": PANIC: couldn't grab cluster map from node tree!" << std::endl;
     assert(m_clustMap);
   }
 
-  // grab track map off the node tree
+  // grab track map from node tree
   m_trkMap = findNode::getClass<SvtxTrackMap>(topNode, "SvtxTrackMap");
   if (!m_trkMap) {
     std::cerr << PHWHERE << ": PANIC: couldn't grab track map from node tree!" << std::endl;
     assert(m_trkMap);
+  }
+
+  // grab jet map from node tree
+  m_jetMap = findNode::getClass<JetContainer>(topNode, "AntiKt_Track_r04");
+  if (!m_jetMap) {
+    std::cerr << PHWHERE << ": PANIC: couldn't grab jet map from node tree!" << std::endl;
+    assert(m_jetMap);
   }
   return;
 
@@ -135,7 +160,7 @@ void InclusiveQAHistFiller::FillClustQAHists(PHCompositeNode* topNode) {
 
 
 
-void TrackQAHistManager::FillTrackQAHists(PHCompositeNode* topNode) {
+void InclusiveQAHistFiller::FillTrackQAHists(PHCompositeNode* topNode) {
 
   // loop over tracks
   for (
@@ -154,6 +179,28 @@ void TrackQAHistManager::FillTrackQAHists(PHCompositeNode* topNode) {
   return;
 
 }  // end 'Process(PHCompositeNode*)'
+
+
+
+void InclusiveQAHistFiller::FillJetQAHists(PHCompositeNode* topNode) {
+
+  // loop over jets
+  for (
+    uint64_t iJet = 0;
+    iJet < m_jetMap -> size();
+    ++iJet
+  ) {
+
+    // grab jet
+    Jet* jet = m_jetMap -> get_jet(iJet);
+
+    // grab info and fill histograms
+    m_jetManager -> GetInfo(jet);
+
+  }  // end track loop
+  return;
+
+}  // end 'FillJetQAHists(PHCompositeNode*)'
 
 // end ------------------------------------------------------------------------
 

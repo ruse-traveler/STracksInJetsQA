@@ -34,6 +34,9 @@
 #include <trackbase/TrkrClusterContainer.h>
 #include <trackbase_historic/SvtxTrack.h>
 #include <trackbase_historic/SvtxTrackMap.h>
+// jet libraries
+#include <jetbase/Jet.h>
+#include <jetbase/JetContainer.h>
 // submodule definitions
 #include "HitQAHistManager.h"
 #include "ClustQAHistManager.h"
@@ -77,6 +80,7 @@ class InclusiveQAHistFiller {
     TrkrHitSetContainer*  m_hitMap   = NULL;
     TrkrClusterContainer* m_clustMap = NULL;
     SvtxTrackMap*         m_trkMap   = NULL;
+    JetContainer*         m_jetMap   = NULL;
 
 };  // end InclusiveQAHistFiller
 
