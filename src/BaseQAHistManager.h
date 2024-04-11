@@ -18,7 +18,6 @@
 // root libraries
 #include <TH1.h>
 #include <TH2.h>
-#include <TFile.h>
 #include <TDirectory.h>
 // module definitions
 #include "TracksInJetsQAMakerHelper.h"
@@ -38,12 +37,13 @@ class BaseQAHistManager {
 
     // external methods
     void Init(TracksInJetsQAMakerHelper& help, TracksInJetsQAMakerHistDef& hist);
-    void End(TFile* outFile, std::string outDirName);
+    void SaveHistograms(TDirectory* outFile, std::string outDirName);
 
   protected:
 
     // internal methods
     void BuildHistograms(vector<HistDef1D> vecDefs1D, vector<HistDef2D> vecDefs2D);
+    void ResetVectors();
 
     // virtual internal methods
     virtual void DefineHistograms() = 0;

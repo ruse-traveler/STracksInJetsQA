@@ -19,11 +19,7 @@
 
 BaseQAHistManager::BaseQAHistManager() {
 
-  m_vecHist1D.clear();
-  m_vecHist2D.clear();
-  m_vecHistTypes.clear();
-  m_vecHistDef1D.clear();
-  m_vecHistDef2D.clear();
+  ResetVectors();
 
 }  // end ctor
 
@@ -31,11 +27,7 @@ BaseQAHistManager::BaseQAHistManager() {
 
 BaseQAHistManager::~BaseQAHistManager() {
 
-  m_vecHist1D.clear();
-  m_vecHist2D.clear();
-  m_vecHistTypes.clear();
-  m_vecHistDef1D.clear();
-  m_vecHistDef2D.clear();
+  ResetVectors();
 
 }  // end dtor
 
@@ -58,9 +50,9 @@ void BaseQAHistManager::Init(TracksInJetsQAMakerHelper& help, TracksInJetsQAMake
 
 
 
-void End(TFile* outFile, std::string outDirName) {
+void SaveHistograms(TDirectory* topDir, std::string outDirName) {
 
-  TDirectory* outDir = outFile -> mkdir(outDirName.data());
+  TDirectory* outDir = topDir -> mkdir(outDirName.data());
   if (!outDir) {
     std::cerr << PHWHERE << ": PANIC: unable to make output directory!" << std::endl;
     assert(outDir);
@@ -79,7 +71,7 @@ void End(TFile* outFile, std::string outDirName) {
   }
   return;
 
-}  // end 'End(TFile*, std::string)'
+}  // end 'SaveHistograms(TFile*, std::string)'
 
 
 
@@ -138,5 +130,18 @@ void BuildHistograms() {
   return;
 
 }  // end 'BuildHistograms()'
+
+
+
+void ResetVectors() {
+
+  m_vecHist1D.clear();
+  m_vecHist2D.clear();
+  m_vecHistTypes.clear();
+  m_vecHistDef1D.clear();
+  m_vecHistDef2D.clear();
+  return;
+
+}  // end 'ResetVectors()'
 
 // end ------------------------------------------------------------------------
