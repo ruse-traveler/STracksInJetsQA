@@ -22,9 +22,8 @@
 #include <jetbase/Jet.h>
 // tracking libraries
 #include <trackbase_historic/SvtxTrack.h>
-// module tools
-#include "TracksInJetsQAMakerHelper.h"
-#include "TracksInJetsQAMakerHistDef.h"
+// submodule definitions
+#include "BaseQAHistManager.h"
 
 
 

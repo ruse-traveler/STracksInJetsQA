@@ -22,9 +22,8 @@
 #include <trackbase/TrkrHitSet.h>
 #include <trackbase/TrkrCluster.h>
 #include <trackbase/ActsGeometry.h>
-// module tools
-#include "TracksInJetsQAMakerHelper.h"
-#include "TracksInJetsQAMakerHistDef.h"
+// submodule definitions
+#include "BaseQAHistManager.h"
 
 
 

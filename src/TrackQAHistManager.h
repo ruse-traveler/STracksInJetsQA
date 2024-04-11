@@ -20,9 +20,8 @@
 #include <TH2.h>
 // tracking libraries
 #include <trackbase_historic/SvtxTrack.h>
-// module tools
-#include "TrackJetQAMakerHelper.h"
-#include "TrackJetQAMakerHistDef.h"
+// submodule definitions
+#include "BaseQAHistManager.h"
 
 
 

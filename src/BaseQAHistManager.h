@@ -19,7 +19,7 @@
 #include <TH1.h>
 #include <TH2.h>
 #include <TDirectory.h>
-// module definitions
+// module utilities
 #include "TracksInJetsQAMakerHelper.h"
 #include "TracksInJetsQAMakerHistDef.h"
 

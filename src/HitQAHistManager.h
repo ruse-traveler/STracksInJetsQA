@@ -23,10 +23,8 @@
 #include <trackbase/InttDefs.h>
 #include <trackbase/MvtxDefs.h>
 #include <trackbase/TrkrDefs.h>
-// module tools
+// submodule definitions
 #include "BaseQAHistManager.h"
-#include "TracksInJetsQAMakerHelper.h"
-#include "TracksInJetsQAMakerHistDef.h"
 
 
 
