@@ -3,7 +3,7 @@
 // Derek Anderson
 // 03.25.2024
 //
-// A small Fun4All module to produce QA plots for tracks,
+// A "small" Fun4All module to produce QA plots for tracks,
 // hits, and more.
 // ----------------------------------------------------------------------------
 
@@ -42,11 +42,7 @@ TracksInJetsQAMaker::~TracksInJetsQAMaker() {
   }
 
   // clean up any dangling pointers
-  if (m_outFile)    delete m_outFile;
-  if (m_hitMaker)   delete m_hitMaker;
-  if (m_clustMaker) delete m_clustMaker;
-  if (m_trackMaker) delete m_trackMaker;
-  if (m_jetMaker)   delete m_jetMaker;
+  if (m_outFile) delete m_outFile;
 
 }  // end dtor
 
@@ -80,17 +76,15 @@ int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
     std::cout << "TracksInJetsQAMaker::Init(PHCompositeNode* topNode) Initializing" << std::endl;
   }
 
-  // instantiate needed submodules
-  if (m_config.doHitQA)   m_hitMaker   = new HitQAMaker();
-  if (m_config.doClustQA) m_clustMaker = new ClustQAMaker();
-  if (m_config.doTrackQA) m_trackMaker = new TrackQAMaker();
-  if (m_config.doJetQA)   m_jetMaker   = new JetQAMaker();
-
-  // intialize submodules
-  if (m_config.doHitQA)   m_hitMaker   -> Init(m_hist, m_help);
-  if (m_config.doClustQA) m_clustMaker -> Init(m_hist, m_help);
-  if (m_config.doTrackQA) m_trackMaker -> Init(m_hist, m_help);
-  if (m_config.doJetQA)   m_jetMaker   -> Init(m_hist, m_help);
+  // initialize needed submodules
+  if (m_config.doInJet) {
+    m_inJet = std::make_unique<InJetQAHistFiller>();
+    m_inJet -> Init(m_config, m_help, m_hist);
+  }
+  if (m_config.doInclusive) {
+    m_inclusive = std::make_unique<InclusiveQAHistFiller>();
+    m_inclusive -> Init(m_config, m_help, m_hist);
+  }
   return Fun4AllReturnCodes::EVENT_OK;
 
 }  // end 'Init(PHCompositeNode*)'
@@ -105,10 +99,8 @@ int TracksInJetsQAMaker::process_event(PHCompositeNode* topNode) {
   }
 
   // run submodules
-  if (m_config.doHitQA)   m_hitMaker   -> Process(topNode);
-  if (m_config.doClustQA) m_clustMaker -> Process(topNode);
-  if (m_config.doTrackQA) m_trackMaker -> Process(topNode);
-  if (m_config.doJetQA)   m_jetMaker   -> Process(topNode);
+  if (m_config.doInJet)     m_inJet     -> Fill(topNode);
+  if (m_config.doInclusive) m_inclusive -> Fill(topNode);
   return Fun4AllReturnCodes::EVENT_OK;
 
 }  // end 'process_event(PHCompositeNode*)'
@@ -122,11 +114,9 @@ int TracksInJetsQAMaker::End(PHCompositeNode* topNode) {
     std::cout << "TracksInJetsQAMaker::End(PHCompositeNode* topNode) This is the End..." << std::endl;
   }
 
-  // terminate submodules
-  if (m_config.doHitQA)   m_hitMaker   -> End(m_outFile, m_config.hitOutDir);
-  if (m_config.doClustQA) m_clustMaker -> End(m_outFile, m_config.clustOutDir);
-  if (m_config.doTrackQA) m_trackMaker -> End(m_outFile, m_config.trackOutDir);
-  if (m_config.doJetQA)   m_jetMaker   -> End(m_outFile, m_config.jetOutDir, m_config.cstOutDir);
+  // save histograms
+  if (m_config.doInJet)     m_inJet     -> SsveHistograms(m_outFile);
+  if (m_config.doInclusive) m_inclusive -> SsveHistograms(m_outFile);
 
   // close file
   m_outFile -> cd();
