@@ -10,6 +10,29 @@
 
 #define TRACKSINJETSQAMAKER_INJETQAHISTFILLER_CC
 
+// submodule definition
+#include "InJetQAHistFiller.h"
+
+
+
+// external methods -----------------------------------------------------------
+
+void Fill(PHCompositeNode* topNode) {
+
+  GetNodes(topNode);
+
+  if (m_config.doJetQA) FillJetQAHists();
+  return;
+
+}  // end 'Fill(PHCompositeNode* topNode)'
+
+
+
+// internal methods -----------------------------------------------------------
+
+void InJetQAHistFiller::FillJetQAHists() {
+
+  /* OLD CODE FOR REFERENCE
     // loop over jet constituents
     auto csts = jet -> get_comp_vec();
     for (
@@ -35,5 +58,23 @@
       FillHistograms(Type::All, cstContent);
 
     }  // end cst loop
+  */
+  return;
+
+}  // end 'FillJetQAHists()'
+
+
+
+void InJetQAHistFiller::GetNodes(PHCompositeNode* topNode) {
+
+  // grab jet map from node tree
+  m_jetMap = findNode::getClass<JetContainer>(topNode, "AntiKt_Track_r04");
+  if (!m_jetMap) {
+    std::cerr << PHWHERE << ": PANIC: couldn't grab jet map from node tree!" << std::endl;
+    assert(m_jetMap);
+  }
+  return;
+
+}  // end 'GetNodes(PHCompositeNode*)'
 
 // end ------------------------------------------------------------------------

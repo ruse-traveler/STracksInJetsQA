@@ -12,45 +12,44 @@
 #define TRACKSINJETSQAMAKER_INJETQAHISTFILLER_H
 
 // c+ utilities
-#include <string>
-#include <utility>
-// f4a libraries
-#include <fun4all/PHCompositeNode.h>
+#include <cassert>
+// phool libraries
+#include <phool/phool.h>
+#include <phool/getClass.h>
+#include <phool/PHCompositeNode.h>
+// jet libraries
+#include <jetbase/Jet.h>
+#include <jetbase/JetContainer.h>
 // submodule definitions
-#include "HitQAHistManager.h"
-#include "ClustQAHistManager.h"
-#include "TrackQAHistManager.h"
-#include "JetQAHistManager.h"
+#include "BaseQAHistFiller.h"
 
 
 
 // InJetQAHistFiller ----------------------------------------------------------
 
-class InJetQAHistFiller {
+class InJetQAHistFiller : public BaseQAHistFiller {
 
   public:
 
     enum JetType {Trk, Full, Calo};
 
     // ctor/dtor
-    InJetQAHistFiller()  {};
-    ~InJetQAHistFiller() {};
+    InJetQAHistFiller() : BaseQAHistFiller() {};
+    ~InJetQAHistFiller() : ~BaseQAHistFiller() {};
 
-    // external methods
-    Init();
-    Fill(PHCompositeNode* topNode);
-    End();
+    // inherited external methods
+    void Fill(PHCompositeNode* topNode) override;
 
   private:
 
-    // submodules to use
-    std::unique_ptr<HitQAHistManager>   m_hitManager   = NULL;
-    std::unique_ptr<ClustQAHistManager> m_clustManager = NULL;
-    std::unique_ptr<TrackQAHistManager> m_trackManager = NULL;
-    std::unique_ptr<JetQAHistManager>   m_jetManager   = NULL;
-
     // internal methods
-    /* TODO fill in */
+    void FillJetQAHists();
+
+    // inherited internal methods
+    void GetNodes(PHCompositeNode* topNode) override;
+
+    // necessary dst nodes
+    JetContainer* m_jetMap = NULL;
 
 };  // end InJetQAHistFiller
 
