@@ -19,19 +19,23 @@
 struct TracksInJetsQAMakerConfig {
 
   // system parameters
-  int  verbose   = 0;
-  bool doDebug   = false;
-  bool doHitQA   = false;
-  bool doClustQA = false;
-  bool doTrackQA = true;
-  bool doJetQA   = true;
+  int  verbose     = 0;
+  bool doDebug     = false;
+  bool doInclusive = true;
+  bool doInJet     = true;
+  bool doHitQA     = false;
+  bool doClustQA   = false;
+  bool doTrackQA   = true;
+  bool doJetQA     = true;
 
-  // i/o parameters
-  std::string hitOutDir   = "HitQA";
-  std::string clustOutDir = "ClustQA";
-  std::string trackOutDir = "TrackQA";
-  std::string jetOutDir   = "JetQA";
-  std::string cstOutDir   = "CstQA";
+  // i/o options
+  std::string outFileName  = "test.root";
+  std::string inclusiveDir = "InclusiveQA";
+  std::string inJetDir     = "InJetQA";
+  std::string hitOutDir    = "Hit";
+  std::string clustOutDir  = "Clust";
+  std::string trackOutDir  = "Track";
+  std::string jetOutDir    = "Jet";
 
   // tracker parameters
   uint16_t nMvtxLayer = 3;
