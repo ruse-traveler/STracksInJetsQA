@@ -33,6 +33,8 @@ to_copy = [
   "src/JetQAHistManager.h",
   "src/TrackQAHistManager.cc",
   "src/TrackQAHistManager.h",
+  "src/BaseQAHistFiller.cc",
+  "src/BaseQAHistFiller.h",
   "src/InJetQAHistFiller.cc",
   "src/InJetQAHistFiller.h",
   "src/InclusiveQAHistFiller.cc",

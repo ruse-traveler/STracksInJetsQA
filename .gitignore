@@ -7,6 +7,8 @@ src/*
 !src/TracksInJetsQAMakerConfig.h
 !src/TracksInJetsQAMakerHelper.h
 !src/TracksInJetsQAMakerHistDef.h
+!src/BaseQAHistFiller.cc
+!src/BaseQAHistFiller.h
 !src/InJetQAHistFiller.cc
 !src/InJetQAHistFiller.h
 !src/InclusiveQAHistFiller.cc
