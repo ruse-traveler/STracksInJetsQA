@@ -42,6 +42,10 @@
 #include "ClustQAHistManager.h"
 #include "TrackQAHistManager.h"
 #include "JetQAHistManager.h"
+// module definitions
+#include "TracksInJetsQAMakerConfig.h"
+#include "TracksInJetsQAMakerHelper.h"
+#include "TracksInJetsQAMakerHistDef.h"
 
 
 
@@ -56,24 +60,18 @@ class InclusiveQAHistFiller {
     ~InclusiveQAHistFiller() {};
 
     // external methods
-    Init();
+    Init(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHelper& helper, TracksInJetsQAMakerHistDef& hist);
     Fill(PHCompositeNode* topNode);
     End();
 
   private:
 
     // internal methods
-    //   - FIXME the hist fillers probably don't need PHCompositeNode
     GetNodes(PHCompositeNode* topNode);
-    FillHitQAHists(PHCompositeNode* topNode);
-    FillClustQAHists(PHCompositeNode* topNode);
-    FillTrackQAHists(PHCompositeNode* topNode);
-
-    // submodules to use
-    std::unique_ptr<HitQAHistManager>   m_hitManager   = NULL;
-    std::unique_ptr<ClustQAHistManager> m_clustManager = NULL;
-    std::unique_ptr<TrackQAHistManager> m_trackManager = NULL;
-    std::unique_ptr<JetQAHistManager>   m_jetManager   = NULL;
+    FillHitQAHists();
+    FillClustQAHists();
+    FillTrackQAHists();
+    FillJetQAHists();
 
     // necessary dst nodes
     ActsGeometry*         m_actsGeom = NULL;
@@ -81,6 +79,17 @@ class InclusiveQAHistFiller {
     TrkrClusterContainer* m_clustMap = NULL;
     SvtxTrackMap*         m_trkMap   = NULL;
     JetContainer*         m_jetMap   = NULL;
+
+    // submodules to use
+    std::unique_ptr<HitQAHistManager>   m_hitManager   = NULL;
+    std::unique_ptr<ClustQAHistManager> m_clustManager = NULL;
+    std::unique_ptr<TrackQAHistManager> m_trackManager = NULL;
+    std::unique_ptr<JetQAHistManager>   m_jetManager   = NULL;
+
+    // module utilities
+    TracksInJetsQAMakerConfig  m_config;
+    TracksInJetsQAMakerHelper  m_help;
+    TracksInJetsQAMakerHistDef m_hist;
 
 };  // end InclusiveQAHistFiller
 
