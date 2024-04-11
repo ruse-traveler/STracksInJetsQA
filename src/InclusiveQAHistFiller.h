@@ -12,14 +12,11 @@
 #define TRACKSINJETSQAMAKER_INCLUSIVEQAHISTFILLER_H
 
 // c+ utilities
-#include <string>
 #include <cassert>
-#include <utility>
-// f4a libraries
-#include <phool/PHCompositeNode.h>
 // phool libraries
 #include <phool/phool.h>
 #include <phool/getClass.h>
+#include <phool/PHCompositeNode.h>
 // tracking libraries
 #include <trackbase/TrkrHit.h>
 #include <trackbase/TpcDefs.h>
@@ -38,40 +35,33 @@
 #include <jetbase/Jet.h>
 #include <jetbase/JetContainer.h>
 // submodule definitions
-#include "HitQAHistManager.h"
-#include "ClustQAHistManager.h"
-#include "TrackQAHistManager.h"
-#include "JetQAHistManager.h"
-// module definitions
-#include "TracksInJetsQAMakerConfig.h"
-#include "TracksInJetsQAMakerHelper.h"
-#include "TracksInJetsQAMakerHistDef.h"
+#include "BaseQAHistFiller.h"
 
 
 
-// InclusiveQAHistFiller ----------------------------------------------------------
+// InclusiveQAHistFiller ------------------------------------------------------
 
-class InclusiveQAHistFiller {
+class InclusiveQAHistFiller : public BaseQAHistFiller {
 
   public:
 
     // ctor/dtor
-    InclusiveQAHistFiller()  {};
-    ~InclusiveQAHistFiller() {};
+    InclusiveQAHistFiller() : BaseQAHistFiller() {};
+    ~InclusiveQAHistFiller() : ~BaseQAHistFiller() {};
 
-    // external methods
-    Init(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHelper& helper, TracksInJetsQAMakerHistDef& hist);
-    Fill(PHCompositeNode* topNode);
-    End();
+    // inherited external methods
+    void Fill(PHCompositeNode* topNode) override;
 
   private:
 
     // internal methods
-    GetNodes(PHCompositeNode* topNode);
-    FillHitQAHists();
-    FillClustQAHists();
-    FillTrackQAHists();
-    FillJetQAHists();
+    void FillHitQAHists();
+    void FillClustQAHists();
+    void FillTrackQAHists();
+    void FillJetQAHists();
+
+    // inherited internal methods
+    void GetNodes(PHCompositeNode* topNode) override;
 
     // necessary dst nodes
     ActsGeometry*         m_actsGeom = NULL;
@@ -80,20 +70,8 @@ class InclusiveQAHistFiller {
     SvtxTrackMap*         m_trkMap   = NULL;
     JetContainer*         m_jetMap   = NULL;
 
-    // submodules to use
-    std::unique_ptr<HitQAHistManager>   m_hitManager   = NULL;
-    std::unique_ptr<ClustQAHistManager> m_clustManager = NULL;
-    std::unique_ptr<TrackQAHistManager> m_trackManager = NULL;
-    std::unique_ptr<JetQAHistManager>   m_jetManager   = NULL;
-
-    // module utilities
-    TracksInJetsQAMakerConfig  m_config;
-    TracksInJetsQAMakerHelper  m_help;
-    TracksInJetsQAMakerHistDef m_hist;
-
 };  // end InclusiveQAHistFiller
 
 #endif
 
 // end ------------------------------------------------------------------------
-
