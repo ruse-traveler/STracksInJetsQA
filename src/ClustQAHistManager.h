@@ -48,10 +48,10 @@ class ClustQAHistManager : public BaseQAHistManager {
 
     // ctor/dtor
     ClustQAHistManager() : BaseQAHistManager() {};
-    ~ClustQAHistManager() : ~BaseQAHistManager() {};
+    ~ClustQAHistManager() {};
 
     // external methods
-    void GetInfo(const TrkrCluster* cluster, const TrkrDefs::clustkey& clustKey, const ActsGeometry* actsGeom);
+    void GetInfo(TrkrCluster* cluster, TrkrDefs::cluskey& clustKey, ActsGeometry* actsGeom);
 
   private:
 

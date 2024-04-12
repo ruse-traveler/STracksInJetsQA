@@ -115,8 +115,8 @@ int TracksInJetsQAMaker::End(PHCompositeNode* topNode) {
   }
 
   // save histograms
-  if (m_config.doInJet)     m_inJet     -> SsveHistograms(m_outFile);
-  if (m_config.doInclusive) m_inclusive -> SsveHistograms(m_outFile);
+  if (m_config.doInJet)     m_inJet     -> SaveHistograms(m_outFile);
+  if (m_config.doInclusive) m_inclusive -> SaveHistograms(m_outFile);
 
   // close file
   m_outFile -> cd();

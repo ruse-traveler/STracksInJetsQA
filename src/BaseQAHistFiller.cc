@@ -36,7 +36,7 @@ BaseQAHistFiller::~BaseQAHistFiller() {
 
 void BaseQAHistFiller::Init(
   TracksInJetsQAMakerConfig& config,
-  TracksInJetsQAMakerHelper& helper,
+  TracksInJetsQAMakerHelper& help,
   TracksInJetsQAMakerHistDef& hist
 ) {
 

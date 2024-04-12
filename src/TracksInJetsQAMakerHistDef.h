@@ -13,6 +13,9 @@
 // c++ utilities
 #include <string>
 #include <utility>
+// root libraries
+#include <TH1.h>
+#include <TH2.h>
 
 
 
@@ -24,6 +27,9 @@ typedef std::tuple<std::string, BinDef>         HistDef1D;
 typedef std::tuple<std::string, BinDef, BinDef> HistDef2D;
 typedef std::vector<HistDef1D>                  VecHistDef1D;
 typedef std::vector<HistDef2D>                  VecHistDef2D;
+typedef std::vector<std::vector<TH1D*>>         VecHist1D;
+typedef std::vector<std::vector<TH2D*>>         VecHist2D;
+typedef std::vector<std::string>                VecHistTypes;
 
 
 

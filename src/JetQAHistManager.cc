@@ -17,33 +17,31 @@
 // external methods -----------------------------------------------------------
 
 void JetQAHistManager::GetInfo(
-  const Jet* jet,
+  Jet* jet,
   std::optional<std::vector<SvtxTrack*>> tracks
 ) {
 
-    // collect jet info
-    JetQAContent jetContent {
-      .eta    = jet -> get_eta(),
-      .phi    = jet -> get_phi(),
-      .pt     = jet -> get_pt(),
-      .nTrk   = 0,
-      .ptSum  = 0.
-    };
+  // collect jet info
+  JetQAContent jetContent {
+    .eta    = jet -> get_eta(),
+    .phi    = jet -> get_phi(),
+    .pt     = jet -> get_pt(),
+    .nTrk   = 0,
+    .ptSum  = 0.
+  };
 
-    // if tracks are available, do calculations 
-    if (tracks.has_value()) {
-      for (SvtxTrack* track : tracks) {
+  // if tracks are available, do calculations 
+  if (tracks.has_value()) {
+    for (SvtxTrack* track : tracks.value()) {
 
-        jetContent.nTrk++;
-        jetContent.ptSum += track -> get_pt();
+      jetContent.nTrk++;
+      jetContent.ptSum += track -> get_pt();
 
-      }  // end track loop
-    }  // end if tracks.has_value
+    }  // end track loop
+  }  // end if tracks.has_value
 
-    // fill histograms
-    FillHistograms(Type::All, jetContent);
-
-  }  // end jet loop
+  // fill histograms
+  FillHistograms(Type::All, jetContent);
   return;
 
 }  // end 'Process(PHCompositeNode*)'
@@ -55,15 +53,15 @@ void JetQAHistManager::GetInfo(
 void JetQAHistManager::FillHistograms(const int type, JetQAContent& content) {
 
   // fill 1d histograms
-  vecJetHist1D.at(type).at(H1D::Eta)   -> Fill(content.eta);
-  vecJetHist1D.at(type).at(H1D::Phi)   -> Fill(content.phi);
-  vecJetHist1D.at(type).at(H1D::Pt)    -> Fill(content.pt);
-  vecJetHist1D.at(type).at(H1D::NTrk)  -> Fill(content.nTrk);
-  vecJetHist1D.at(type).at(H1D::PtSum) -> Fill(content.ptSum);
+  m_vecHist1D.at(type).at(H1D::Eta)   -> Fill(content.eta);
+  m_vecHist1D.at(type).at(H1D::Phi)   -> Fill(content.phi);
+  m_vecHist1D.at(type).at(H1D::Pt)    -> Fill(content.pt);
+  m_vecHist1D.at(type).at(H1D::NTrk)  -> Fill(content.nTrk);
+  m_vecHist1D.at(type).at(H1D::PtSum) -> Fill(content.ptSum);
 
   // fill 2d histograms
-  vecJetHist2D.at(type).at(H2D::PtVsEta)   -> Fill(content.eta, content.pt);
-  vecJetHist2D.at(type).at(H2D::PtSumVsPt) -> Fill(content.pt, content.ptSum);
+  m_vecHist2D.at(type).at(H2D::PtVsEta)   -> Fill(content.eta, content.pt);
+  m_vecHist2D.at(type).at(H2D::PtSumVsPt) -> Fill(content.pt, content.ptSum);
   return;
 
 }  //  end 'FillHistograms(Type, JetQAContent&)'
@@ -102,7 +100,7 @@ void JetQAHistManager::DefineHistograms() {
   );
   return;
 
-}  // end 'BuildHistograms()'
+}  // end 'DefineHistograms()'
 
 // end ------------------------------------------------------------------------
 

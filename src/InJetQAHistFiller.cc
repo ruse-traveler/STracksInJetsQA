@@ -17,7 +17,7 @@
 
 // external methods -----------------------------------------------------------
 
-void Fill(PHCompositeNode* topNode) {
+void InJetQAHistFiller::Fill(PHCompositeNode* topNode) {
 
   GetNodes(topNode);
 

@@ -50,15 +50,15 @@ class HitQAHistManager : public BaseQAHistManager {
 
     // ctor/dtor
     HitQAHistManager() : BaseQAHistManager() {};
-    ~HitQAHistManager() : ~BaseQAHistManager() {};
+    ~HitQAHistManager() {};
 
     // external methods
-    void GetInfo(const TrkrHit* hit, const TrkrDefs::hitsetkey& setKey, const TrkrDefs::hitkey& hitKey);
+    void GetInfo(TrkrHit* hit, TrkrDefs::hitsetkey& setKey, TrkrDefs::hitkey& hitKey);
 
   private:
 
     // internal methods
-    void FillHistograms(const int type, const HitQAContent& content);
+    void FillHistograms(const int type, HitQAContent& content);
 
     // inherited internal methods
     void DefineHistograms() override;

@@ -16,7 +16,7 @@
 
 // external methods -----------------------------------------------------------
 
-void ClustQAHistManager::GetInfo(const TrkrCluster* cluster, const TrkrDefs::cluskey& clustKey, const ActsGeometry* actsGeom) {
+void ClustQAHistManager::GetInfo(TrkrCluster* cluster, TrkrDefs::cluskey& clustKey, ActsGeometry* actsGeom) {
 
   // check which subsystem cluster is in
   const uint16_t layer  = TrkrDefs::getLayer(clustKey);
@@ -54,14 +54,14 @@ void ClustQAHistManager::GetInfo(const TrkrCluster* cluster, const TrkrDefs::clu
 void ClustQAHistManager::FillHistograms(const int type, ClustQAContent& content) {
 
   // fill 1d histograms
-  vecHist1D.at(type).at(H1D::PosX) -> Fill(content.x);
-  vecHist1D.at(type).at(H1D::PosY) -> Fill(content.y);
-  vecHist1D.at(type).at(H1D::PosZ) -> Fill(content.z);
-  vecHist1D.at(type).at(H1D::PosR) -> Fill(content.r);
+  m_vecHist1D.at(type).at(H1D::PosX) -> Fill(content.x);
+  m_vecHist1D.at(type).at(H1D::PosY) -> Fill(content.y);
+  m_vecHist1D.at(type).at(H1D::PosZ) -> Fill(content.z);
+  m_vecHist1D.at(type).at(H1D::PosR) -> Fill(content.r);
 
   // fill 2d histograms
-  vecHist2D.at(type).at(H2D::PosYvsX) -> Fill(content.x, content.y);
-  vecHist2D.at(type).at(H2D::PosRvsZ) -> Fill(content.z, content.r);
+  m_vecHist2D.at(type).at(H2D::PosYvsX) -> Fill(content.x, content.y);
+  m_vecHist2D.at(type).at(H2D::PosRvsZ) -> Fill(content.z, content.r);
   return;
 
 }  //  end 'FillHistograms(int, ClustQAContent&)'

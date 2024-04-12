@@ -19,8 +19,9 @@
 #include <TFile.h>
 // f4a/phool libraries
 #include <fun4all/SubsysReco.h>
-#include <phool/PHCompositeNode.h>
 #include <fun4all/Fun4AllReturnCodes.h>
+#include <phool/phool.h>
+#include <phool/PHCompositeNode.h>
 // module utilities
 #include "TracksInJetsQAMakerConfig.h"
 #include "TracksInJetsQAMakerHelper.h"

@@ -14,6 +14,7 @@
 // root libraries
 #include <TFile.h>
 // phool libraries
+#include <phool/phool.h>
 #include <phool/PHCompositeNode.h>
 // submodule definitions
 #include "HitQAHistManager.h"
@@ -38,7 +39,7 @@ class BaseQAHistFiller {
     ~BaseQAHistFiller();
 
     // external methods
-    void Init(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHelper& helper, TracksInJetsQAMakerHistDef& hist);
+    void Init(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHelper& help, TracksInJetsQAMakerHistDef& hist);
     void SaveHistograms(TFile* outFile);
 
     // virtual external methods

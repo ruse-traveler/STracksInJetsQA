@@ -29,7 +29,7 @@
 
 // JetQAHistManager definition ------------------------------------------------
 
-class JetQAHistManager {
+class JetQAHistManager : public BaseQAHistManager {
 
   public:
 
@@ -49,10 +49,10 @@ class JetQAHistManager {
 
     // ctor/dtor
     JetQAHistManager() : BaseQAHistManager() {};
-    ~JetQAHistManager() : ~BaseQAHistManager() {};
+    ~JetQAHistManager() {};
 
     // external methods
-    void GetInfo(const Jet* jet, std::optional<std::vector<SvtxTrack*>> tracks = std::nullopt);
+    void GetInfo(Jet* jet, std::optional<std::vector<SvtxTrack*>> tracks = std::nullopt);
 
   private:
 

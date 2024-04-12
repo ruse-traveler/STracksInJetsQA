@@ -47,7 +47,7 @@ class InclusiveQAHistFiller : public BaseQAHistFiller {
 
     // ctor/dtor
     InclusiveQAHistFiller() : BaseQAHistFiller() {};
-    ~InclusiveQAHistFiller() : ~BaseQAHistFiller() {};
+    ~InclusiveQAHistFiller() {};
 
     // inherited external methods
     void Fill(PHCompositeNode* topNode) override;

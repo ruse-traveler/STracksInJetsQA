@@ -50,7 +50,7 @@ void BaseQAHistManager::Init(TracksInJetsQAMakerHelper& help, TracksInJetsQAMake
 
 
 
-void SaveHistograms(TDirectory* topDir, std::string outDirName) {
+void BaseQAHistManager::SaveHistograms(TDirectory* topDir, std::string outDirName) {
 
   TDirectory* outDir = topDir -> mkdir(outDirName.data());
   if (!outDir) {
@@ -77,7 +77,7 @@ void SaveHistograms(TDirectory* topDir, std::string outDirName) {
 
 // internal methods -----------------------------------------------------------
 
-void BuildHistograms() {
+void BaseQAHistManager::BuildHistograms() {
 
   // build 1d histograms
   m_vecHist1D.resize( m_vecHistTypes.size() );
@@ -133,7 +133,7 @@ void BuildHistograms() {
 
 
 
-void ResetVectors() {
+void BaseQAHistManager::ResetVectors() {
 
   m_vecHist1D.clear();
   m_vecHist2D.clear();

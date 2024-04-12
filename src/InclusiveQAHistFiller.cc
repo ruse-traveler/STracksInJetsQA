@@ -17,7 +17,7 @@
 
 // external methods -----------------------------------------------------------
 
-void Fill(PHCompositeNode* topNode) {
+void InclusiveQAHistFiller::Fill(PHCompositeNode* topNode) {
 
   GetNodes(topNode);
 
@@ -33,7 +33,7 @@ void Fill(PHCompositeNode* topNode) {
 
 // internal methods -----------------------------------------------------------
 
-void InclusiveQAHistFiller::FillHitQAHists(PHCompositeNode* topNode) {
+void InclusiveQAHistFiller::FillHitQAHists() {
 
   // loop over hit sets
   TrkrHitSetContainer::ConstRange hitSets = m_hitMap -> getHitSets();

@@ -15,10 +15,13 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <iostream>
 // root libraries
 #include <TH1.h>
 #include <TH2.h>
 #include <TDirectory.h>
+// phool libraries
+#include <phool/phool.h>
 // module utilities
 #include "TracksInJetsQAMakerHelper.h"
 #include "TracksInJetsQAMakerHistDef.h"
@@ -42,15 +45,15 @@ class BaseQAHistManager {
   protected:
 
     // internal methods
-    void BuildHistograms(vector<HistDef1D> vecDefs1D, vector<HistDef2D> vecDefs2D);
+    void BuildHistograms();
     void ResetVectors();
 
     // virtual internal methods
     virtual void DefineHistograms() = 0;
 
     // histograms
-    std::vector<std::vector<TH1D*>> m_vecHist1D;
-    std::vector<std::vector<TH2D*>> m_vecHist2D;
+    VecHist1D m_vecHist1D;
+    VecHist2D m_vecHist2D;
 
     // histogram definitions
     VecHistTypes m_vecHistTypes;

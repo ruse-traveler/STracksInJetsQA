@@ -47,10 +47,10 @@ class TrackQAHistManager : public BaseQAHistManager {
 
     // ctor/dtor
     TrackQAHistManager() : BaseQAHistManager() {};
-    ~TrackQAHistManager() : ~BaseQAHistManager() {};
+    ~TrackQAHistManager() {};
 
     // external methods
-    void GetInfo(const SvtxTrack* track);
+    void GetInfo(SvtxTrack* track);
 
   private:
 

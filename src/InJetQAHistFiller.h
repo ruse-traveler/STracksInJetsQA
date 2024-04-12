@@ -35,7 +35,7 @@ class InJetQAHistFiller : public BaseQAHistFiller {
 
     // ctor/dtor
     InJetQAHistFiller() : BaseQAHistFiller() {};
-    ~InJetQAHistFiller() : ~BaseQAHistFiller() {};
+    ~InJetQAHistFiller() {};
 
     // inherited external methods
     void Fill(PHCompositeNode* topNode) override;

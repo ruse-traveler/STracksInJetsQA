@@ -16,7 +16,7 @@
 
 // external methods -----------------------------------------------------------
 
-void GetInfo(const TrkrHit* hit, const TrkrDefs::hitsetkey& setKey, const TrkrDefs::hitkey& hitKey) {
+void HitQAHistManager::GetInfo(TrkrHit* hit, TrkrDefs::hitsetkey& setKey, TrkrDefs::hitkey& hitKey) {
 
   // check which subsystem hit is in
   const uint16_t layer  = TrkrDefs::getLayer(setKey);
@@ -58,6 +58,7 @@ void GetInfo(const TrkrHit* hit, const TrkrDefs::hitsetkey& setKey, const TrkrDe
   } else if (isTpc) {
     FillHistograms(Type::Tpc, content);
   }
+  return;
 
 }  // end 'GetInfo(TrkrHit*, TrkrDefs::hitsetkey&, TrkrDefs::hitkey&)'
 
@@ -65,7 +66,7 @@ void GetInfo(const TrkrHit* hit, const TrkrDefs::hitsetkey& setKey, const TrkrDe
 
 // internal methods -----------------------------------------------------------
 
-void HitQAHistManager::FillHistograms(const int type, const HitQAContent& content) {
+void HitQAHistManager::FillHistograms(const int type, HitQAContent& content) {
 
   // fill 1d histograms
   m_vecHist1D.at(type).at(H1D::Ene)    -> Fill(content.ene);
