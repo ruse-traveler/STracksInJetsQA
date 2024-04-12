@@ -28,10 +28,10 @@
 #include <jetbase/Jet.h>
 #include <jetbase/JetReco.h>
 #include <jetbase/FastJetAlgo.h>
-#include <jetbase/TracksInJetsInput.h>
+#include <jetbase/TrackJetInput.h>
 // module definition
-#include </sphenix/user/danderson/install/include/tracksinjetsqamaker/TracksInJetsQAMaker.h>
-#include </sphenix/user/danderson/install/include/tracksinjetsqamaker/TracksInJetsQAMakerConfig.h>
+#include </sphenix/u/danderson/install/include/tracksinjetsqamaker/TracksInJetsQAMaker.h>
+#include </sphenix/u/danderson/install/include/tracksinjetsqamaker/TracksInJetsQAMakerConfig.h>
 // f4a macros
 #include <G4_Magnet.C>
 #include <G4_ActsGeom.C>
@@ -44,7 +44,7 @@ R__LOAD_LIBRARY(libg4jets.so)
 R__LOAD_LIBRARY(libjetbase.so)
 R__LOAD_LIBRARY(libfun4all.so)
 R__LOAD_LIBRARY(libffamodules.so)
-R__LOAD_LIBRARY(/sphenix/user/danderson/install/lib/libtracksinjetsqamaker.so)
+R__LOAD_LIBRARY(/sphenix/u/danderson/install/lib/libtracksinjetsqamaker.so)
 
 
 
@@ -54,9 +54,9 @@ void Fun4All_MakeTracksInJetsQA(
   const int         verb           = 1,
   const int64_t     nEvts          = 1000,
   const std::string outFile        = "test.root",
-  const std::string inTrkDSTs      = "input/dst_tracks.list",
-  const std::string inTrkHitDSTs   = "input/dst_trkr_hit.list",
-  const std::string inTrkClustDSTs = "input/dst_trkr_cluster.list"
+  const std::string inTrkDSTs      = "input/pp200py8run11jet30.dst_tracks.list",
+  const std::string inTrkHitDSTs   = "input/pp200py8run11jet30.dst_trkr_hit.list",
+  const std::string inTrkClustDSTs = "input/pp200py8run11jet30.dst_trkr_cluster.list"
 ) {
 
   // grab instances of fun4all, etc
@@ -96,7 +96,7 @@ void Fun4All_MakeTracksInJetsQA(
 
   // run jet reconstruction
   JetReco* reco = new JetReco();
-  reco -> add_input(new TracksInJetsInput(Jet::SRC::TRACK));
+  reco -> add_input(new TrackJetInput(Jet::SRC::TRACK));
   reco -> add_algo(new FastJetAlgo(Jet::ALGO::ANTIKT, 0.4), "AntiKt_Track_r04");
   reco -> set_algo_node("ANTIKT");
   reco -> set_input_node("TRACK");
@@ -107,12 +107,14 @@ void Fun4All_MakeTracksInJetsQA(
   TracksInJetsQAMaker* maker = new TracksInJetsQAMaker("TracksInJetsQAMaker", outFile);
   maker -> Configure(
     {
-      .verbose   = verb,
-      .doDebug   = true,
-      .doHitQA   = true,
-      .doClustQA = true,
-      .doTrackQA = true,
-      .doJetQA   = true
+      .verbose     = verb,
+      .doDebug     = true,
+      .doInclusive = true,
+      .doInJet     = false,
+      .doHitQA     = true,
+      .doClustQA   = true,
+      .doTrackQA   = true,
+      .doJetQA     = true
     }
   );
   f4a -> registerSubsystem(maker);
