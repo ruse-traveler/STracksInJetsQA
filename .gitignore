@@ -1,6 +1,7 @@
 reference/
 backup/
 output/
+log/
 src/*
 !src/TracksInJetsQAMaker.cc
 !src/TracksInJetsQAMaker.h
