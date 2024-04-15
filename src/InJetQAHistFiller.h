@@ -12,16 +12,28 @@
 #define TRACKSINJETSQAMAKER_INJETQAHISTFILLER_H
 
 // c+ utilities
+#include <vector>
 #include <cassert>
 // phool libraries
 #include <phool/phool.h>
 #include <phool/getClass.h>
 #include <phool/PHCompositeNode.h>
+// tracking libraries
+#include <trackbase_historic/SvtxTrack.h>
+#include <trackbase_historic/SvtxTrackMap.h>
+// particle flow libraries
+#include <particleflowreco/ParticleFlowElement.h>
+#include <particleflowreco/ParticleFlowElementContainer.h>
 // jet libraries
 #include <jetbase/Jet.h>
 #include <jetbase/JetContainer.h>
 // submodule definitions
 #include "BaseQAHistFiller.h"
+
+// type definition ------------------------------------------------------------
+
+typedef ParticleFlowElement PFObject;
+typedef ParticleFlowElementContainer PFObjectStore;
 
 
 
@@ -30,8 +42,6 @@
 class InJetQAHistFiller : public BaseQAHistFiller {
 
   public:
-
-    enum JetType {Trk, Full, Calo};
 
     // ctor/dtor
     InJetQAHistFiller() : BaseQAHistFiller() {};
@@ -43,13 +53,24 @@ class InJetQAHistFiller : public BaseQAHistFiller {
   private:
 
     // internal methods
+    void GetCstTracks(Jet* jet);
     void FillJetQAHists();
 
     // inherited internal methods
     void GetNodes(PHCompositeNode* topNode) override;
 
+    // internal helper methods
+    bool       IsCstNotRelevant(const uint32_t type);
+    PFObject*  GetPFObject(const uint32_t id);
+    SvtxTrack* GetTrkFromPFO(PFObject* pfo);
+
     // necessary dst nodes
-    JetContainer* m_jetMap = NULL;
+    JetContainer*  m_jetMap    = NULL;
+    SvtxTrackMap*  m_trkMap    = NULL;
+    PFObjectStore* m_flowStore = NULL;
+
+    // for tracks in jet
+    std::vector<SvtxTrack*> m_trksInJet;
 
 };  // end InJetQAHistFiller
 
