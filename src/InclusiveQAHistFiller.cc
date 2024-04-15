@@ -141,7 +141,7 @@ void InclusiveQAHistFiller::FillJetQAHists() {
     // grab info and fill histograms
     m_jetManager -> GetInfo(jet);
 
-  }  // end track loop
+  }  // end jet loop
   return;
 
 }  // end 'FillJetQAHists()'
