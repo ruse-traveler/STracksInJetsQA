@@ -39,13 +39,13 @@ class BaseQAHistManager {
     ~BaseQAHistManager();
 
     // external methods
-    void Init(TracksInJetsQAMakerHelper& help, TracksInJetsQAMakerHistDef& hist);
+    void Init(TracksInJetsQAMakerHelper& help, TracksInJetsQAMakerHistDef& hist, std::string label = "");
     void SaveHistograms(TDirectory* outFile, std::string outDirName);
 
   protected:
 
     // internal methods
-    void BuildHistograms();
+    void BuildHistograms(std::string label = "");
     void ResetVectors();
 
     // virtual internal methods

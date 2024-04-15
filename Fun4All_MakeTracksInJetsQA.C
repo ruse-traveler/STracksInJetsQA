@@ -51,8 +51,8 @@ R__LOAD_LIBRARY(/sphenix/u/danderson/install/lib/libtracksinjetsqamaker.so)
 // macro body -----------------------------------------------------------------
 
 void Fun4All_MakeTracksInJetsQA(
-  const int         verb           = 1,
-  const int64_t     nEvts          = 1000,
+  const int         verb           = 10,
+  const int64_t     nEvts          = 10,
   const std::string outFile        = "test.root",
   const std::string inTrkDSTs      = "input/pp200py8run11jet30.dst_tracks.list",
   const std::string inTrkHitDSTs   = "input/pp200py8run11jet30.dst_trkr_hit.list",
@@ -110,7 +110,7 @@ void Fun4All_MakeTracksInJetsQA(
       .verbose     = verb,
       .doDebug     = true,
       .doInclusive = true,
-      .doInJet     = false,
+      .doInJet     = true,
       .doHitQA     = true,
       .doClustQA   = true,
       .doTrackQA   = true,

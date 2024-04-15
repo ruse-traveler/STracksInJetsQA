@@ -35,7 +35,11 @@ BaseQAHistManager::~BaseQAHistManager() {
 
 // external methods -----------------------------------------------------------
 
-void BaseQAHistManager::Init(TracksInJetsQAMakerHelper& help, TracksInJetsQAMakerHistDef& hist) {
+void BaseQAHistManager::Init(
+  TracksInJetsQAMakerHelper& help,
+  TracksInJetsQAMakerHistDef& hist,
+  std::string label
+) {
 
   // grab helper & hist definitions
   m_help = help;
@@ -43,10 +47,10 @@ void BaseQAHistManager::Init(TracksInJetsQAMakerHelper& help, TracksInJetsQAMake
 
   // construct histograms
   DefineHistograms();
-  BuildHistograms();
+  BuildHistograms(label);
   return;
 
-}  // end 'Init(TracksInJetsQAMakerHelper&, TracksInJetsQAMakerHistDef&)'
+}  // end 'Init(TracksInJetsQAMakerHelper&, TracksInJetsQAMakerHistDef&, std::string)'
 
 
 
@@ -71,13 +75,13 @@ void BaseQAHistManager::SaveHistograms(TDirectory* topDir, std::string outDirNam
   }
   return;
 
-}  // end 'SaveHistograms(TFile*, std::string)'
+}  // end 'SaveHistograms(TDirectory*, std::string)'
 
 
 
 // internal methods -----------------------------------------------------------
 
-void BaseQAHistManager::BuildHistograms() {
+void BaseQAHistManager::BuildHistograms(std::string label) {
 
   // build 1d histograms
   m_vecHist1D.resize( m_vecHistTypes.size() );
@@ -86,6 +90,7 @@ void BaseQAHistManager::BuildHistograms() {
 
       // make name
       std::string sHistName("h");
+      sHistName += label;
       sHistName += m_vecHistTypes.at(iType);
       sHistName += std::get<0>(histDef1D);
 
@@ -109,6 +114,7 @@ void BaseQAHistManager::BuildHistograms() {
 
       // make name
       std::string sHistName("h");
+      sHistName += label;
       sHistName += m_vecHistTypes.at(iType);
       sHistName += std::get<0>(histDef2D);
 
@@ -129,7 +135,7 @@ void BaseQAHistManager::BuildHistograms() {
   }  // end type loop
   return;
 
-}  // end 'BuildHistograms()'
+}  // end 'BuildHistograms(std::string)'
 
 
 

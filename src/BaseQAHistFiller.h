@@ -11,6 +11,8 @@
 #ifndef TRACKSINJETSQAMAKER_BASEQAHISTFILLER_H
 #define TRACKSINJETSQAMAKER_BASEQAHISTFILLER_H
 
+// c++ utilities
+#include <string>
 // root libraries
 #include <TFile.h>
 // phool libraries
@@ -39,8 +41,8 @@ class BaseQAHistFiller {
     ~BaseQAHistFiller();
 
     // external methods
-    void Init(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHelper& help, TracksInJetsQAMakerHistDef& hist);
-    void SaveHistograms(TFile* outFile);
+    void Init(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHelper& help, TracksInJetsQAMakerHistDef& hist, std::string label = "");
+    void SaveHistograms(TFile* outFile, std::string outDirName);
 
     // virtual external methods
     virtual void Fill(PHCompositeNode* topNode) = 0;

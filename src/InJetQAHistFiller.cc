@@ -21,7 +21,7 @@ void InJetQAHistFiller::Fill(PHCompositeNode* topNode) {
 
   GetNodes(topNode);
 
-  if (m_config.doJetQA) FillJetQAHists();
+  FillJetQAHists(topNode);
   return;
 
 }  // end 'Fill(PHCompositeNode* topNode)'
@@ -64,38 +64,37 @@ void InJetQAHistFiller::GetCstTracks(Jet* jet, PHCompositeNode* topNode) {
 
 
 
-void InJetQAHistFiller::FillJetQAHists() {
+void InJetQAHistFiller::FillJetQAHists(PHCompositeNode* topNode) {
 
-  /* OLD CODE FOR REFERENCE
-    // loop over jet constituents
-    auto csts = jet -> get_comp_vec();
-    for (
-      auto cst = csts.begin();
-      cst != csts.end();
-      ++cst
-    ) {
+  // loop over jets
+  for (
+    uint64_t iJet = 0;
+    iJet < m_jetMap -> size();
+    ++iJet
+  ) {
 
-      // skip if cst is not a track
-      uint32_t src = cst -> first;
-      if (src != Jet::SRC::TRACK) continue;
+    // grab jet
+    Jet* jet = m_jetMap -> get_jet(iJet);
 
-      // grab track
-      SvtxTrack* track = m_trkMap -> get(cst -> second);
+    // get all tracks in jet
+    m_trksInJet.clear();
+    GetCstTracks(jet, topNode);
+    /* TODO get NON-consituent tracks "in" jets */
 
-      // collect cst info
-      CstQAContent cstContent {
-        .ptCst   = track -> get_pt(),
-        .qualCst = track -> get_quality()
-      };
+    // grab info and fill histograms
+    m_jetManager -> GetInfo(jet, m_trksInJet);
 
-      // fill histograms
-      FillHistograms(Type::All, cstContent);
-
-    }  // end cst loop
-  */
+    /* TODO fill track, hit, clust histograms here
+    for (SvtxTrack* track : m_trksInJet) {
+      if (m_config.doTrackQA) FillTrackQAHists(track);
+      if (m_config.doClustQA) FillClustQAHists(track);
+      if (m_config.doHitQA)   FillHitQAHists(track);
+    }
+    */
+  }  // end track loop
   return;
 
-}  // end 'FillJetQAHists()'
+}  // end 'FillJetQAHists(PHCompositeNode*)'
 
 
 

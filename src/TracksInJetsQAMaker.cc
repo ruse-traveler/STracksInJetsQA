@@ -79,11 +79,11 @@ int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
   // initialize needed submodules
   if (m_config.doInJet) {
     m_inJet = std::make_unique<InJetQAHistFiller>();
-    m_inJet -> Init(m_config, m_help, m_hist);
+    m_inJet -> Init(m_config, m_help, m_hist, "InJet");
   }
   if (m_config.doInclusive) {
     m_inclusive = std::make_unique<InclusiveQAHistFiller>();
-    m_inclusive -> Init(m_config, m_help, m_hist);
+    m_inclusive -> Init(m_config, m_help, m_hist, "Inclusive");
   }
   return Fun4AllReturnCodes::EVENT_OK;
 
@@ -115,8 +115,8 @@ int TracksInJetsQAMaker::End(PHCompositeNode* topNode) {
   }
 
   // save histograms
-  if (m_config.doInJet)     m_inJet     -> SaveHistograms(m_outFile);
-  if (m_config.doInclusive) m_inclusive -> SaveHistograms(m_outFile);
+  if (m_config.doInJet)     m_inJet     -> SaveHistograms(m_outFile, "InJet");
+  if (m_config.doInclusive) m_inclusive -> SaveHistograms(m_outFile, "Inclusive");
 
   // close file
   m_outFile -> cd();

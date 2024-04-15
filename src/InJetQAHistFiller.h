@@ -30,6 +30,8 @@
 // submodule definitions
 #include "BaseQAHistFiller.h"
 
+
+
 // type definition ------------------------------------------------------------
 
 typedef ParticleFlowElement PFObject;
@@ -54,7 +56,7 @@ class InJetQAHistFiller : public BaseQAHistFiller {
 
     // internal methods
     void GetCstTracks(Jet* jet, PHCompositeNode* topNode);
-    void FillJetQAHists();
+    void FillJetQAHists(PHCompositeNode* topNode);
 
     // inherited internal methods
     void GetNodes(PHCompositeNode* topNode) override;

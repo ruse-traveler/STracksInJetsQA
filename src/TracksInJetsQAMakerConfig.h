@@ -30,8 +30,8 @@ struct TracksInJetsQAMakerConfig {
 
   // i/o options
   std::string outFileName  = "test.root";
-  std::string inclusiveDir = "InclusiveQA";
-  std::string inJetDir     = "InJetQA";
+  std::string inclusiveDir = "Inclusive";
+  std::string inJetDir     = "InJet";
   std::string hitOutDir    = "Hit";
   std::string clustOutDir  = "Clust";
   std::string trackOutDir  = "Track";

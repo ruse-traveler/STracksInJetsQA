@@ -37,7 +37,8 @@ BaseQAHistFiller::~BaseQAHistFiller() {
 void BaseQAHistFiller::Init(
   TracksInJetsQAMakerConfig& config,
   TracksInJetsQAMakerHelper& help,
-  TracksInJetsQAMakerHistDef& hist
+  TracksInJetsQAMakerHistDef& hist,
+  std::string label
 ) {
 
   // set module utilities
@@ -48,29 +49,29 @@ void BaseQAHistFiller::Init(
   // initialize relevant submodules
   if (m_config.doHitQA) {
     m_hitManager = std::make_unique<HitQAHistManager>();
-    m_hitManager -> Init(m_help, m_hist);
+    m_hitManager -> Init(m_help, m_hist, label);
   }
   if (m_config.doClustQA) {
     m_clustManager = std::make_unique<ClustQAHistManager>();
-    m_clustManager -> Init(m_help, m_hist);
+    m_clustManager -> Init(m_help, m_hist, label);
   }
   if (m_config.doTrackQA) {
     m_trackManager = std::make_unique<TrackQAHistManager>();
-    m_trackManager -> Init(m_help, m_hist);
+    m_trackManager -> Init(m_help, m_hist, label);
   }
   if (m_config.doJetQA) {
     m_jetManager = std::make_unique<JetQAHistManager>();
-    m_jetManager -> Init(m_help, m_hist);
+    m_jetManager -> Init(m_help, m_hist, label);
   }
   return;
 
-}  // end 'Init(TracksInJetsQAMakerConfig&, TracksInJetsQAMakerHelper&, TracksInJetsQAMakerHistDef&)'
+}  // end 'Init(TracksInJetsQAMakerConfig&, TracksInJetsQAMakerHelper&, TracksInJetsQAMakerHistDef&, std::optional<std::string>)'
 
 
 
-void BaseQAHistFiller::SaveHistograms(TFile* outFile) {
+void BaseQAHistFiller::SaveHistograms(TFile* outFile, std::string outDirName) {
 
-  TDirectory* outDir = outFile -> mkdir(m_config.inclusiveDir.data());
+  TDirectory* outDir = outFile -> mkdir(outDirName.data());
   if (!outDir) {
     std::cerr << PHWHERE << ": PANIC: unable to make output directory!" << std::endl;
     assert(outDir);
@@ -82,6 +83,6 @@ void BaseQAHistFiller::SaveHistograms(TFile* outFile) {
   if (m_config.doJetQA)   m_jetManager   -> SaveHistograms(outDir, m_config.jetOutDir);
   return;
 
-}  // end 'SaveHistograms(TFile*)'
+}  // end 'SaveHistograms(TFile*, std::string)'
 
 // end ------------------------------------------------------------------------
