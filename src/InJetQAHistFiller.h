@@ -53,15 +53,16 @@ class InJetQAHistFiller : public BaseQAHistFiller {
   private:
 
     // internal methods
-    void GetCstTracks(Jet* jet);
+    void GetCstTracks(Jet* jet, PHCompositeNode* topNode);
     void FillJetQAHists();
 
     // inherited internal methods
     void GetNodes(PHCompositeNode* topNode) override;
 
     // internal helper methods
+    void       GetPFNode(PHCompositeNode* topNode);
     bool       IsCstNotRelevant(const uint32_t type);
-    PFObject*  GetPFObject(const uint32_t id);
+    PFObject*  GetPFObject(const uint32_t id, PHCompositeNode* topNode);
     SvtxTrack* GetTrkFromPFO(PFObject* pfo);
 
     // necessary dst nodes

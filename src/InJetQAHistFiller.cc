@@ -30,7 +30,7 @@ void InJetQAHistFiller::Fill(PHCompositeNode* topNode) {
 
 // internal methods -----------------------------------------------------------
 
-void InJetQAHistFiller::GetCstTracks(Jet* jet) {
+void InJetQAHistFiller::GetCstTracks(Jet* jet, PHCompositeNode* topNode) {
 
   // loop over consituents
   auto csts = jet -> get_comp_vec();
@@ -51,7 +51,7 @@ void InJetQAHistFiller::GetCstTracks(Jet* jet) {
 
     // if pfo w/ track info, grab track and add it to list
     if (src == Jet::SRC::PARTICLE) {
-      PFObject*  pfo   = GetPFObject(cst -> second);
+      PFObject*  pfo   = GetPFObject(cst -> second, topNode);
       SvtxTrack* track = GetTrkFromPFO(pfo);
       if (track) {
         m_trksInJet.push_back( track );
@@ -60,7 +60,7 @@ void InJetQAHistFiller::GetCstTracks(Jet* jet) {
   }  // end cst loop
   return;
 
-}  // end 'GetCstTracks(Jet* jet)'
+}  // end 'GetCstTracks(Jet* jet, PHCompositeNode* topNode)'
 
 
 
@@ -114,10 +114,14 @@ void InJetQAHistFiller::GetNodes(PHCompositeNode* topNode) {
     std::cerr << PHWHERE << ": PANIC: couldn't grab track map from node tree!" << std::endl;
     assert(m_trkMap);
   }
+  return;
 
-  // grab pfo container
-  //   - FIXME probably should move to a separate function
-  //     that gets called only if needed
+}  // end 'GetNodes(PHCompositeNode*)'
+
+
+
+void InJetQAHistFiller::GetPFNode(PHCompositeNode* topNode) {
+
   m_flowStore = findNode::getClass<ParticleFlowElementContainer>(topNode, "ParticleFlowElements");
   if (!m_flowStore) {
     std::cerr << PHWHERE << ": PANIC: Couldn't grab particle flow container from node tree!" << std::endl;
@@ -125,7 +129,7 @@ void InJetQAHistFiller::GetNodes(PHCompositeNode* topNode) {
   }
   return;
 
-}  // end 'GetNodes(PHCompositeNode*)'
+}  // end 'GetPFNode(PHCompositeNode*)'
 
 
 
@@ -140,10 +144,13 @@ bool InJetQAHistFiller::IsCstNotRelevant(const uint32_t type) {
 
 
 
-PFObject* InJetQAHistFiller::GetPFObject(const uint32_t id) {
+PFObject* InJetQAHistFiller::GetPFObject(const uint32_t id, PHCompositeNode* topNode) {
 
   // pointer to pfo 
   PFObject* pfoToFind = NULL;
+
+  // grab pf node if needed
+  if (!m_flowStore) GetPFNode(topNode);
 
   // loop over pfos
   for (
@@ -163,7 +170,7 @@ PFObject* InJetQAHistFiller::GetPFObject(const uint32_t id) {
   }  // end pfo loop
   return pfoToFind;
 
-}  // end 'GetPFObject(uint32_t)'
+}  // end 'GetPFObject(uint32_t, PHCompositeNode*)'
 
 
 
