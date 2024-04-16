@@ -2,6 +2,7 @@ reference/
 backup/
 output/
 log/
+ref/
 src/*
 !src/TracksInJetsQAMaker.cc
 !src/TracksInJetsQAMaker.h

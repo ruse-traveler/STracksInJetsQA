@@ -21,6 +21,8 @@
 // tracking libraries
 #include <trackbase_historic/SvtxTrack.h>
 #include <trackbase_historic/SvtxTrackMap.h>
+// calorimetry libraries
+#include <calobase/RawTowerGeomContainer.h>
 // particle flow libraries
 #include <particleflowreco/ParticleFlowElement.h>
 #include <particleflowreco/ParticleFlowElementContainer.h>
@@ -55,17 +57,18 @@ class InJetQAHistFiller : public BaseQAHistFiller {
   private:
 
     // internal methods
-    void GetCstTracks(Jet* jet, PHCompositeNode* topNode);
-    void FillJetQAHists(PHCompositeNode* topNode);
+    void       FillJetQAHists(PHCompositeNode* topNode);
+    void       GetPFNode(PHCompositeNode* topNode);
+    void       GetGeomNode(const int geometry, PHCompositeNode* topNode);
+    void       GetCstTracks(Jet* jet, PHCompositeNode* topNode);
+    void       GetNonCstTracks(Jet* jet, PHCompositeNode* topNode);
+    bool       IsCstNotRelevant(const uint32_t type);
+    bool       IsTrkInList(const uint32_t id);
+    PFObject*  GetPFObject(const uint32_t id, PHCompositeNode* topNode);
+    SvtxTrack* GetTrkFromPFO(PFObject* pfo);
 
     // inherited internal methods
     void GetNodes(PHCompositeNode* topNode) override;
-
-    // internal helper methods
-    void       GetPFNode(PHCompositeNode* topNode);
-    bool       IsCstNotRelevant(const uint32_t type);
-    PFObject*  GetPFObject(const uint32_t id, PHCompositeNode* topNode);
-    SvtxTrack* GetTrkFromPFO(PFObject* pfo);
 
     // necessary dst nodes
     JetContainer*  m_jetMap    = NULL;

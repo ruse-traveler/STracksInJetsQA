@@ -30,40 +30,6 @@ void InJetQAHistFiller::Fill(PHCompositeNode* topNode) {
 
 // internal methods -----------------------------------------------------------
 
-void InJetQAHistFiller::GetCstTracks(Jet* jet, PHCompositeNode* topNode) {
-
-  // loop over consituents
-  auto csts = jet -> get_comp_vec();
-  for (
-    auto cst = csts.begin();
-    cst != csts.end();
-    ++cst
-  ) {
-
-    // ignore cst if non-relevent type
-    const uint32_t src = cst -> first;
-    if ( IsCstNotRelevant(src) ) continue;
-
-    // if track, add to list
-    if (src == Jet::SRC::TRACK) {
-      m_trksInJet.push_back( m_trkMap -> get(cst -> second) );
-    }
-
-    // if pfo w/ track info, grab track and add it to list
-    if (src == Jet::SRC::PARTICLE) {
-      PFObject*  pfo   = GetPFObject(cst -> second, topNode);
-      SvtxTrack* track = GetTrkFromPFO(pfo);
-      if (track) {
-        m_trksInJet.push_back( track );
-      }
-    }
-  }  // end cst loop
-  return;
-
-}  // end 'GetCstTracks(Jet* jet, PHCompositeNode* topNode)'
-
-
-
 void InJetQAHistFiller::FillJetQAHists(PHCompositeNode* topNode) {
 
   // loop over jets
@@ -76,10 +42,12 @@ void InJetQAHistFiller::FillJetQAHists(PHCompositeNode* topNode) {
     // grab jet
     Jet* jet = m_jetMap -> get_jet(iJet);
 
-    // get all tracks in jet
+    // make sure track vector is clear
     m_trksInJet.clear();
+
+    // get all tracks "in" a jet
     GetCstTracks(jet, topNode);
-    /* TODO get NON-consituent tracks "in" jets */
+    GetNonCstTracks(jet, topNode);
 
     // grab info and fill histograms
     m_jetManager -> GetInfo(jet, m_trksInJet);
@@ -98,27 +66,6 @@ void InJetQAHistFiller::FillJetQAHists(PHCompositeNode* topNode) {
 
 
 
-void InJetQAHistFiller::GetNodes(PHCompositeNode* topNode) {
-
-  // grab jet map from node tree
-  m_jetMap = findNode::getClass<JetContainer>(topNode, "AntiKt_Track_r04");
-  if (!m_jetMap) {
-    std::cerr << PHWHERE << ": PANIC: couldn't grab jet map from node tree!" << std::endl;
-    assert(m_jetMap);
-  }
-
-  // grab track map from node tree
-  m_trkMap = findNode::getClass<SvtxTrackMap>(topNode, "SvtxTrackMap");
-  if (!m_trkMap) {
-    std::cerr << PHWHERE << ": PANIC: couldn't grab track map from node tree!" << std::endl;
-    assert(m_trkMap);
-  }
-  return;
-
-}  // end 'GetNodes(PHCompositeNode*)'
-
-
-
 void InJetQAHistFiller::GetPFNode(PHCompositeNode* topNode) {
 
   m_flowStore = findNode::getClass<ParticleFlowElementContainer>(topNode, "ParticleFlowElements");
@@ -132,6 +79,77 @@ void InJetQAHistFiller::GetPFNode(PHCompositeNode* topNode) {
 
 
 
+void InJetQAHistFiller::GetCstTracks(Jet* jet, PHCompositeNode* topNode) {
+
+  // loop over consituents
+  auto csts = jet -> get_comp_vec();
+  for (
+    auto cst = csts.begin();
+    cst != csts.end();
+    ++cst
+  ) {
+
+    // ignore cst if non-relevent type
+    const uint32_t src = cst -> first;
+    if ( IsCstNotRelevant(src) ) continue;
+
+    // if cst is track, add to list
+    if (src == Jet::SRC::TRACK) {
+      m_trksInJet.push_back( m_trkMap -> get(cst -> second) );
+    }
+
+    // if pfo, grab track if needed
+    if (src == Jet::SRC::PARTICLE) {
+      PFObject*  pfo   = GetPFObject(cst -> second, topNode);
+      SvtxTrack* track = GetTrkFromPFO(pfo);
+      if (track) {
+        m_trksInJet.push_back( track );
+      }
+    }
+  }  // end cst loop
+  return;
+
+}  // end 'GetCstTracks(Jet* jet, PHCompositeNode* topNode)'
+
+
+
+void InJetQAHistFiller::GetNonCstTracks(Jet* jet, PHCompositeNode* topNode) {
+
+  // loop over tracks
+  for (
+    SvtxTrackMap::Iter itTrk = m_trkMap -> begin();
+    itTrk != m_trkMap -> end();
+    ++itTrk
+  ) {
+
+    // grab track
+    SvtxTrack* track = itTrk -> second;
+
+    // ignore tracks we've already added to the list
+    if ( IsTrkInList(track -> get_id()) ) continue;
+
+    // FIXME this can be improved!
+    //   - jets don't necessarily have areas of
+    //     pi*(Rjet)^2
+    //   - it may be better to instead check
+    //     if a track projection falls in
+    //     a constituent tower/clsuter
+
+    /* TODO
+     *  get eta/phi of track, jet
+     *  calculate dr
+     *  if dr < tower/cluster dimensions
+     *    add to list
+     *  end
+     */
+
+  }  // end track loop
+  return;
+
+}  // end 'GetNonCstTracks(Jet* jet, PHCompositeNode* topNode)'
+
+
+
 bool InJetQAHistFiller::IsCstNotRelevant(const uint32_t type) {
 
   const bool isVoid   = (type == Jet::SRC::VOID);
@@ -140,6 +158,21 @@ bool InJetQAHistFiller::IsCstNotRelevant(const uint32_t type) {
   return (isVoid || isImport || isProbe);
 
 }  // end 'IsCstNotRelevant(uint32_t)'
+
+
+
+bool InJetQAHistFiller::IsTrkInList(const uint32_t id) {
+
+  bool isAdded = false;
+  for (SvtxTrack* trkInJet : m_trksInJet) {
+    if (id == trkInJet -> get_id() ) {
+      isAdded = true;
+      break;
+    }
+  }
+  return isAdded;
+
+}  // end 'IsTrkInList(uint32_t)'
 
 
 
@@ -189,5 +222,27 @@ SvtxTrack* InJetQAHistFiller::GetTrkFromPFO(PFObject* pfo) {
   return track;
 
 }  // end 'GetTrkFromPFO(PFObject*)'
+
+
+
+void InJetQAHistFiller::GetNodes(PHCompositeNode* topNode) {
+
+  // grab jet map from node tree
+  //   - TODO make user configurable
+  m_jetMap = findNode::getClass<JetContainer>(topNode, "AntiKt_Track_r04");
+  if (!m_jetMap) {
+    std::cerr << PHWHERE << ": PANIC: couldn't grab jet map from node tree!" << std::endl;
+    assert(m_jetMap);
+  }
+
+  // grab track map from node tree
+  m_trkMap = findNode::getClass<SvtxTrackMap>(topNode, "SvtxTrackMap");
+  if (!m_trkMap) {
+    std::cerr << PHWHERE << ": PANIC: couldn't grab track map from node tree!" << std::endl;
+    assert(m_trkMap);
+  }
+  return;
+
+}  // end 'GetNodes(PHCompositeNode*)'
 
 // end ------------------------------------------------------------------------
