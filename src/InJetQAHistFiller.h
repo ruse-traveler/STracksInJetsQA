@@ -14,6 +14,8 @@
 // c+ utilities
 #include <vector>
 #include <cassert>
+// root libraries
+#include <TMath.h>
 // phool libraries
 #include <phool/phool.h>
 #include <phool/getClass.h>
@@ -51,12 +53,12 @@ class InJetQAHistFiller : public BaseQAHistFiller {
     InJetQAHistFiller() : BaseQAHistFiller() {};
     ~InJetQAHistFiller() {};
 
-    // inherited external methods
+    // inherited public methods
     void Fill(PHCompositeNode* topNode) override;
 
   private:
 
-    // internal methods
+    // private methods
     void       FillJetQAHists(PHCompositeNode* topNode);
     void       GetPFNode(PHCompositeNode* topNode);
     void       GetGeomNode(const int geometry, PHCompositeNode* topNode);
@@ -64,10 +66,11 @@ class InJetQAHistFiller : public BaseQAHistFiller {
     void       GetNonCstTracks(Jet* jet, PHCompositeNode* topNode);
     bool       IsCstNotRelevant(const uint32_t type);
     bool       IsTrkInList(const uint32_t id);
+    double     GetTrackJetDist(SvtxTrack* track, Jet* jet);
     PFObject*  GetPFObject(const uint32_t id, PHCompositeNode* topNode);
     SvtxTrack* GetTrkFromPFO(PFObject* pfo);
 
-    // inherited internal methods
+    // inherited private methods
     void GetNodes(PHCompositeNode* topNode) override;
 
     // necessary dst nodes

@@ -53,11 +53,14 @@ R__LOAD_LIBRARY(/sphenix/u/danderson/install/lib/libtracksinjetsqamaker.so)
 void Fun4All_MakeTracksInJetsQA(
   const int         verb           = 10,
   const int64_t     nEvts          = 10,
-  const std::string outFile        = "test.root",
+  const std::string outFileBase    = "test",
   const std::string inTrkDSTs      = "input/pp200py8run11jet30.dst_tracks.list",
   const std::string inTrkHitDSTs   = "input/pp200py8run11jet30.dst_trkr_hit.list",
-  const std::string inTrkClustDSTs = "input/pp200py8run11jet30.dst_trkr_cluster.list"
+  const std::string inTrkClustDSTs = "input/pp200py8run11jet30.dst_trkr_cluster.list",
+  const std::string inCalClustDSTs = "input/pp200py8run11jet30.dst_calo_cluster.list"
 ) {
+
+  // initialize fun4all -------------------------------------------------------
 
   // grab instances of fun4all, etc
   Fun4AllServer* f4a = Fun4AllServer::instance();
@@ -78,14 +81,17 @@ void Fun4All_MakeTracksInJetsQA(
   Fun4AllDstInputManager*     trkManager   = new Fun4AllDstInputManager("TrackDstManager");
   Fun4AllDstInputManager*     hitManager   = new Fun4AllDstInputManager("TrackHitDstManager");
   Fun4AllDstInputManager*     clustManager = new Fun4AllDstInputManager("TrackClusterDstManager");
+  Fun4AllDstInputManager*     caloManager  = new Fun4AllDstInputManager("CaloClusterDstManager");
   Fun4AllRunNodeInputManager* geoManager   = new Fun4AllRunNodeInputManager("GeometryManager");
   trkManager   -> AddListFile(inTrkDSTs.data(), 1);
   hitManager   -> AddListFile(inTrkHitDSTs.data(), 1);
   clustManager -> AddListFile(inTrkClustDSTs.data(), 1);
+  caloManager  -> AddListFile(inCalClustDSTs.data(), 1);
   geoManager   -> AddFile(inGeoFile.data());
   f4a -> registerInputManager(trkManager);
   f4a -> registerInputManager(hitManager);
   f4a -> registerInputManager(clustManager);
+  f4a -> registerInputManager(caloManager);
   f4a -> registerInputManager(geoManager);
 
   // initialize acts geometry
@@ -94,18 +100,37 @@ void Fun4All_MakeTracksInJetsQA(
   G4MAGNET::magfield_rescale = 1;
   ACTSGEOM::ActsGeomInit();
 
-  // run jet reconstruction
-  JetReco* reco = new JetReco();
-  reco -> add_input(new TrackJetInput(Jet::SRC::TRACK));
-  reco -> add_algo(new FastJetAlgo(Jet::ALGO::ANTIKT, 0.4), "AntiKt_Track_r04");
-  reco -> set_algo_node("ANTIKT");
-  reco -> set_input_node("TRACK");
-  reco -> Verbosity(verb);
-  f4a  -> registerSubsystem(reco);
+  // register jet finders -----------------------------------------------------
 
-  // initialize and register qa module
-  TracksInJetsQAMaker* maker = new TracksInJetsQAMaker("TracksInJetsQAMaker", outFile);
-  maker -> Configure(
+  // run track jet reconstruction
+  JetReco* trkJetFinder = new JetReco();
+  trkJetFinder -> add_input(new TrackJetInput(Jet::SRC::TRACK));
+  trkJetFinder -> add_algo(new FastJetAlgo(Jet::ALGO::ANTIKT, 0.4), "AntiKt_Track_r04");
+  trkJetFinder -> set_algo_node("ANTIKT");
+  trkJetFinder -> set_input_node("TRACK");
+  trkJetFinder -> Verbosity(verb);
+  f4a  -> registerSubsystem(trkJetFinder);
+
+  // run cluster jet reconstruction
+  JetReco* clustJetFinder = new JetReco();
+  clustJetFinder -> add_input(new TrackJetInput(Jet::SRC::CEMC_CLUSTER));
+  clustJetFinder -> add_input(new TrackJetInput(Jet::SRC::HCALIN_CLUSTER));
+  clustJetFinder -> add_input(new TrackJetInput(Jet::SRC::HCALOUT_CLUSTER));
+  clustJetFinder -> add_algo(new FastJetAlgo(Jet::ALGO::ANTIKT, 0.4), "AntiKt_Cluster_r04");
+  clustJetFinder -> set_algo_node("ANTIKT");
+  clustJetFinder -> set_input_node("CLUSTER");
+  clustJetFinder -> Verbosity(verb);
+  f4a  -> registerSubsystem(clustJetFinder);
+
+  // register qa maker --------------------------------------------------------
+
+  // construct output file names
+  const std::string outTrkFile = outFileBase + ".track.root";
+  const std::string outCalFile = outFileBase + ".clust.root";
+
+  // initialize and register track jet qa module
+  TracksInJetsQAMaker* trkJetQAMaker = new TracksInJetsQAMaker("TracksInJetsQAMaker_TrackJets", outTrkFile);
+  trkJetQAMaker -> Configure(
     {
       .verbose     = verb,
       .doDebug     = true,
@@ -114,10 +139,32 @@ void Fun4All_MakeTracksInJetsQA(
       .doHitQA     = true,
       .doClustQA   = true,
       .doTrackQA   = true,
-      .doJetQA     = true
+      .doJetQA     = true,
+      .rJet        = 0.4,
+      .jetInNode   = "AntiKt_Track_r04"
     }
   );
-  f4a -> registerSubsystem(maker);
+  f4a -> registerSubsystem(trkJetQAMaker);
+
+  // initialize and register track jet qa module
+  TracksInJetsQAMaker* clustJetQAMaker = new TracksInJetsQAMaker("TracksInJetsQAMaker_ClustJets", outCalFile);
+  clustJetQAMaker -> Configure(
+    {
+      .verbose     = verb,
+      .doDebug     = true,
+      .doInclusive = true,
+      .doInJet     = true,
+      .doHitQA     = true,
+      .doClustQA   = true,
+      .doTrackQA   = true,
+      .doJetQA     = true,
+      .rJet        = 0.4,
+      .jetInNode   = "AntiKt_Cluster_r04"
+    }
+  );
+  f4a -> registerSubsystem(clustJetQAMaker);
+
+  // run  modules and exit ----------------------------------------------------
 
   // run4all
   f4a -> run(nEvts);

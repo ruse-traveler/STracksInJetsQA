@@ -18,7 +18,7 @@
 
 struct TracksInJetsQAMakerConfig {
 
-  // system parameters
+  // system options
   int  verbose     = 0;
   bool doDebug     = false;
   bool doInclusive = true;
@@ -28,8 +28,13 @@ struct TracksInJetsQAMakerConfig {
   bool doTrackQA   = true;
   bool doJetQA     = true;
 
-  // i/o options
-  std::string outFileName  = "test.root";
+  // jet options
+  double rJet = 0.4;
+
+  // input options
+  std::string jetInNode = "AntiKt_Track_r04";
+
+  // output options
   std::string inclusiveDir = "Inclusive";
   std::string inJetDir     = "InJet";
   std::string hitOutDir    = "Hit";

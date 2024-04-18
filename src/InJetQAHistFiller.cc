@@ -15,7 +15,7 @@
 
 
 
-// external methods -----------------------------------------------------------
+// inherited public methods ---------------------------------------------------
 
 void InJetQAHistFiller::Fill(PHCompositeNode* topNode) {
 
@@ -28,7 +28,7 @@ void InJetQAHistFiller::Fill(PHCompositeNode* topNode) {
 
 
 
-// internal methods -----------------------------------------------------------
+// private methods ------------------------------------------------------------
 
 void InJetQAHistFiller::FillJetQAHists(PHCompositeNode* topNode) {
 
@@ -133,16 +133,14 @@ void InJetQAHistFiller::GetNonCstTracks(Jet* jet, PHCompositeNode* topNode) {
     //     pi*(Rjet)^2
     //   - it may be better to instead check
     //     if a track projection falls in
-    //     a constituent tower/clsuter
-
-    /* TODO
-     *  get eta/phi of track, jet
-     *  calculate dr
-     *  if dr < tower/cluster dimensions
-     *    add to list
-     *  end
-     */
-
+    //     a constituent tower/cluster
+    //   - Also track projections to a calo
+    //     would be better to use than just
+    //     the track
+    const double dr = GetTrackJetDist(track, jet);
+    if (dr < m_config.rJet) {
+      m_trksInJet.push_back( track );
+    }
   }  // end track loop
   return;
 
@@ -173,6 +171,23 @@ bool InJetQAHistFiller::IsTrkInList(const uint32_t id) {
   return isAdded;
 
 }  // end 'IsTrkInList(uint32_t)'
+
+
+
+double InJetQAHistFiller::GetTrackJetDist(SvtxTrack* track, Jet* jet) {
+
+  // get delta eta
+  const double dEta = (track -> get_eta()) - (jet -> get_eta());
+
+  // get delta phi
+  double dPhi = (track -> get_phi()) - (jet -> get_phi());
+  if (dPhi < (-1. * TMath::Pi())) dPhi += TMath::TwoPi();
+  if (dPhi > (1. * TMath::Pi()))  dPhi -= TMath::TwoPi();
+
+  // return distance
+  return std::hypot(dEta, dPhi);
+
+}  // end 'GetTrackJetDist(SvtxTrack*, Jet*)'
 
 
 
@@ -225,11 +240,13 @@ SvtxTrack* InJetQAHistFiller::GetTrkFromPFO(PFObject* pfo) {
 
 
 
+// inherited private methods --------------------------------------------------
+
 void InJetQAHistFiller::GetNodes(PHCompositeNode* topNode) {
 
   // grab jet map from node tree
   //   - TODO make user configurable
-  m_jetMap = findNode::getClass<JetContainer>(topNode, "AntiKt_Track_r04");
+  m_jetMap = findNode::getClass<JetContainer>(topNode, m_config.jetInNode.data());
   if (!m_jetMap) {
     std::cerr << PHWHERE << ": PANIC: couldn't grab jet map from node tree!" << std::endl;
     assert(m_jetMap);
