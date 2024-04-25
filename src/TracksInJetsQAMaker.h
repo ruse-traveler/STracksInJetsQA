@@ -24,7 +24,6 @@
 #include <phool/PHCompositeNode.h>
 // module utilities
 #include "TracksInJetsQAMakerConfig.h"
-#include "TracksInJetsQAMakerHelper.h"
 #include "TracksInJetsQAMakerHistDef.h"
 // submodule definitions
 #include "InJetQAHistFiller.h"
@@ -62,7 +61,6 @@ class TracksInJetsQAMaker : public SubsysReco {
 
     // module utilities
     TracksInJetsQAMakerConfig  m_config;
-    TracksInJetsQAMakerHelper  m_help;
     TracksInJetsQAMakerHistDef m_hist;
 
 };  // end TracksInJetsQAMaker

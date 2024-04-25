@@ -79,11 +79,11 @@ int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
   // initialize needed submodules
   if (m_config.doInJet) {
     m_inJet = std::make_unique<InJetQAHistFiller>();
-    m_inJet -> Init(m_config, m_help, m_hist, "InJet");
+    m_inJet -> Init(m_config, m_hist, "InJet");
   }
   if (m_config.doInclusive) {
     m_inclusive = std::make_unique<InclusiveQAHistFiller>();
-    m_inclusive -> Init(m_config, m_help, m_hist, "Inclusive");
+    m_inclusive -> Init(m_config, m_hist, "Inclusive");
   }
   return Fun4AllReturnCodes::EVENT_OK;
 
