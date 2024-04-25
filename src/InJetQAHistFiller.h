@@ -21,22 +21,29 @@
 #include <phool/getClass.h>
 #include <phool/PHCompositeNode.h>
 // tracking libraries
+#include <trackbase/TrkrHit.h>
+#include <trackbase/TrkrDefs.h>
+#include <trackbase/TrkrHitSet.h>
+#include <trackbase/TrkrCluster.h>
+#include <trackbase/ActsGeometry.h>
+#include <trackbase/TrkrHitSetContainer.h>
+#include <trackbase/TrkrClusterContainer.h>
 #include <trackbase_historic/SvtxTrack.h>
 #include <trackbase_historic/SvtxTrackMap.h>
-// calorimetry libraries
-#include <calobase/RawTowerGeomContainer.h>
 // particle flow libraries
 #include <particleflowreco/ParticleFlowElement.h>
 #include <particleflowreco/ParticleFlowElementContainer.h>
 // jet libraries
 #include <jetbase/Jet.h>
 #include <jetbase/JetContainer.h>
+// g4eval libraries
+#include <g4eval/ClusKeyIter.h>
 // submodule definitions
 #include "BaseQAHistFiller.h"
 
 
 
-// type definition ------------------------------------------------------------
+// type definitions for brevity -----------------------------------------------
 
 typedef ParticleFlowElement PFObject;
 typedef ParticleFlowElementContainer PFObjectStore;
@@ -49,6 +56,9 @@ class InJetQAHistFiller : public BaseQAHistFiller {
 
   public:
 
+    // additional nodes to grab
+    enum Node {Flow};
+
     // ctor/dtor
     InJetQAHistFiller() : BaseQAHistFiller() {};
     ~InJetQAHistFiller() {};
@@ -59,9 +69,9 @@ class InJetQAHistFiller : public BaseQAHistFiller {
   private:
 
     // private methods
-    void       FillJetQAHists(PHCompositeNode* topNode);
-    void       GetPFNode(PHCompositeNode* topNode);
-    void       GetGeomNode(const int geometry, PHCompositeNode* topNode);
+    void       GetNode(const int node, PHCompositeNode* topNode);
+    void       FillJetAndTrackQAHists(PHCompositeNode* topNode);
+    void       FillClustAndHitQAHists(SvtxTrack* track, PHCompositeNode* topNode);
     void       GetCstTracks(Jet* jet, PHCompositeNode* topNode);
     void       GetNonCstTracks(Jet* jet, PHCompositeNode* topNode);
     bool       IsCstNotRelevant(const uint32_t type);
@@ -70,12 +80,7 @@ class InJetQAHistFiller : public BaseQAHistFiller {
     PFObject*  GetPFObject(const uint32_t id, PHCompositeNode* topNode);
     SvtxTrack* GetTrkFromPFO(PFObject* pfo);
 
-    // inherited private methods
-    void GetNodes(PHCompositeNode* topNode) override;
-
-    // necessary dst nodes
-    JetContainer*  m_jetMap    = NULL;
-    SvtxTrackMap*  m_trkMap    = NULL;
+    // additional dst nodes needed
     PFObjectStore* m_flowStore = NULL;
 
     // for tracks in jet

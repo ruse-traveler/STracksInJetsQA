@@ -21,7 +21,7 @@ void InJetQAHistFiller::Fill(PHCompositeNode* topNode) {
 
   GetNodes(topNode);
 
-  FillJetQAHists(topNode);
+  FillJetAndTrackQAHists(topNode);
   return;
 
 }  // end 'Fill(PHCompositeNode* topNode)'
@@ -30,7 +30,30 @@ void InJetQAHistFiller::Fill(PHCompositeNode* topNode) {
 
 // private methods ------------------------------------------------------------
 
-void InJetQAHistFiller::FillJetQAHists(PHCompositeNode* topNode) {
+void InJetQAHistFiller::GetNode(const int node, PHCompositeNode* topNode) {
+
+  // jump to relevant node
+  switch (node) {
+
+    case Node::Flow:
+      m_flowStore = findNode::getClass<ParticleFlowElementContainer>(topNode, "ParticleFlowElements");
+      if (!m_flowStore) {
+        std::cerr << PHWHERE << ": PANIC: Couldn't grab particle flow container from node tree!" << std::endl;
+        assert(m_flowStore);
+      }
+      break;
+
+    default:
+      std::cerr << PHWHERE << ": WARNING: trying to grab unkown additional node..." << std::endl;
+      break;
+  }
+  return;
+
+}  // end 'GetNode(int, PHCompositeNode*)'
+
+
+
+void InJetQAHistFiller::FillJetAndTrackQAHists(PHCompositeNode* topNode) {
 
   // loop over jets
   for (
@@ -39,43 +62,78 @@ void InJetQAHistFiller::FillJetQAHists(PHCompositeNode* topNode) {
     ++iJet
   ) {
 
-    // grab jet
+    // grab jet and make sure track vector is clear
     Jet* jet = m_jetMap -> get_jet(iJet);
-
-    // make sure track vector is clear
     m_trksInJet.clear();
 
     // get all tracks "in" a jet
     GetCstTracks(jet, topNode);
     GetNonCstTracks(jet, topNode);
 
-    // grab info and fill histograms
-    m_jetManager -> GetInfo(jet, m_trksInJet);
+    // grab jet info and fill histograms
+    if (m_config.doJetQA) m_jetManager -> GetInfo(jet, m_trksInJet);
 
-    /* TODO fill track, hit, clust histograms here
+    // loop over tracks in the jet
     for (SvtxTrack* track : m_trksInJet) {
-      if (m_config.doTrackQA) FillTrackQAHists(track);
-      if (m_config.doClustQA) FillClustQAHists(track);
-      if (m_config.doHitQA)   FillHitQAHists(track);
+
+      // grab track info and fill histograms
+      if (m_config.doTrackQA) m_trackManager -> GetInfo(track);
+
+      // fill cluster and hit histograms as needed
+      if (m_config.doClustQA || m_config.doHitQA) {
+        FillClustAndHitQAHists(track, topNode);
+      }
+    }  // end track loop
+  }  // end jet loop
+  return;
+
+}  // end 'FillJetAndTrackQAHists(PHCompositeNode*)'
+
+
+
+void InJetQAHistFiller::FillClustAndHitQAHists(SvtxTrack* track, PHCompositeNode* topNode) {
+
+  // get cluster keys
+  for (auto clustKey : ClusKeyIter(track)) {
+
+    // grab cluster and its info
+    if (m_config.doClustQA) {
+      m_clustManager -> GetInfo(
+        m_clustMap -> findCluster(clustKey),
+        clustKey,
+        m_actsGeom
+      );
     }
-    */
-  }  // end track loop
+
+    // get hits if needed
+    if (m_config.doHitQA) {
+
+      // grab hit set and key associated with cluster key
+      TrkrDefs::hitsetkey setKey = TrkrDefs::getHitSetKeyFromClusKey(clustKey);
+      TrkrHitSet*         set    = m_hitMap -> findHitSet(setKey);
+      if (!set || !(set -> size() > 0)) return;
+
+      // loop over all hits in hit set
+      TrkrHitSet::ConstRange hits = set -> getHits();
+      for (
+        TrkrHitSet::ConstIterator itHit = hits.first;
+        itHit != hits.second;
+        ++itHit
+      ) {
+
+        // grab hit
+        TrkrDefs::hitkey hitKey = itHit -> first;
+        TrkrHit*         hit    = itHit -> second;
+
+        // grab info and fill histograms
+        m_hitManager -> GetInfo(hit, setKey, hitKey);
+
+      }  // end hit loop
+    }
+  }  // end cluster key loop
   return;
 
-}  // end 'FillJetQAHists(PHCompositeNode*)'
-
-
-
-void InJetQAHistFiller::GetPFNode(PHCompositeNode* topNode) {
-
-  m_flowStore = findNode::getClass<ParticleFlowElementContainer>(topNode, "ParticleFlowElements");
-  if (!m_flowStore) {
-    std::cerr << PHWHERE << ": PANIC: Couldn't grab particle flow container from node tree!" << std::endl;
-    assert(m_flowStore);
-  }
-  return;
-
-}  // end 'GetPFNode(PHCompositeNode*)'
+}  // end 'FillClustQAHists(SvtxTrack*, PHCompositeNode*)'
 
 
 
@@ -197,7 +255,7 @@ PFObject* InJetQAHistFiller::GetPFObject(const uint32_t id, PHCompositeNode* top
   PFObject* pfoToFind = NULL;
 
   // grab pf node if needed
-  if (!m_flowStore) GetPFNode(topNode);
+  if (!m_flowStore) GetNode(Node::Flow, topNode);
 
   // loop over pfos
   for (
@@ -237,29 +295,5 @@ SvtxTrack* InJetQAHistFiller::GetTrkFromPFO(PFObject* pfo) {
   return track;
 
 }  // end 'GetTrkFromPFO(PFObject*)'
-
-
-
-// inherited private methods --------------------------------------------------
-
-void InJetQAHistFiller::GetNodes(PHCompositeNode* topNode) {
-
-  // grab jet map from node tree
-  //   - TODO make user configurable
-  m_jetMap = findNode::getClass<JetContainer>(topNode, m_config.jetInNode.data());
-  if (!m_jetMap) {
-    std::cerr << PHWHERE << ": PANIC: couldn't grab jet map from node tree!" << std::endl;
-    assert(m_jetMap);
-  }
-
-  // grab track map from node tree
-  m_trkMap = findNode::getClass<SvtxTrackMap>(topNode, "SvtxTrackMap");
-  if (!m_trkMap) {
-    std::cerr << PHWHERE << ": PANIC: couldn't grab track map from node tree!" << std::endl;
-    assert(m_trkMap);
-  }
-  return;
-
-}  // end 'GetNodes(PHCompositeNode*)'
 
 // end ------------------------------------------------------------------------
