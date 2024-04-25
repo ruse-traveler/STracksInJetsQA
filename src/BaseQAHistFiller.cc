@@ -26,7 +26,27 @@ BaseQAHistFiller::BaseQAHistFiller() {
 
 BaseQAHistFiller::~BaseQAHistFiller() {
 
-  /* nothing to do */
+  // remove dangling pointers
+  if (m_actsGeom) {
+    delete m_actsGeom;
+    m_actsGeom = NULL;
+  }
+  if (m_hitMap) {
+    delete m_hitMap;
+    m_hitMap = NULL;
+  }
+  if (m_clustMap) {
+    delete m_clustMap;
+    m_clustMap = NULL;
+  }
+  if (m_trkMap) {
+    delete m_trkMap;
+    m_trkMap = NULL;
+  }
+  if (m_jetMap) {
+    delete m_jetMap;
+    m_jetMap = NULL;
+  }
 
 }  // end dtor
 
@@ -36,32 +56,30 @@ BaseQAHistFiller::~BaseQAHistFiller() {
 
 void BaseQAHistFiller::Init(
   TracksInJetsQAMakerConfig& config,
-  TracksInJetsQAMakerHelper& help,
   TracksInJetsQAMakerHistDef& hist,
   std::string label
 ) {
 
   // set module utilities
   m_config = config;
-  m_help   = help;
   m_hist   = hist;
 
   // initialize relevant submodules
   if (m_config.doHitQA) {
     m_hitManager = std::make_unique<HitQAHistManager>();
-    m_hitManager -> Init(m_help, m_hist, label);
+    m_hitManager -> Init(m_config, m_hist, label);
   }
   if (m_config.doClustQA) {
     m_clustManager = std::make_unique<ClustQAHistManager>();
-    m_clustManager -> Init(m_help, m_hist, label);
+    m_clustManager -> Init(m_config, m_hist, label);
   }
   if (m_config.doTrackQA) {
     m_trackManager = std::make_unique<TrackQAHistManager>();
-    m_trackManager -> Init(m_help, m_hist, label);
+    m_trackManager -> Init(m_config, m_hist, label);
   }
   if (m_config.doJetQA) {
     m_jetManager = std::make_unique<JetQAHistManager>();
-    m_jetManager -> Init(m_help, m_hist, label);
+    m_jetManager -> Init(m_config, m_hist, label);
   }
   return;
 

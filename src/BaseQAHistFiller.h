@@ -33,7 +33,6 @@
 #include "JetQAHistManager.h"
 // module utilties
 #include "TracksInJetsQAMakerConfig.h"
-#include "TracksInJetsQAMakerHelper.h"
 #include "TracksInJetsQAMakerHistDef.h"
 
 
@@ -49,7 +48,7 @@ class BaseQAHistFiller {
     ~BaseQAHistFiller();
 
     // public methods
-    void Init(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHelper& help, TracksInJetsQAMakerHistDef& hist, std::string label = "");
+    void Init(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHistDef& hist, std::string label = "");
     void SaveHistograms(TFile* outFile, std::string outDirName);
 
     // virtual public methods
@@ -75,7 +74,6 @@ class BaseQAHistFiller {
 
     // module utilities
     TracksInJetsQAMakerConfig  m_config;
-    TracksInJetsQAMakerHelper  m_help;
     TracksInJetsQAMakerHistDef m_hist;
 
 };  // end BaseQAHistFiller
