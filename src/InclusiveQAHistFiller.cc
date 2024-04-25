@@ -15,12 +15,12 @@
 
 
 
-// external methods -----------------------------------------------------------
+// inherited public methods ---------------------------------------------------
 
 void InclusiveQAHistFiller::Fill(PHCompositeNode* topNode) {
 
   GetNodes(topNode);
-
+  
   if (m_config.doHitQA)   FillHitQAHists();
   if (m_config.doClustQA) FillClustQAHists();
   if (m_config.doTrackQA) FillTrackQAHists();
@@ -31,7 +31,7 @@ void InclusiveQAHistFiller::Fill(PHCompositeNode* topNode) {
 
 
 
-// internal methods -----------------------------------------------------------
+// private methods ------------------------------------------------------------
 
 void InclusiveQAHistFiller::FillHitQAHists() {
 
@@ -145,48 +145,6 @@ void InclusiveQAHistFiller::FillJetQAHists() {
   return;
 
 }  // end 'FillJetQAHists()'
-
-
-
-void InclusiveQAHistFiller::GetNodes(PHCompositeNode* topNode) {
-
-  // grab acts geometry from node tree
-  m_actsGeom = findNode::getClass<ActsGeometry>(topNode, "ActsGeometry");
-  if (!m_actsGeom) {
-    std::cerr << PHWHERE << ": PANIC: couldn't grab ACTS geometry from node tree!" << std::endl;
-    assert(m_actsGeom);
-  }
-
-  // grab hit map from node tree
-  m_hitMap = findNode::getClass<TrkrHitSetContainer>(topNode, "TRKR_HITSET");
-  if (!m_hitMap) {
-    std::cerr << PHWHERE << ": PANIC: couldn't grab hit map from node tree!" << std::endl;
-    assert(m_hitMap);
-  }
-
-  // grab cluster map from node tree
-  m_clustMap = findNode::getClass<TrkrClusterContainer>(topNode, "TRKR_CLUSTER");
-  if (!m_clustMap) {
-    std::cerr << PHWHERE << ": PANIC: couldn't grab cluster map from node tree!" << std::endl;
-    assert(m_clustMap);
-  }
-
-  // grab track map from node tree
-  m_trkMap = findNode::getClass<SvtxTrackMap>(topNode, "SvtxTrackMap");
-  if (!m_trkMap) {
-    std::cerr << PHWHERE << ": PANIC: couldn't grab track map from node tree!" << std::endl;
-    assert(m_trkMap);
-  }
-
-  // grab jet map from node tree
-  m_jetMap = findNode::getClass<JetContainer>(topNode, "AntiKt_Track_r04");
-  if (!m_jetMap) {
-    std::cerr << PHWHERE << ": PANIC: couldn't grab jet map from node tree!" << std::endl;
-    assert(m_jetMap);
-  }
-  return;
-
-}  // end 'GetNodes(PHCompositeNode*)'
 
 // end ------------------------------------------------------------------------
 

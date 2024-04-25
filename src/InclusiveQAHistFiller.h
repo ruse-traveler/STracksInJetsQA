@@ -19,14 +19,10 @@
 #include <phool/PHCompositeNode.h>
 // tracking libraries
 #include <trackbase/TrkrHit.h>
-#include <trackbase/TpcDefs.h>
-#include <trackbase/InttDefs.h>
-#include <trackbase/MvtxDefs.h>
 #include <trackbase/TrkrDefs.h>
 #include <trackbase/TrkrHitSet.h>
 #include <trackbase/TrkrCluster.h>
 #include <trackbase/ActsGeometry.h>
-#include <trackbase/TrkrHitSetContainer.h>
 #include <trackbase/TrkrHitSetContainer.h>
 #include <trackbase/TrkrClusterContainer.h>
 #include <trackbase_historic/SvtxTrack.h>
@@ -49,26 +45,16 @@ class InclusiveQAHistFiller : public BaseQAHistFiller {
     InclusiveQAHistFiller() : BaseQAHistFiller() {};
     ~InclusiveQAHistFiller() {};
 
-    // inherited external methods
+    // inherited public methods
     void Fill(PHCompositeNode* topNode) override;
 
   private:
 
-    // internal methods
+    // private methods
     void FillHitQAHists();
     void FillClustQAHists();
     void FillTrackQAHists();
     void FillJetQAHists();
-
-    // inherited internal methods
-    void GetNodes(PHCompositeNode* topNode) override;
-
-    // necessary dst nodes
-    ActsGeometry*         m_actsGeom = NULL;
-    TrkrHitSetContainer*  m_hitMap   = NULL;
-    TrkrClusterContainer* m_clustMap = NULL;
-    SvtxTrackMap*         m_trkMap   = NULL;
-    JetContainer*         m_jetMap   = NULL;
 
 };  // end InclusiveQAHistFiller
 
