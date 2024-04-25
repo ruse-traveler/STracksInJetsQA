@@ -14,15 +14,15 @@
 
 
 
-// external methods -----------------------------------------------------------
+// public methods -------------------------------------------------------------
 
 void HitQAHistManager::GetInfo(TrkrHit* hit, TrkrDefs::hitsetkey& setKey, TrkrDefs::hitkey& hitKey) {
 
   // check which subsystem hit is in
   const uint16_t layer  = TrkrDefs::getLayer(setKey);
-  const bool     isMvtx = m_help.IsInMvtx(layer);
-  const bool     isIntt = m_help.IsInIntt(layer);
-  const bool     isTpc  = m_help.IsInTpc(layer);
+  const bool     isMvtx = IsInMvtx(layer);
+  const bool     isIntt = IsInIntt(layer);
+  const bool     isTpc  = IsInTpc(layer);
 
   // get phi and z values
   //   - FIXME should be more explicit about
@@ -64,7 +64,7 @@ void HitQAHistManager::GetInfo(TrkrHit* hit, TrkrDefs::hitsetkey& setKey, TrkrDe
 
 
 
-// internal methods -----------------------------------------------------------
+// private methods ------------------------------------------------------------
 
 void HitQAHistManager::FillHistograms(const int type, HitQAContent& content) {
 

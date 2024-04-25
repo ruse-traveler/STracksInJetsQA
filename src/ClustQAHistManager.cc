@@ -14,15 +14,15 @@
 
 
 
-// external methods -----------------------------------------------------------
+// public methods -------------------------------------------------------------
 
 void ClustQAHistManager::GetInfo(TrkrCluster* cluster, TrkrDefs::cluskey& clustKey, ActsGeometry* actsGeom) {
 
   // check which subsystem cluster is in
   const uint16_t layer  = TrkrDefs::getLayer(clustKey);
-  const bool     isMvtx = m_help.IsInMvtx(layer);
-  const bool     isIntt = m_help.IsInIntt(layer);
-  const bool     isTpc  = m_help.IsInTpc(layer);
+  const bool     isMvtx = IsInMvtx(layer);
+  const bool     isIntt = IsInIntt(layer);
+  const bool     isTpc  = IsInTpc(layer);
 
   // get cluster position
   Acts::Vector3 actsPos = actsGeom -> getGlobalPosition(clustKey, cluster);
@@ -49,7 +49,7 @@ void ClustQAHistManager::GetInfo(TrkrCluster* cluster, TrkrDefs::cluskey& clustK
 
 
 
-// internal methods -----------------------------------------------------------
+// private methods ------------------------------------------------------------
 
 void ClustQAHistManager::FillHistograms(const int type, ClustQAContent& content) {
 

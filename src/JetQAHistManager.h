@@ -51,12 +51,12 @@ class JetQAHistManager : public BaseQAHistManager {
     JetQAHistManager() : BaseQAHistManager() {};
     ~JetQAHistManager() {};
 
-    // external methods
+    // public methods
     void GetInfo(Jet* jet, std::optional<std::vector<SvtxTrack*>> tracks = std::nullopt);
 
   private:
 
-    // internal methods
+    // private methods
     void FillHistograms(const int type, JetQAContent& content);
 
     // inherited interal methods

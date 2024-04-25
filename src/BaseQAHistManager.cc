@@ -33,24 +33,24 @@ BaseQAHistManager::~BaseQAHistManager() {
 
 
 
-// external methods -----------------------------------------------------------
+// public methods -------------------------------------------------------------
 
 void BaseQAHistManager::Init(
-  TracksInJetsQAMakerHelper& help,
+  TracksInJetsQAMakerConfig& config,
   TracksInJetsQAMakerHistDef& hist,
   std::string label
 ) {
 
-  // grab helper & hist definitions
-  m_help = help;
-  m_hist = hist;
+  // grab utilities
+  m_config = config;
+  m_hist   = hist;
 
   // construct histograms
   DefineHistograms();
   BuildHistograms(label);
   return;
 
-}  // end 'Init(TracksInJetsQAMakerHelper&, TracksInJetsQAMakerHistDef&, std::string)'
+}  // end 'Init(TracksInJetsQAMakerConfig&, TracksInJetsQAMakerHistDef&, std::string)'
 
 
 
@@ -79,7 +79,7 @@ void BaseQAHistManager::SaveHistograms(TDirectory* topDir, std::string outDirNam
 
 
 
-// internal methods -----------------------------------------------------------
+// private methods ------------------------------------------------------------
 
 void BaseQAHistManager::BuildHistograms(std::string label) {
 
@@ -149,5 +149,34 @@ void BaseQAHistManager::ResetVectors() {
   return;
 
 }  // end 'ResetVectors()'
+
+
+
+// private helper methods -----------------------------------------------------
+
+bool BaseQAHistManager::IsInMvtx(const uint16_t layer) {
+
+  return (layer < m_config.nMvtxLayer);
+
+}  // end 'IsInMvtx(uint16_t)'
+
+
+
+bool BaseQAHistManager::IsInIntt(const uint16_t layer) {
+
+  return (
+    (layer >= m_config.nMvtxLayer) &&
+    (layer <  m_config.nInttLayer + m_config.nMvtxLayer)
+  );
+
+}  // end 'IsInIntt(uint16_t)'
+
+
+
+bool BaseQAHistManager::IsInTpc(const uint16_t layer) {
+
+  return (layer >= m_config.nMvtxLayer + m_config.nInttLayer);
+
+}  // end 'IsInTpc(uint16_t)'
 
 // end ------------------------------------------------------------------------

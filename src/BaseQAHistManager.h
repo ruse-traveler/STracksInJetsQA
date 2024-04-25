@@ -23,7 +23,7 @@
 // phool libraries
 #include <phool/phool.h>
 // module utilities
-#include "TracksInJetsQAMakerHelper.h"
+#include "TracksInJetsQAMakerConfig.h"
 #include "TracksInJetsQAMakerHistDef.h"
 
 
@@ -38,17 +38,22 @@ class BaseQAHistManager {
     BaseQAHistManager();
     ~BaseQAHistManager();
 
-    // external methods
-    void Init(TracksInJetsQAMakerHelper& help, TracksInJetsQAMakerHistDef& hist, std::string label = "");
+    // public methods
+    void Init(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHistDef& hist, std::string label = "");
     void SaveHistograms(TDirectory* outFile, std::string outDirName);
 
   protected:
 
-    // internal methods
+    // private methods
     void BuildHistograms(std::string label = "");
     void ResetVectors();
 
-    // virtual internal methods
+    // private helper methods
+    bool IsInMvtx(const uint16_t layer);
+    bool IsInIntt(const uint16_t layer);
+    bool IsInTpc(const uint16_t layer);
+
+    // virtual private methods
     virtual void DefineHistograms() = 0;
 
     // histograms
@@ -61,7 +66,7 @@ class BaseQAHistManager {
     VecHistDef2D m_vecHistDef2D;
 
     // module utilities
-    TracksInJetsQAMakerHelper  m_help;
+    TracksInJetsQAMakerConfig  m_config;
     TracksInJetsQAMakerHistDef m_hist;
 
 };  // end BaseQAHistManager

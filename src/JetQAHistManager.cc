@@ -14,7 +14,7 @@
 
 
 
-// external methods -----------------------------------------------------------
+// public methods -------------------------------------------------------------
 
 void JetQAHistManager::GetInfo(
   Jet* jet,
@@ -48,7 +48,7 @@ void JetQAHistManager::GetInfo(
 
 
 
-// internal methods -----------------------------------------------------------
+// private methods ------------------------------------------------------------
 
 void JetQAHistManager::FillHistograms(const int type, JetQAContent& content) {
 

@@ -50,15 +50,15 @@ class ClustQAHistManager : public BaseQAHistManager {
     ClustQAHistManager() : BaseQAHistManager() {};
     ~ClustQAHistManager() {};
 
-    // external methods
+    // public methods
     void GetInfo(TrkrCluster* cluster, TrkrDefs::cluskey& clustKey, ActsGeometry* actsGeom);
 
   private:
 
-    // internal methods
+    // private methods
     void FillHistograms(const int type, ClustQAContent& content);
 
-    // inherited internal methods
+    // inherited private methods
     void DefineHistograms() override;
 
 };  // end ClustQAHistManager

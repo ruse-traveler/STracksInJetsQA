@@ -49,15 +49,15 @@ class TrackQAHistManager : public BaseQAHistManager {
     TrackQAHistManager() : BaseQAHistManager() {};
     ~TrackQAHistManager() {};
 
-    // external methods
+    // public methods
     void GetInfo(SvtxTrack* track);
 
   private:
 
-    // internal methods
+    // private methods
     void FillHistograms(const int type, TrackQAContent& content);
 
-    // inherited internal methods
+    // inherited private methods
     void DefineHistograms();
 
 };  // end TrackQAHistManager

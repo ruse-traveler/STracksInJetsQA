@@ -14,7 +14,7 @@
 
 
 
-// external methods -----------------------------------------------------------
+// public methods -------------------------------------------------------------
 
 void TrackQAHistManager::GetInfo(SvtxTrack* track) {
 
@@ -34,7 +34,7 @@ void TrackQAHistManager::GetInfo(SvtxTrack* track) {
 
 
 
-// internal methods -----------------------------------------------------------
+// private methods ------------------------------------------------------------
 
 void TrackQAHistManager::FillHistograms(const int type, TrackQAContent& content) {
 
