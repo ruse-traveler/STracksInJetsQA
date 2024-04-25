@@ -47,7 +47,6 @@ to_copy = [
   "src/TracksInJetsQAMaker.cc",
   "src/TracksInJetsQAMaker.h",
   "src/TracksInJetsQAMakerConfig.h",
-  "src/TracksInJetsQAMakerHelper.h",
   "src/TracksInJetsQAMakerHistDef.h",
   "src/autogen.sh",
   "src/configure.ac",
