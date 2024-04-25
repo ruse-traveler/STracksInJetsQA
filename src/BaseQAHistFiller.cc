@@ -32,7 +32,7 @@ BaseQAHistFiller::~BaseQAHistFiller() {
 
 
 
-// external methods -----------------------------------------------------------
+// public methods -------------------------------------------------------------
 
 void BaseQAHistFiller::Init(
   TracksInJetsQAMakerConfig& config,
@@ -84,5 +84,57 @@ void BaseQAHistFiller::SaveHistograms(TFile* outFile, std::string outDirName) {
   return;
 
 }  // end 'SaveHistograms(TFile*, std::string)'
+
+
+
+// private methods ------------------------------------------------------------
+
+void BaseQAHistFiller::GetNodes(PHCompositeNode* topNode) {
+
+  // grab necessary jet nodes
+  if (m_config.doJetQA) {
+    m_jetMap = findNode::getClass<JetContainer>(topNode, m_config.jetInNode.data());
+    if (!m_jetMap) {
+      std::cerr << PHWHERE << ": PANIC: couldn't grab jet map from node tree!" << std::endl;
+      assert(m_jetMap);
+    }
+  }
+
+  // grab necessary track nodes
+  if (m_config.doTrackQA) {
+    m_trkMap = findNode::getClass<SvtxTrackMap>(topNode, "SvtxTrackMap");
+    if (!m_trkMap) {
+      std::cerr << PHWHERE << ": PANIC: couldn't grab track map from node tree!" << std::endl;
+      assert(m_trkMap);
+    }
+  }
+
+  // grab necessary cluster nodes
+  if (m_config.doClustQA) {
+
+    m_actsGeom = findNode::getClass<ActsGeometry>(topNode, "ActsGeometry");
+    if (!m_actsGeom) {
+      std::cerr << PHWHERE << ": PANIC: couldn't grab ACTS geometry from node tree!" << std::endl;
+      assert(m_actsGeom);
+    }
+
+    m_clustMap = findNode::getClass<TrkrClusterContainer>(topNode, "TRKR_CLUSTER");
+    if (!m_clustMap) {
+      std::cerr << PHWHERE << ": PANIC: couldn't grab cluster map from node tree!" << std::endl;
+      assert(m_clustMap);
+    }
+  }
+
+  // grab necessary hit nodes
+  if (m_config.doHitQA) {
+    m_hitMap = findNode::getClass<TrkrHitSetContainer>(topNode, "TRKR_HITSET");
+    if (!m_hitMap) {
+      std::cerr << PHWHERE << ": PANIC: couldn't grab hit map from node tree!" << std::endl;
+      assert(m_hitMap);
+    }
+  }
+  return;
+
+}  // end 'GetNodes(PHCompositeNode*)'
 
 // end ------------------------------------------------------------------------

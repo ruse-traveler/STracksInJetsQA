@@ -17,7 +17,15 @@
 #include <TFile.h>
 // phool libraries
 #include <phool/phool.h>
+#include <phool/getClass.h>
 #include <phool/PHCompositeNode.h>
+// tracking libraries
+#include <trackbase/ActsGeometry.h>
+#include <trackbase/TrkrHitSetContainer.h>
+#include <trackbase/TrkrClusterContainer.h>
+#include <trackbase_historic/SvtxTrackMap.h>
+// jet libraries
+#include <jetbase/JetContainer.h>
 // submodule definitions
 #include "HitQAHistManager.h"
 #include "ClustQAHistManager.h"
@@ -40,17 +48,24 @@ class BaseQAHistFiller {
     BaseQAHistFiller();
     ~BaseQAHistFiller();
 
-    // external methods
+    // public methods
     void Init(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHelper& help, TracksInJetsQAMakerHistDef& hist, std::string label = "");
     void SaveHistograms(TFile* outFile, std::string outDirName);
 
-    // virtual external methods
+    // virtual public methods
     virtual void Fill(PHCompositeNode* topNode) = 0;
 
   protected:
 
-    // virtual internal methods
-    virtual void GetNodes(PHCompositeNode* topNode) = 0;
+    // private methods
+    void GetNodes(PHCompositeNode* topNode);
+
+    // necessary dst nodes
+    ActsGeometry*         m_actsGeom = NULL;
+    TrkrHitSetContainer*  m_hitMap   = NULL;
+    TrkrClusterContainer* m_clustMap = NULL;
+    SvtxTrackMap*         m_trkMap   = NULL;
+    JetContainer*         m_jetMap   = NULL;
 
     // submodules to use
     std::unique_ptr<HitQAHistManager>   m_hitManager   = NULL;
