@@ -31,7 +31,6 @@
 #include <jetbase/TrackJetInput.h>
 // module definition
 #include </sphenix/u/danderson/install/include/tracksinjetsqamaker/TracksInJetsQAMaker.h>
-#include </sphenix/u/danderson/install/include/tracksinjetsqamaker/TracksInJetsQAMakerConfig.h>
 // f4a macros
 #include <G4_Magnet.C>
 #include <G4_ActsGeom.C>
