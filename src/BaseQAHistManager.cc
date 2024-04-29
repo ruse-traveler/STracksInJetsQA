@@ -17,11 +17,18 @@
 
 // ctor/dtor ------------------------------------------------------------------
 
-BaseQAHistManager::BaseQAHistManager() {
+BaseQAHistManager::BaseQAHistManager(
+  TracksInJetsQAMakerConfig& config,
+  TracksInJetsQAMakerHistDef& hist
+) {
 
   ResetVectors();
 
-}  // end ctor
+  // grab vectors
+  m_config = config;
+  m_hist   = hist;
+
+}  // end ctor(TracksInJetsQAMakerConfig&, TracksInJetsQAMakerHistDef&)
 
 
 
@@ -35,22 +42,13 @@ BaseQAHistManager::~BaseQAHistManager() {
 
 // public methods -------------------------------------------------------------
 
-void BaseQAHistManager::Init(
-  TracksInJetsQAMakerConfig& config,
-  TracksInJetsQAMakerHistDef& hist,
-  std::string label
-) {
+void BaseQAHistManager::MakeHistograms(std::string label) {
 
-  // grab utilities
-  m_config = config;
-  m_hist   = hist;
-
-  // construct histograms
   DefineHistograms();
   BuildHistograms(label);
   return;
 
-}  // end 'Init(TracksInJetsQAMakerConfig&, TracksInJetsQAMakerHistDef&, std::string)'
+}  // end 'MakeHistograms(std::string)'
 
 
 

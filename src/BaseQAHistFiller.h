@@ -44,11 +44,11 @@ class BaseQAHistFiller {
   public:
 
     // ctor/dtor
-    BaseQAHistFiller();
+    BaseQAHistFiller(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHistDef& hist);
     ~BaseQAHistFiller();
 
     // public methods
-    void Init(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHistDef& hist, std::string label = "");
+    void MakeHistograms(std::string label = "");
     void SaveHistograms(TFile* outFile, std::string outDirName);
 
     // virtual public methods

@@ -49,7 +49,7 @@ class HitQAHistManager : public BaseQAHistManager {
     };
 
     // ctor/dtor
-    HitQAHistManager() : BaseQAHistManager() {};
+    using BaseQAHistManager::BaseQAHistManager;
     ~HitQAHistManager() {};
 
     // public methods

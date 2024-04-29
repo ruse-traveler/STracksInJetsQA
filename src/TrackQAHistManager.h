@@ -46,7 +46,7 @@ class TrackQAHistManager : public BaseQAHistManager {
     };
 
     // ctor/dtor
-    TrackQAHistManager() : BaseQAHistManager() {};
+    using BaseQAHistManager::BaseQAHistManager;
     ~TrackQAHistManager() {};
 
     // public methods
@@ -58,7 +58,7 @@ class TrackQAHistManager : public BaseQAHistManager {
     void FillHistograms(const int type, TrackQAContent& content);
 
     // inherited private methods
-    void DefineHistograms();
+    void DefineHistograms() override;
 
 };  // end TrackQAHistManager
 

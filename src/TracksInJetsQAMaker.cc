@@ -42,7 +42,10 @@ TracksInJetsQAMaker::~TracksInJetsQAMaker() {
   }
 
   // clean up any dangling pointers
-  if (m_outFile) delete m_outFile;
+  if (m_outFile) {
+    delete m_outFile;
+    m_outFile = NULL;
+  }
 
 }  // end dtor
 
@@ -78,12 +81,12 @@ int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
 
   // initialize needed submodules
   if (m_config.doInJet) {
-    m_inJet = std::make_unique<InJetQAHistFiller>();
-    m_inJet -> Init(m_config, m_hist, "InJet");
+    m_inJet = std::make_unique<InJetQAHistFiller>(m_config, m_hist);
+    m_inJet -> MakeHistograms("InJet");
   }
   if (m_config.doInclusive) {
-    m_inclusive = std::make_unique<InclusiveQAHistFiller>();
-    m_inclusive -> Init(m_config, m_hist, "Inclusive");
+    m_inclusive = std::make_unique<InclusiveQAHistFiller>(m_config, m_hist);
+    m_inclusive -> MakeHistograms("Inclusive");
   }
   return Fun4AllReturnCodes::EVENT_OK;
 

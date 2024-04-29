@@ -35,11 +35,11 @@ class BaseQAHistManager {
   public:
 
     // ctor/dtor
-    BaseQAHistManager();
+    BaseQAHistManager(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHistDef& hist);
     ~BaseQAHistManager();
 
     // public methods
-    void Init(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHistDef& hist, std::string label = "");
+    void MakeHistograms(std::string label = "");
     void SaveHistograms(TDirectory* outFile, std::string outDirName);
 
   protected:

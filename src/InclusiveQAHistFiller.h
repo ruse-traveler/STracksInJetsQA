@@ -42,7 +42,7 @@ class InclusiveQAHistFiller : public BaseQAHistFiller {
   public:
 
     // ctor/dtor
-    InclusiveQAHistFiller() : BaseQAHistFiller() {};
+    using BaseQAHistFiller::BaseQAHistFiller;
     ~InclusiveQAHistFiller() {};
 
     // inherited public methods

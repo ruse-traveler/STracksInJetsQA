@@ -47,7 +47,7 @@ class ClustQAHistManager : public BaseQAHistManager {
     };
 
     // ctor/dtor
-    ClustQAHistManager() : BaseQAHistManager() {};
+    using BaseQAHistManager::BaseQAHistManager;
     ~ClustQAHistManager() {};
 
     // public methods

@@ -16,11 +16,22 @@
 
 // ctor/dtor ------------------------------------------------------------------
 
-BaseQAHistFiller::BaseQAHistFiller() {
+BaseQAHistFiller::BaseQAHistFiller(
+  TracksInJetsQAMakerConfig& config,
+  TracksInJetsQAMakerHistDef& hist
+) {
 
-  /* nothing to do */
+  // grab utilities
+  m_config = config;
+  m_hist   = hist;
 
-}  // end ctor
+  // initialize managers
+  if (m_config.doHitQA)   m_hitManager   = std::make_unique<HitQAHistManager>(m_config, m_hist);
+  if (m_config.doClustQA) m_clustManager = std::make_unique<ClustQAHistManager>(m_config, m_hist);
+  if (m_config.doTrackQA) m_trackManager = std::make_unique<TrackQAHistManager>(m_config, m_hist);
+  if (m_config.doJetQA)   m_jetManager   = std::make_unique<JetQAHistManager>(m_config, m_hist);
+
+}  // end ctor()'
 
 
 
@@ -54,36 +65,16 @@ BaseQAHistFiller::~BaseQAHistFiller() {
 
 // public methods -------------------------------------------------------------
 
-void BaseQAHistFiller::Init(
-  TracksInJetsQAMakerConfig& config,
-  TracksInJetsQAMakerHistDef& hist,
-  std::string label
-) {
-
-  // set module utilities
-  m_config = config;
-  m_hist   = hist;
+void BaseQAHistFiller::MakeHistograms(std::string label) {
 
   // initialize relevant submodules
-  if (m_config.doHitQA) {
-    m_hitManager = std::make_unique<HitQAHistManager>();
-    m_hitManager -> Init(m_config, m_hist, label);
-  }
-  if (m_config.doClustQA) {
-    m_clustManager = std::make_unique<ClustQAHistManager>();
-    m_clustManager -> Init(m_config, m_hist, label);
-  }
-  if (m_config.doTrackQA) {
-    m_trackManager = std::make_unique<TrackQAHistManager>();
-    m_trackManager -> Init(m_config, m_hist, label);
-  }
-  if (m_config.doJetQA) {
-    m_jetManager = std::make_unique<JetQAHistManager>();
-    m_jetManager -> Init(m_config, m_hist, label);
-  }
+  if (m_config.doHitQA)   m_hitManager   -> MakeHistograms(label);
+  if (m_config.doClustQA) m_clustManager -> MakeHistograms(label);
+  if (m_config.doTrackQA) m_trackManager -> MakeHistograms(label);
+  if (m_config.doJetQA)   m_jetManager   -> MakeHistograms(label);
   return;
 
-}  // end 'Init(TracksInJetsQAMakerConfig&, TracksInJetsQAMakerHelper&, TracksInJetsQAMakerHistDef&, std::optional<std::string>)'
+}  // end 'MakeHistograms(std::string)'
 
 
 

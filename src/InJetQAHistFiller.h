@@ -60,7 +60,7 @@ class InJetQAHistFiller : public BaseQAHistFiller {
     enum Node {Flow};
 
     // ctor/dtor
-    InJetQAHistFiller() : BaseQAHistFiller() {};
+    using BaseQAHistFiller::BaseQAHistFiller;
     ~InJetQAHistFiller() {};
 
     // inherited public methods

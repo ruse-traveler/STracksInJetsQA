@@ -48,7 +48,7 @@ class JetQAHistManager : public BaseQAHistManager {
     };
 
     // ctor/dtor
-    JetQAHistManager() : BaseQAHistManager() {};
+    using BaseQAHistManager::BaseQAHistManager;
     ~JetQAHistManager() {};
 
     // public methods
