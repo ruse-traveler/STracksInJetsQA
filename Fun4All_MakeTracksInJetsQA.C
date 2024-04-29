@@ -50,7 +50,7 @@ R__LOAD_LIBRARY(/sphenix/u/danderson/install/lib/libtracksinjetsqamaker.so)
 // macro body -----------------------------------------------------------------
 
 void Fun4All_MakeTracksInJetsQA(
-  const int         verb           = 10,
+  const int         verb           = 5,
   const int64_t     nEvts          = 10,
   const std::string outFileBase    = "test",
   const std::string inTrkDSTs      = "input/pp200py8run11jet30.dst_tracks.list",
@@ -121,14 +121,14 @@ void Fun4All_MakeTracksInJetsQA(
   clustJetFinder -> Verbosity(verb);
   f4a  -> registerSubsystem(clustJetFinder);
 
-  // register qa maker --------------------------------------------------------
+  // example of how to use as a plain SubsysReco module -----------------------
 
   // construct output file names
   const std::string outTrkFile = outFileBase + ".track.root";
   const std::string outCalFile = outFileBase + ".clust.root";
 
   // initialize and register track jet qa module
-  TracksInJetsQAMaker* trkJetQAMaker = new TracksInJetsQAMaker("TracksInJetsQAMaker_TrackJets", outTrkFile);
+  TracksInJetsQAMaker* trkJetQAMaker = new TracksInJetsQAMaker("TracksInJetsQAMaker_TrackJets", outTrkFile, "TrackJetSubsysReco");
   trkJetQAMaker -> Configure(
     {
       .verbose     = verb,
@@ -146,7 +146,7 @@ void Fun4All_MakeTracksInJetsQA(
   f4a -> registerSubsystem(trkJetQAMaker);
 
   // initialize and register track jet qa module
-  TracksInJetsQAMaker* clustJetQAMaker = new TracksInJetsQAMaker("TracksInJetsQAMaker_ClustJets", outCalFile);
+  TracksInJetsQAMaker* clustJetQAMaker = new TracksInJetsQAMaker("TracksInJetsQAMaker_ClustJets", outCalFile, "ClustJetSubsysReco");
   clustJetQAMaker -> Configure(
     {
       .verbose     = verb,

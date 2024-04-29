@@ -38,7 +38,7 @@ class TracksInJetsQAMaker : public SubsysReco {
   public:
 
     // ctor/dtor
-    TracksInJetsQAMaker(const std::string &name = "TracksInJetsQAMaker", const std::string& sOutFileName = "tracksinjets.root");
+    TracksInJetsQAMaker(const std::string &name = "TracksInJetsQAMaker", const std::string& sOutFileName = "tracksinjets.root", std::optional<std::string> histSuffix = std::nullopt);
     ~TracksInJetsQAMaker() override;
 
     // public methods
@@ -54,6 +54,9 @@ class TracksInJetsQAMaker : public SubsysReco {
     // io members
     TFile*      m_outFile     = NULL;
     std::string m_outFileName = "";
+
+    // optional suffix for histograms
+    std::optional<std::string> m_histSuffix  = std::nullopt;
 
     // submodules to run
     std::unique_ptr<InJetQAHistFiller>     m_inJet;

@@ -88,9 +88,10 @@ void BaseQAHistManager::BuildHistograms(std::string label) {
 
       // make name
       std::string sHistName("h");
-      sHistName += label;
       sHistName += m_vecHistTypes.at(iType);
       sHistName += std::get<0>(histDef1D);
+      sHistName += "_";
+      sHistName += label;
 
       // create histogram
       m_vecHist1D.at(iType).push_back(
@@ -112,9 +113,10 @@ void BaseQAHistManager::BuildHistograms(std::string label) {
 
       // make name
       std::string sHistName("h");
-      sHistName += label;
       sHistName += m_vecHistTypes.at(iType);
       sHistName += std::get<0>(histDef2D);
+      sHistName += "_";
+      sHistName += label;
 
       // create histogram
       m_vecHist2D.at(iType).push_back(

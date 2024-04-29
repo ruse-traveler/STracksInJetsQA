@@ -16,7 +16,11 @@
 
 // ctor/dtor ------------------------------------------------------------------
 
-TracksInJetsQAMaker::TracksInJetsQAMaker(const std::string& name, const std::string& outFileName) : SubsysReco(name) {
+TracksInJetsQAMaker::TracksInJetsQAMaker(
+  const std::string& name,
+  const std::string& outFileName,
+  std::optional<std::string> histSuffix
+) : SubsysReco(name) {
 
   // print debug message
   if (m_config.doDebug && (m_config.verbose > 4)) {
@@ -30,7 +34,10 @@ TracksInJetsQAMaker::TracksInJetsQAMaker(const std::string& name, const std::str
     assert(m_outFile); 
   }
 
-}  // end ctor(std::string, st::string)
+  // set suffix for histograms
+  m_histSuffix = histSuffix;
+
+}  // end ctor(std::string, std::string, std::optional<std::string>)
 
 
 
@@ -79,14 +86,24 @@ int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
     std::cout << "TracksInJetsQAMaker::Init(PHCompositeNode* topNode) Initializing" << std::endl;
   }
 
-  // initialize needed submodules
+  // make labels
+  std::string inJetLabel     = "InJet";
+  std::string inclusiveLabel = "Inclusive";
+  if (m_histSuffix.has_value()) {
+    inJetLabel     += "_";
+    inJetLabel     += m_histSuffix.value();
+    inclusiveLabel += "_";
+    inclusiveLabel += m_histSuffix.value();
+  }
+
+  // initialize submodules, as needed
   if (m_config.doInJet) {
     m_inJet = std::make_unique<InJetQAHistFiller>(m_config, m_hist);
-    m_inJet -> MakeHistograms("InJet");
+    m_inJet -> MakeHistograms(inJetLabel);
   }
   if (m_config.doInclusive) {
     m_inclusive = std::make_unique<InclusiveQAHistFiller>(m_config, m_hist);
-    m_inclusive -> MakeHistograms("Inclusive");
+    m_inclusive -> MakeHistograms(inclusiveLabel);
   }
   return Fun4AllReturnCodes::EVENT_OK;
 
