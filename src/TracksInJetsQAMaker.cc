@@ -16,28 +16,11 @@
 
 // ctor/dtor ------------------------------------------------------------------
 
-TracksInJetsQAMaker::TracksInJetsQAMaker(
-  const std::string& name,
-  const std::string& outFileName,
-  std::optional<std::string> histSuffix
-) : SubsysReco(name) {
+TracksInJetsQAMaker::TracksInJetsQAMaker(const std::string& name) : SubsysReco(name) {
 
-  // print debug message
-  if (m_config.doDebug && (m_config.verbose > 4)) {
-    std::cout << "TracksInJetsQAMaker::TracksInJetsQAMaker(const std::string& name, const std::string& outFileName) Calling ctor" << std::endl;
-  }
+  /* nothing to do */
 
-  // initialize output file
-  m_outFile = new TFile(outFileName.data(), "RECREATE");
-  if (!m_outFile) {
-    std::cerr << PHWHERE << ": PANIC: couldn't create output file!" << std::endl;
-    assert(m_outFile); 
-  }
-
-  // set suffix for histograms
-  m_histSuffix = histSuffix;
-
-}  // end ctor(std::string, std::string, std::optional<std::string>)
+}  // end ctor
 
 
 
@@ -54,13 +37,21 @@ TracksInJetsQAMaker::~TracksInJetsQAMaker() {
     m_outFile = NULL;
   }
 
+  if (m_manager) {
+    delete m_manager;
+    m_manager = NULL;
+  }
+
 }  // end dtor
 
 
 
 // public methods -------------------------------------------------------------
 
-void TracksInJetsQAMaker::Configure(TracksInJetsQAMakerConfig config, std::optional<TracksInJetsQAMakerHistDef> hist) {
+void TracksInJetsQAMaker::Configure(
+  TracksInJetsQAMakerConfig config,
+  std::optional<TracksInJetsQAMakerHistDef> hist
+) {
 
   // print debug messages
   if (m_config.doDebug && (m_config.verbose > 3)) {
@@ -86,6 +77,33 @@ int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
     std::cout << "TracksInJetsQAMaker::Init(PHCompositeNode* topNode) Initializing" << std::endl;
   }
 
+  // initialize relevent outputs
+  switch (m_config.outMode) {
+
+    case OutMode::File:
+      m_outFile = new TFile(m_outFileName.data(), "RECREATE");
+      if (!m_outFile) {
+        std::cerr << PHWHERE << ": PANIC: couldn't create output file!" << std::endl;
+        assert(m_outFile); 
+      }
+      break;
+
+    case OutMode::QA:
+      m_manager = QAHistManagerDef::getHistoManager();
+      if (!m_manager) {
+        std::cerr << PHWHERE << ": PANIC: couldn't grab histogram manager!" << std::endl;
+        assert(m_manager);
+      }
+      break;
+
+    default:
+      std::cerr << PHWHERE << ": PANIC: unknown output mode specified!\n"
+                << "  Please set .outMode = OutMode::File OR OutMode::QA!"
+                << std::endl;
+      assert((m_config.outMode == OutMode::File) || (m_config.outMode == OutMode::QA));
+      break;
+  }
+
   // make labels
   std::string inJetLabel     = "InJet";
   std::string inclusiveLabel = "Inclusive";
@@ -104,6 +122,24 @@ int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
   if (m_config.doInclusive) {
     m_inclusive = std::make_unique<InclusiveQAHistFiller>(m_config, m_hist);
     m_inclusive -> MakeHistograms(inclusiveLabel);
+  }
+
+  // register histograms with manager if needed
+  if (m_config.outMode == OutMode::QA) {
+
+    // grab histograms
+    std::vector<TH1D*> vecHist1D;
+    std::vector<TH2D*> vecHist2D;
+    if (m_config.doInJet)     m_inJet     -> GrabHistograms(vecHist1D, vecHist2D);
+    if (m_config.doInclusive) m_inclusive -> GrabHistograms(vecHist1D, vecHist2D);
+
+    // register w/ manager
+    for (TH1D* hist1D : vecHist1D) {
+      m_manager -> registerHisto(hist1D);
+    }
+    for (TH2D* hist2D : vecHist2D) {
+      m_manager -> registerHisto(hist2D);
+    }
   }
   return Fun4AllReturnCodes::EVENT_OK;
 
@@ -134,13 +170,17 @@ int TracksInJetsQAMaker::End(PHCompositeNode* topNode) {
     std::cout << "TracksInJetsQAMaker::End(PHCompositeNode* topNode) This is the End..." << std::endl;
   }
 
-  // save histograms
-  if (m_config.doInJet)     m_inJet     -> SaveHistograms(m_outFile, "InJet");
-  if (m_config.doInclusive) m_inclusive -> SaveHistograms(m_outFile, "Inclusive");
+  // save hists to file if needed
+  if (m_config.outMode == OutMode::File) {
 
-  // close file
-  m_outFile -> cd();
-  m_outFile -> Close();
+    // save histograms
+    if (m_config.doInJet)     m_inJet     -> SaveHistograms(m_outFile, "InJet");
+    if (m_config.doInclusive) m_inclusive -> SaveHistograms(m_outFile, "Inclusive");
+
+    // close file
+    m_outFile -> cd();
+    m_outFile -> Close();
+  }
   return Fun4AllReturnCodes::EVENT_OK;
 
 }  // end 'End(PHCompositeNode*)'

@@ -19,6 +19,7 @@
 struct TracksInJetsQAMakerConfig {
 
   // system options
+  int  outMode     = 0;
   int  verbose     = 0;
   bool doDebug     = false;
   bool doInclusive = true;

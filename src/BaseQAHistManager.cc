@@ -77,6 +77,27 @@ void BaseQAHistManager::SaveHistograms(TDirectory* topDir, std::string outDirNam
 
 
 
+void BaseQAHistManager::GrabHistograms(
+  std::vector<TH1D*>& vecOutHist1D,
+  std::vector<TH2D*>& vecOutHist2D
+) {
+
+  for (auto hist1Ds : m_vecHist1D) {
+    for (TH1D* hist1D : hist1Ds) {
+      vecOutHist1D.push_back(hist1D);
+    }
+  }
+  for (auto hist2Ds : m_vecHist2D) {
+    for (TH2D* hist2D : hist2Ds) {
+      vecOutHist2D.push_back(hist2D);
+    }
+  }
+  return;
+
+}  // end 'GrabHistograms(std::vector<TH1D*>&, std::vector<TH2D*>&)'
+
+
+
 // private methods ------------------------------------------------------------
 
 void BaseQAHistManager::BuildHistograms(std::string label) {

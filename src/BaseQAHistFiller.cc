@@ -96,6 +96,21 @@ void BaseQAHistFiller::SaveHistograms(TFile* outFile, std::string outDirName) {
 
 
 
+void BaseQAHistFiller::GrabHistograms(
+  std::vector<TH1D*>& vecOutHist1D,
+  std::vector<TH2D*>& vecOutHist2D
+) {
+
+  if (m_config.doHitQA)   m_hitManager   -> GrabHistograms(vecOutHist1D, vecOutHist2D);
+  if (m_config.doClustQA) m_clustManager -> GrabHistograms(vecOutHist1D, vecOutHist2D);
+  if (m_config.doTrackQA) m_trackManager -> GrabHistograms(vecOutHist1D, vecOutHist2D);
+  if (m_config.doJetQA)   m_jetManager   -> GrabHistograms(vecOutHist1D, vecOutHist2D);
+  return;
+
+}  // end 'GrabHistograms(std::vector<TH1D*>&, std::vector<TH2D*>&)'
+
+
+
 // private methods ------------------------------------------------------------
 
 void BaseQAHistFiller::GetNodes(PHCompositeNode* topNode) {

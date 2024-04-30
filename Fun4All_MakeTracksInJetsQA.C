@@ -24,6 +24,8 @@
 // phool libraries
 #include <phool/recoConsts.h>
 #include <phool/PHRandomSeed.h>
+// qa utils
+#include <qautils/QAHistManagerDef.h>
 // jet base software
 #include <jetbase/Jet.h>
 #include <jetbase/JetReco.h>
@@ -40,8 +42,9 @@
 // load libraries
 R__LOAD_LIBRARY(libg4dst.so)
 R__LOAD_LIBRARY(libg4jets.so)
-R__LOAD_LIBRARY(libjetbase.so)
 R__LOAD_LIBRARY(libfun4all.so)
+R__LOAD_LIBRARY(libjetbase.so)
+R__LOAD_LIBRARY(libqautils.so)
 R__LOAD_LIBRARY(libffamodules.so)
 R__LOAD_LIBRARY(/sphenix/u/danderson/install/lib/libtracksinjetsqamaker.so)
 
@@ -50,7 +53,7 @@ R__LOAD_LIBRARY(/sphenix/u/danderson/install/lib/libtracksinjetsqamaker.so)
 // macro body -----------------------------------------------------------------
 
 void Fun4All_MakeTracksInJetsQA(
-  const int         verb           = 5,
+  const int         verb           = 10,
   const int64_t     nEvts          = 10,
   const std::string outFileBase    = "test",
   const std::string inTrkDSTs      = "input/pp200py8run11jet30.dst_tracks.list",
@@ -121,16 +124,19 @@ void Fun4All_MakeTracksInJetsQA(
   clustJetFinder -> Verbosity(verb);
   f4a  -> registerSubsystem(clustJetFinder);
 
-  // example of how to use as a plain SubsysReco module -----------------------
+  // example of how to use modue as a plain SubsysReco module -----------------
 
   // construct output file names
   const std::string outTrkFile = outFileBase + ".track.root";
   const std::string outCalFile = outFileBase + ".clust.root";
 
   // initialize and register track jet qa module
-  TracksInJetsQAMaker* trkJetQAMaker = new TracksInJetsQAMaker("TracksInJetsQAMaker_TrackJets", outTrkFile, "TrackJetSubsysReco");
+  TracksInJetsQAMaker* trkJetQAMaker = new TracksInJetsQAMaker("TracksInJetsQAMaker_TrackJets");
+  trkJetQAMaker -> SetOutFileName(outTrkFile);
+  trkJetQAMaker -> SetHistSuffix("TrackJetSubsysReco");
   trkJetQAMaker -> Configure(
     {
+      .outMode     = TracksInJetsQAMaker::OutMode::File,
       .verbose     = verb,
       .doDebug     = true,
       .doInclusive = true,
@@ -146,9 +152,12 @@ void Fun4All_MakeTracksInJetsQA(
   f4a -> registerSubsystem(trkJetQAMaker);
 
   // initialize and register track jet qa module
-  TracksInJetsQAMaker* clustJetQAMaker = new TracksInJetsQAMaker("TracksInJetsQAMaker_ClustJets", outCalFile, "ClustJetSubsysReco");
+  TracksInJetsQAMaker* clustJetQAMaker = new TracksInJetsQAMaker("TracksInJetsQAMaker_ClustJets");
+  clustJetQAMaker -> SetOutFileName(outCalFile);
+  clustJetQAMaker -> SetHistSuffix("ClustJetSubsysReco");
   clustJetQAMaker -> Configure(
     {
+      .outMode     = TracksInJetsQAMaker::OutMode::File,
       .verbose     = verb,
       .doDebug     = true,
       .doInclusive = true,
@@ -163,11 +172,61 @@ void Fun4All_MakeTracksInJetsQA(
   );
   f4a -> registerSubsystem(clustJetQAMaker);
 
+  // example of how to use module with qa framework ---------------------------
+
+  const std::string outQAFile = outFileBase + ".qa.root";
+
+  // initialize and register track jet qa module
+  TracksInJetsQAMaker* trkJetQANode = new TracksInJetsQAMaker("TracksInJetsQANode_TrackJets");
+  trkJetQANode -> SetHistSuffix("TrackJetQANode");
+  trkJetQANode -> Configure(
+    {
+      .outMode     = TracksInJetsQAMaker::OutMode::QA,
+      .verbose     = verb,
+      .doDebug     = true,
+      .doInclusive = true,
+      .doInJet     = true,
+      .doHitQA     = true,
+      .doClustQA   = true,
+      .doTrackQA   = true,
+      .doJetQA     = true,
+      .rJet        = 0.4,
+      .jetInNode   = "AntiKt_Track_r04"
+    }
+  );
+  f4a -> registerSubsystem(trkJetQANode);
+
+  // initialize and register track jet qa module
+  TracksInJetsQAMaker* clustJetQANode = new TracksInJetsQAMaker("TracksInJetsQANode_ClustJets");
+  clustJetQANode -> SetHistSuffix("ClustJetQANode");
+  clustJetQANode -> Configure(
+    {
+      .outMode     = TracksInJetsQAMaker::OutMode::QA,
+      .verbose     = verb,
+      .doDebug     = true,
+      .doInclusive = true,
+      .doInJet     = true,
+      .doHitQA     = true,
+      .doClustQA   = true,
+      .doTrackQA   = true,
+      .doJetQA     = true,
+      .rJet        = 0.4,
+      .jetInNode   = "AntiKt_Cluster_r04"
+    }
+  );
+  f4a -> registerSubsystem(clustJetQANode);
+
   // run  modules and exit ----------------------------------------------------
 
   // run4all
   f4a -> run(nEvts);
   f4a -> End();
+
+  // TEST
+  std::cout << "TEST nhists in manager = " << QAHistManagerDef::getHistoManager() -> nHistos() << std::endl;
+
+  // save qa output and exit
+  QAHistManagerDef::saveQARootFile(outQAFile);
   delete f4a;
 
   // close and exit

@@ -50,6 +50,7 @@ class BaseQAHistFiller {
     // public methods
     void MakeHistograms(std::string label = "");
     void SaveHistograms(TFile* outFile, std::string outDirName);
+    void GrabHistograms(std::vector<TH1D*>& vecOutHist1D, std::vector<TH2D*>& vecOutHist2D);
 
     // virtual public methods
     virtual void Fill(PHCompositeNode* topNode) = 0;
