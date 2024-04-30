@@ -33,7 +33,10 @@ struct TrksInJetQAConfig {
   double rJet = 0.4;
 
   // input options
-  std::string jetInNode = "AntiKt_Track_r04";
+  std::string jetInNode   = "AntiKt_Track_r04";
+  std::string trkInNode   = "SvtxTrackMap";
+  std::string clustInNode = "TRKR_CLUSTER";
+  std::string hitInNode   = "TRKR_HITSET";
 
   // output options
   std::string inclusiveDir = "Inclusive";

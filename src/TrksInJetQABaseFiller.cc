@@ -125,7 +125,7 @@ void TrksInJetQABaseFiller::GetNodes(PHCompositeNode* topNode) {
 
   // grab necessary track nodes
   if (m_config.doTrackQA) {
-    m_trkMap = findNode::getClass<SvtxTrackMap>(topNode, "SvtxTrackMap");
+    m_trkMap = findNode::getClass<SvtxTrackMap>(topNode, m_config.trkInNode.data());
     if (!m_trkMap) {
       std::cerr << PHWHERE << ": PANIC: couldn't grab track map from node tree!" << std::endl;
       assert(m_trkMap);
@@ -141,7 +141,7 @@ void TrksInJetQABaseFiller::GetNodes(PHCompositeNode* topNode) {
       assert(m_actsGeom);
     }
 
-    m_clustMap = findNode::getClass<TrkrClusterContainer>(topNode, "TRKR_CLUSTER");
+    m_clustMap = findNode::getClass<TrkrClusterContainer>(topNode, m_config.clustInNode.data());
     if (!m_clustMap) {
       std::cerr << PHWHERE << ": PANIC: couldn't grab cluster map from node tree!" << std::endl;
       assert(m_clustMap);
@@ -150,7 +150,7 @@ void TrksInJetQABaseFiller::GetNodes(PHCompositeNode* topNode) {
 
   // grab necessary hit nodes
   if (m_config.doHitQA) {
-    m_hitMap = findNode::getClass<TrkrHitSetContainer>(topNode, "TRKR_HITSET");
+    m_hitMap = findNode::getClass<TrkrHitSetContainer>(topNode, m_config.hitInNode.data());
     if (!m_hitMap) {
       std::cerr << PHWHERE << ": PANIC: couldn't grab hit map from node tree!" << std::endl;
       assert(m_hitMap);
