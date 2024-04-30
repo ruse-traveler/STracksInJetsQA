@@ -5,7 +5,8 @@ lib_LTLIBRARIES = \
 
 AM_LDFLAGS = \
   -L$(libdir) \
-  -L$(OFFLINE_MAIN)/lib
+  -L$(OFFLINE_MAIN)/lib \
+  -L$(OFFLINE_MAIN)/lib64
 
 AM_CPPFLAGS = \
   -I$(includedir) \
@@ -51,6 +52,7 @@ libtracksinjetsqamaker_la_LDFLAGS = \
   -lphg4hit \
   -lg4dst \
   -lg4eval \
+  -lqautils \
   `fastjet-config --libs`
 
 
