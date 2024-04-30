@@ -77,69 +77,13 @@ int TrksInJetQA::Init(PHCompositeNode* topNode) {
     std::cout << "TrksInJetQA::Init(PHCompositeNode* topNode) Initializing" << std::endl;
   }
 
-  // initialize relevent outputs
-  switch (m_config.outMode) {
-
-    case OutMode::File:
-      m_outFile = new TFile(m_outFileName.data(), "RECREATE");
-      if (!m_outFile) {
-        std::cerr << PHWHERE << ": PANIC: couldn't create output file!" << std::endl;
-        assert(m_outFile); 
-      }
-      break;
-
-    case OutMode::QA:
-      m_manager = QAHistManagerDef::getHistoManager();
-      if (!m_manager) {
-        std::cerr << PHWHERE << ": PANIC: couldn't grab histogram manager!" << std::endl;
-        assert(m_manager);
-      }
-      break;
-
-    default:
-      std::cerr << PHWHERE << ": PANIC: unknown output mode specified!\n"
-                << "  Please set .outMode = OutMode::File OR OutMode::QA!"
-                << std::endl;
-      assert((m_config.outMode == OutMode::File) || (m_config.outMode == OutMode::QA));
-      break;
-  }
-
-  // make labels
-  std::string inJetLabel     = "InJet";
-  std::string inclusiveLabel = "Inclusive";
-  if (m_histSuffix.has_value()) {
-    inJetLabel     += "_";
-    inJetLabel     += m_histSuffix.value();
-    inclusiveLabel += "_";
-    inclusiveLabel += m_histSuffix.value();
-  }
-
-  // initialize submodules, as needed
-  if (m_config.doInJet) {
-    m_inJet = std::make_unique<TrksInJetQAInJetFiller>(m_config, m_hist);
-    m_inJet -> MakeHistograms(inJetLabel);
-  }
-  if (m_config.doInclusive) {
-    m_inclusive = std::make_unique<TrksInJetQAInclusiveFiller>(m_config, m_hist);
-    m_inclusive -> MakeHistograms(inclusiveLabel);
-  }
+  // initialize output & histograms
+  InitOutput();
+  InitHistograms();
 
   // register histograms with manager if needed
   if (m_config.outMode == OutMode::QA) {
-
-    // grab histograms
-    std::vector<TH1D*> vecHist1D;
-    std::vector<TH2D*> vecHist2D;
-    if (m_config.doInJet)     m_inJet     -> GrabHistograms(vecHist1D, vecHist2D);
-    if (m_config.doInclusive) m_inclusive -> GrabHistograms(vecHist1D, vecHist2D);
-
-    // register w/ manager
-    for (TH1D* hist1D : vecHist1D) {
-      m_manager -> registerHisto(hist1D);
-    }
-    for (TH2D* hist2D : vecHist2D) {
-      m_manager -> registerHisto(hist2D);
-    }
+    RegisterHistograms();
   }
   return Fun4AllReturnCodes::EVENT_OK;
 
@@ -184,5 +128,103 @@ int TrksInJetQA::End(PHCompositeNode* topNode) {
   return Fun4AllReturnCodes::EVENT_OK;
 
 }  // end 'End(PHCompositeNode*)'
+
+
+
+// private methods ------------------------------------------------------------
+
+void TrksInJetQA::InitOutput() {
+
+  // print debug message
+  if (m_config.doDebug && (m_config.verbose > 1)) {
+    std::cout << "TrksInJetQA::InitOutput() Initializing outputs..." << std::endl;
+  }
+
+  // initialize relevent outputs
+  switch (m_config.outMode) {
+
+    case OutMode::File:
+      m_outFile = new TFile(m_outFileName.data(), "RECREATE");
+      if (!m_outFile) {
+        std::cerr << PHWHERE << ": PANIC: couldn't create output file!" << std::endl;
+        assert(m_outFile); 
+      }
+      break;
+
+    case OutMode::QA:
+      m_manager = QAHistManagerDef::getHistoManager();
+      if (!m_manager) {
+        std::cerr << PHWHERE << ": PANIC: couldn't grab histogram manager!" << std::endl;
+        assert(m_manager);
+      }
+      break;
+
+    default:
+      std::cerr << PHWHERE << ": PANIC: unknown output mode specified!\n"
+                << "  Please set .outMode = OutMode::File OR OutMode::QA!"
+                << std::endl;
+      assert((m_config.outMode == OutMode::File) || (m_config.outMode == OutMode::QA));
+      break;
+  }
+  return;
+
+}  // end 'InitOutput()'
+
+
+
+void TrksInJetQA::InitHistograms() {
+
+  // print debug message
+  if (m_config.doDebug && (m_config.verbose > 1)) {
+    std::cout << "TrksInJetQA::InitHistograms() Initializing histograms..." << std::endl;
+  }
+
+  // make labels
+  std::string inJetLabel     = "InJet";
+  std::string inclusiveLabel = "Inclusive";
+  if (m_histSuffix.has_value()) {
+    inJetLabel     += "_";
+    inJetLabel     += m_histSuffix.value();
+    inclusiveLabel += "_";
+    inclusiveLabel += m_histSuffix.value();
+  }
+
+  // initialize submodules, as needed
+  if (m_config.doInJet) {
+    m_inJet = std::make_unique<TrksInJetQAInJetFiller>(m_config, m_hist);
+    m_inJet -> MakeHistograms(inJetLabel);
+  }
+  if (m_config.doInclusive) {
+    m_inclusive = std::make_unique<TrksInJetQAInclusiveFiller>(m_config, m_hist);
+    m_inclusive -> MakeHistograms(inclusiveLabel);
+  }
+  return;
+
+}  // end 'InitHistograms()'
+
+
+
+void TrksInJetQA::RegisterHistograms() {
+
+  // print debug message
+  if (m_config.doDebug && (m_config.verbose > 1)) {
+    std::cout << "TrksInJetQA::RegisterHistograms() Registering histograms..." << std::endl;
+  }
+
+  std::vector<TH1D*> vecHist1D;
+  std::vector<TH2D*> vecHist2D;
+  if (m_config.doInJet)     m_inJet     -> GrabHistograms(vecHist1D, vecHist2D);
+  if (m_config.doInclusive) m_inclusive -> GrabHistograms(vecHist1D, vecHist2D);
+
+  // register w/ manager
+  for (TH1D* hist1D : vecHist1D) {
+    m_manager -> registerHisto(hist1D);
+  }
+  for (TH2D* hist2D : vecHist2D) {
+    m_manager -> registerHisto(hist2D);
+  }
+  return;
+
+}  // end 'RegisterHistograms()'
 
 // end ------------------------------------------------------------------------

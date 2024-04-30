@@ -67,6 +67,11 @@ class TrksInJetQA : public SubsysReco {
 
   private:
 
+    // private methods
+    void InitOutput();
+    void InitHistograms();
+    void RegisterHistograms();
+
     // io members
     TFile*               m_outFile     = NULL;
     std::string          m_outFileName = "tracksInJetsQA.root";
