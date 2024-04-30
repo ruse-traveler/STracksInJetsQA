@@ -8,10 +8,10 @@
 # with default options.
 # -----------------------------------------------------------------------------
 
-if ARGV[0] == "condor"
-  exec("condor_submit RunTracksInJetsQAMakerOnCondor.job")
-else
+if ARGV[0] == "local"
   exec("root -b -q Fun4All_MakeTracksInJetsQA.C")
+else
+  exec("condor_submit RunTracksInJetsQAMakerOnCondor.job")
 end
 
 # end -------------------------------------------------------------------------

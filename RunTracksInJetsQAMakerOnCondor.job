@@ -13,7 +13,7 @@ notification = Never
 # executable parameters
 Executable           = RunTracksInJetsQAMakerOnCondor.sh
 Initialdir           = ./
-request_memory       = 8GB
+request_memory       = 16GB
 transfer_input_files = Fun4All_MakeTracksInJetsQA.C
 
 # output parameters
