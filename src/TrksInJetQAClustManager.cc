@@ -1,22 +1,22 @@
 // ----------------------------------------------------------------------------
-// 'ClustQAHistManager.cc'
+// 'TrksInJetQAClustManager.cc'
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TracksInJetsQAMaker module
-// to generate QA plots for track clusters
+// A submodule for the TrksInJetQA module to generate
+// QA plots for track clusters
 // ----------------------------------------------------------------------------
 
-#define TRACKSINJETSQAMAKER_CLUSTQAHISTMANAGER_CC
+#define TRKSINJETQACLUSTMANAGER_CC
 
 // submodule definition
-#include "ClustQAHistManager.h"
+#include "TrksInJetQAClustManager.h"
 
 
 
 // public methods -------------------------------------------------------------
 
-void ClustQAHistManager::GetInfo(TrkrCluster* cluster, TrkrDefs::cluskey& clustKey, ActsGeometry* actsGeom) {
+void TrksInJetQAClustManager::GetInfo(TrkrCluster* cluster, TrkrDefs::cluskey& clustKey, ActsGeometry* actsGeom) {
 
   // check which subsystem cluster is in
   const uint16_t layer  = TrkrDefs::getLayer(clustKey);
@@ -51,7 +51,7 @@ void ClustQAHistManager::GetInfo(TrkrCluster* cluster, TrkrDefs::cluskey& clustK
 
 // private methods ------------------------------------------------------------
 
-void ClustQAHistManager::FillHistograms(const int type, ClustQAContent& content) {
+void TrksInJetQAClustManager::FillHistograms(const int type, ClustQAContent& content) {
 
   // fill 1d histograms
   m_vecHist1D.at(type).at(H1D::PosX) -> Fill(content.x);
@@ -68,7 +68,7 @@ void ClustQAHistManager::FillHistograms(const int type, ClustQAContent& content)
 
 
 
-void ClustQAHistManager::DefineHistograms() {
+void TrksInJetQAClustManager::DefineHistograms() {
 
   // grab binning schemes
   std::vector<BinDef> vecBins = m_hist.GetVecHistBins();
@@ -80,24 +80,24 @@ void ClustQAHistManager::DefineHistograms() {
   m_vecHistTypes.push_back( "All"  );
 
   // define 1d histograms
-  m_vecHistDef1D.push_back( std::make_tuple( "ClustPosX", vecBins.at(TracksInJetsQAMakerHistDef::Var::PosXY) ));
-  m_vecHistDef1D.push_back( std::make_tuple( "ClustPosY", vecBins.at(TracksInJetsQAMakerHistDef::Var::PosXY) ));
-  m_vecHistDef1D.push_back( std::make_tuple( "ClustPosZ", vecBins.at(TracksInJetsQAMakerHistDef::Var::PosZ)  ));
-  m_vecHistDef1D.push_back( std::make_tuple( "ClustPosR", vecBins.at(TracksInJetsQAMakerHistDef::Var::PosR)  ));
+  m_vecHistDef1D.push_back( std::make_tuple( "ClustPosX", vecBins.at(TrksInJetQAHist::Var::PosXY) ));
+  m_vecHistDef1D.push_back( std::make_tuple( "ClustPosY", vecBins.at(TrksInJetQAHist::Var::PosXY) ));
+  m_vecHistDef1D.push_back( std::make_tuple( "ClustPosZ", vecBins.at(TrksInJetQAHist::Var::PosZ)  ));
+  m_vecHistDef1D.push_back( std::make_tuple( "ClustPosR", vecBins.at(TrksInJetQAHist::Var::PosR)  ));
 
   // define 2d histograms
   m_vecHistDef2D.push_back(
     std::make_tuple(
       "ClustPosYvsX",
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::PosXY),
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::PosXY)
+      vecBins.at(TrksInJetQAHist::Var::PosXY),
+      vecBins.at(TrksInJetQAHist::Var::PosXY)
     )
   );
   m_vecHistDef2D.push_back(
     std::make_tuple(
       "ClustPosRvsZ",
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::PosZ),
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::PosR)
+      vecBins.at(TrksInJetQAHist::Var::PosZ),
+      vecBins.at(TrksInJetQAHist::Var::PosR)
     )
   );
   return;

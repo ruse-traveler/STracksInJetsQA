@@ -1,41 +1,26 @@
 // ----------------------------------------------------------------------------
-// 'TracksInJetsQAMakerHistDef.h'
+// 'TrksInJetQAHist.h'
 // Derek Anderson
 // 03.25.2024
 //
 // Configurable parameters for histograms (like binning, etc.)
-// for the TracksInJetsQAMaker module.
+// for the TrksInJetQA module.
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKERHISTDEF_H
-#define TRACKSINJETSQAMAKERHISTDEF_H
+#ifndef TRKSINJETSQAHIST_H
+#define TRKSINJETSQAHIST_H
 
 // c++ utilities
 #include <string>
 #include <utility>
-// root libraries
-#include <TH1.h>
-#include <TH2.h>
+// module utilities
+#include "TrksInJetQATypes.h"
 
 
 
-// type definitions -----------------------------------------------------------
+// TrksInJetQAHist definition -------------------------------------------------
 
-typedef std::pair<float, float>                 BinRange;
-typedef std::pair<uint32_t, BinRange>           BinDef;
-typedef std::tuple<std::string, BinDef>         HistDef1D;
-typedef std::tuple<std::string, BinDef, BinDef> HistDef2D;
-typedef std::vector<HistDef1D>                  VecHistDef1D;
-typedef std::vector<HistDef2D>                  VecHistDef2D;
-typedef std::vector<std::vector<TH1D*>>         VecHist1D;
-typedef std::vector<std::vector<TH2D*>>         VecHist2D;
-typedef std::vector<std::string>                VecHistTypes;
-
-
-
-// TracksInJetsQAMakerHistDef definition --------------------------------------
-
-struct TracksInJetsQAMakerHistDef {
+struct TrksInJetQAHist {
 
   enum Var {
     Num,
@@ -104,9 +89,8 @@ struct TracksInJetsQAMakerHistDef {
 
   }  // end 'GetVecHistBins()'
 
-};  // end TracksInJetsQAMakerHistDef
+};  // end TrksInJetQAHist
 
 #endif
 
 // end ------------------------------------------------------------------------
-

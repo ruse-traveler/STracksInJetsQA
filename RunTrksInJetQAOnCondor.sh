@@ -1,10 +1,10 @@
 #!/bin/bash
 # -----------------------------------------------------------------------------
-# 'RunTracksInJetsQAMakerOnCondor.sh'
+# 'RunTrksInJetQAOnCondor.sh'
 # Derek Anderson
 # 04.13.2024
 #
-# short script to run Fun4All_MakeTracksInJetsQA.C via condor
+# short script to run Fun4All_MakeTrksInJetQA.C via condor
 # -----------------------------------------------------------------------------
 
 # set up environment
@@ -15,6 +15,6 @@ source /opt/sphenix/core/bin/sphenix_setup.sh
 printenv
 
 # run macro
-root -b -q "Fun4All_MakeTracksInJetsQA.C"
+root -b -q "Fun4All_MakeTrksInJetQA.C"
 
 # end -------------------------------------------------------------------------

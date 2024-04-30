@@ -1,15 +1,14 @@
 // ----------------------------------------------------------------------------
-// 'BaseQAHistManager.h'
+// 'TrksInJetQABaseManager.h'
 // Derek Anderson
 // 04.03.2024
 //
-// Base hist manager submodule for the TracksInJetsQAMaker module
-// which consolidates methods/data common to all of the hist
-// managers
+// Base hist manager submodule for the TrksInJetQA module which
+// consolidates methods/data common to all of the hist managers
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKER_BASEQAHISTMANAGER_H
-#define TRACKSINJETSQAMAKER_BASEQAHISTMANAGER_H
+#ifndef TRKSINJETQABASEMANAGER_H
+#define TRKSINJETQABASEMANAGER_H
 
 // c++ utilities
 #include <string>
@@ -23,20 +22,21 @@
 // phool libraries
 #include <phool/phool.h>
 // module utilities
-#include "TracksInJetsQAMakerConfig.h"
-#include "TracksInJetsQAMakerHistDef.h"
+#include "TrksInJetQAHist.h"
+#include "TrksInJetQATypes.h"
+#include "TrksInJetQAConfig.h"
 
 
 
-// BaseQAHistManager definition -----------------------------------------------
+// TrksInJetQABaseManager definition ------------------------------------------
 
-class BaseQAHistManager {
+class TrksInJetQABaseManager {
 
   public:
 
     // ctor/dtor
-    BaseQAHistManager(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHistDef& hist);
-    ~BaseQAHistManager();
+    TrksInJetQABaseManager(TrksInJetQAConfig& config, TrksInJetQAHist& hist);
+    ~TrksInJetQABaseManager();
 
     // public methods
     void MakeHistograms(std::string label = "");
@@ -67,10 +67,10 @@ class BaseQAHistManager {
     VecHistDef2D m_vecHistDef2D;
 
     // module utilities
-    TracksInJetsQAMakerConfig  m_config;
-    TracksInJetsQAMakerHistDef m_hist;
+    TrksInJetQAConfig m_config;
+    TrksInJetQAHist   m_hist;
 
-};  // end BaseQAHistManager
+};  // end TrksInJetQABaseManager
 
 
 #endif

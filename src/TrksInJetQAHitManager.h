@@ -1,14 +1,14 @@
 // ----------------------------------------------------------------------------
-// 'HitQAHistManager.h'
+// 'TrksInJetQAHitManager.h'
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TracksInJetsQAMaker module
+// A submodule for the TrksInJetQA module
 // to generate QA plots for track hits
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKER_HITQAHISTMANAGER_H
-#define TRACKSINJETSQAMAKER_HITQAHISTMANAGER_H
+#ifndef TRKSINJETQAHITMANAGER_H
+#define TRKSINJETQAHITMANAGER_H
 
 // c++ utilities
 #include <limits>
@@ -24,13 +24,13 @@
 #include <trackbase/MvtxDefs.h>
 #include <trackbase/TrkrDefs.h>
 // submodule definitions
-#include "BaseQAHistManager.h"
+#include "TrksInJetQABaseManager.h"
 
 
 
-// HitQAHistManager definition ------------------------------------------------
+// TrksInJetQAHitManager definition -------------------------------------------
 
-class HitQAHistManager : public BaseQAHistManager {
+class TrksInJetQAHitManager : public TrksInJetQABaseManager {
 
   public:
 
@@ -49,8 +49,8 @@ class HitQAHistManager : public BaseQAHistManager {
     };
 
     // ctor/dtor
-    using BaseQAHistManager::BaseQAHistManager;
-    ~HitQAHistManager() {};
+    using TrksInJetQABaseManager::TrksInJetQABaseManager;
+    ~TrksInJetQAHitManager() {};
 
     // public methods
     void GetInfo(TrkrHit* hit, TrkrDefs::hitsetkey& setKey, TrkrDefs::hitkey& hitKey);
@@ -63,7 +63,7 @@ class HitQAHistManager : public BaseQAHistManager {
     // inherited private methods
     void DefineHistograms() override;
 
-};  // end HitQAHistManager
+};  // end TrksInJetQAHitManager
 
 #endif
 

@@ -1,7 +1,7 @@
-# TracksInJetsQAMaker
+# TrksInJetQA
 
 A Fun4All package to generate QA plots for tracks in jets and related objects. Can be
-run as a plain `SubsysReco` module (`TracksInJetsQAMaker.*`) or as a QA module (TBD).
+run as a plain `SubsysReco` module or as a QA module.
 
 The top-level macro included here illustrates both use cases.
 
@@ -52,10 +52,9 @@ The code is organized into 3 layers:
 All chunks of code that are common to the 4 managers and 2 fillers are
 consolidated into relevant base classes -- `BaseHistogramManager`, `BaseHistogramFiller`.
 
-Lastly, alongside the core pieces described above, there are 3 helper objects used to
-streamline the code and centralize related information.
+Lastly, alongside the core pieces described above, there are a few additional headers with
+things to streamline the code and centralize related information.
 
-  - `TracksInJetsQAMakerConfig.h:` defines a struct used to collect **all** user-configurable options.
-  - `TracksInJetsQAMakerHelper.h:` consolidates a variety of useful methods and information (e.g.
-    checks on whether or not a particular hit/cluster is in a given subsystem).
-  - `TracksInJetsQAMakerHistDef.h:` consoldiates the binning schemes used across all three sub-modules,
+  - `TrksInJetQAHist.h:` consoldiates the binning schemes used across all three sub-modules,
+  - `TrksInJetQATypes.h:` defines a variety of commonly-used or clunky types,
+  - `TrksInJetQAConfig.h:` defines a struct used to collect **all** user-configurable options.

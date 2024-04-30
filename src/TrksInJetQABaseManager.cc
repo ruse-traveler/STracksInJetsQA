@@ -1,25 +1,24 @@
 // ----------------------------------------------------------------------------
-// 'BaseQAHistManager.cc'
+// 'TrksInJetQABaseManager.cc'
 // Derek Anderson
 // 04.03.2024
 //
-// Base hist manager submodule for the TracksInJetsQAMaker module
-// which consolidates methods/data common to all of the hist
-// managers
+// Base hist manager submodule for the TrksInJetQA module which
+// consolidates methods/data common to all of the hist managers
 // ----------------------------------------------------------------------------
 
-#define TRACKSINJETSQAMAKER_BASEQAHISTMANAGER_CC
+#define TRKSINJETQABASEMANAGER_CC
 
 // submodule definition
-#include "BaseQAHistManager.h"
+#include "TrksInJetQABaseManager.h"
 
 
 
 // ctor/dtor ------------------------------------------------------------------
 
-BaseQAHistManager::BaseQAHistManager(
-  TracksInJetsQAMakerConfig& config,
-  TracksInJetsQAMakerHistDef& hist
+TrksInJetQABaseManager::TrksInJetQABaseManager(
+  TrksInJetQAConfig& config,
+  TrksInJetQAHist& hist
 ) {
 
   ResetVectors();
@@ -28,11 +27,11 @@ BaseQAHistManager::BaseQAHistManager(
   m_config = config;
   m_hist   = hist;
 
-}  // end ctor(TracksInJetsQAMakerConfig&, TracksInJetsQAMakerHistDef&)
+}  // end ctor(TrksInJetQAConfig&, TrksInJetQAHist&)
 
 
 
-BaseQAHistManager::~BaseQAHistManager() {
+TrksInJetQABaseManager::~TrksInJetQABaseManager() {
 
   ResetVectors();
 
@@ -42,7 +41,7 @@ BaseQAHistManager::~BaseQAHistManager() {
 
 // public methods -------------------------------------------------------------
 
-void BaseQAHistManager::MakeHistograms(std::string label) {
+void TrksInJetQABaseManager::MakeHistograms(std::string label) {
 
   DefineHistograms();
   BuildHistograms(label);
@@ -52,7 +51,7 @@ void BaseQAHistManager::MakeHistograms(std::string label) {
 
 
 
-void BaseQAHistManager::SaveHistograms(TDirectory* topDir, std::string outDirName) {
+void TrksInJetQABaseManager::SaveHistograms(TDirectory* topDir, std::string outDirName) {
 
   TDirectory* outDir = topDir -> mkdir(outDirName.data());
   if (!outDir) {
@@ -77,7 +76,7 @@ void BaseQAHistManager::SaveHistograms(TDirectory* topDir, std::string outDirNam
 
 
 
-void BaseQAHistManager::GrabHistograms(
+void TrksInJetQABaseManager::GrabHistograms(
   std::vector<TH1D*>& vecOutHist1D,
   std::vector<TH2D*>& vecOutHist2D
 ) {
@@ -100,7 +99,7 @@ void BaseQAHistManager::GrabHistograms(
 
 // private methods ------------------------------------------------------------
 
-void BaseQAHistManager::BuildHistograms(std::string label) {
+void TrksInJetQABaseManager::BuildHistograms(std::string label) {
 
   // build 1d histograms
   m_vecHist1D.resize( m_vecHistTypes.size() );
@@ -160,7 +159,7 @@ void BaseQAHistManager::BuildHistograms(std::string label) {
 
 
 
-void BaseQAHistManager::ResetVectors() {
+void TrksInJetQABaseManager::ResetVectors() {
 
   m_vecHist1D.clear();
   m_vecHist2D.clear();
@@ -175,7 +174,7 @@ void BaseQAHistManager::ResetVectors() {
 
 // private helper methods -----------------------------------------------------
 
-bool BaseQAHistManager::IsInMvtx(const uint16_t layer) {
+bool TrksInJetQABaseManager::IsInMvtx(const uint16_t layer) {
 
   return (layer < m_config.nMvtxLayer);
 
@@ -183,7 +182,7 @@ bool BaseQAHistManager::IsInMvtx(const uint16_t layer) {
 
 
 
-bool BaseQAHistManager::IsInIntt(const uint16_t layer) {
+bool TrksInJetQABaseManager::IsInIntt(const uint16_t layer) {
 
   return (
     (layer >= m_config.nMvtxLayer) &&
@@ -194,7 +193,7 @@ bool BaseQAHistManager::IsInIntt(const uint16_t layer) {
 
 
 
-bool BaseQAHistManager::IsInTpc(const uint16_t layer) {
+bool TrksInJetQABaseManager::IsInTpc(const uint16_t layer) {
 
   return (layer >= m_config.nMvtxLayer + m_config.nInttLayer);
 

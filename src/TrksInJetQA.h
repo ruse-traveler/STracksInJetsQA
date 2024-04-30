@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------------------
-// 'TracksInJetsQAMaker.h'
+// 'TrksInJetQA.h'
 // Derek Anderson
 // 03.25.2024
 //
@@ -7,8 +7,8 @@
 // hits, and more.
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKER_H
-#define TRACKSINJETSQAMAKER_H
+#ifndef TRKSINJETQA_H
+#define TRKSINJETQA_H
 
 // c++ utilities
 #include <string>
@@ -28,17 +28,17 @@
 // qa utilities
 #include <qautils/QAHistManagerDef.h>
 // module utilities
-#include "TracksInJetsQAMakerConfig.h"
-#include "TracksInJetsQAMakerHistDef.h"
+#include "TrksInJetQAHist.h"
+#include "TrksInJetQAConfig.h"
 // submodule definitions
-#include "InJetQAHistFiller.h"
-#include "InclusiveQAHistFiller.h"
+#include "TrksInJetQAInJetFiller.h"
+#include "TrksInJetQAInclusiveFiller.h"
 
 
 
-// TracksInJetsQAMaker definition ---------------------------------------------
+// TrksInJetQA definition -----------------------------------------------------
 
-class TracksInJetsQAMaker : public SubsysReco {
+class TrksInJetQA : public SubsysReco {
 
   public:
 
@@ -46,8 +46,8 @@ class TracksInJetsQAMaker : public SubsysReco {
     enum OutMode {File, QA};
 
     // ctor/dtor
-    TracksInJetsQAMaker(const std::string& name);
-    ~TracksInJetsQAMaker() override;
+    TrksInJetQA(const std::string& name);
+    ~TrksInJetQA() override;
 
     // setters
     void SetOutFileName(const std::string& name)  {m_outFileName = name;}
@@ -55,8 +55,8 @@ class TracksInJetsQAMaker : public SubsysReco {
 
     // public methods
     void Configure(
-      TracksInJetsQAMakerConfig config,
-      std::optional<TracksInJetsQAMakerHistDef> hist = std::nullopt
+      TrksInJetQAConfig config,
+      std::optional<TrksInJetQAHist> hist = std::nullopt
     );
 
 
@@ -76,14 +76,14 @@ class TracksInJetsQAMaker : public SubsysReco {
     std::optional<std::string> m_histSuffix  = std::nullopt;
 
     // submodules to run
-    std::unique_ptr<InJetQAHistFiller>     m_inJet;
-    std::unique_ptr<InclusiveQAHistFiller> m_inclusive;
+    std::unique_ptr<TrksInJetQAInJetFiller>     m_inJet;
+    std::unique_ptr<TrksInJetQAInclusiveFiller> m_inclusive;
 
     // module utilities
-    TracksInJetsQAMakerConfig  m_config;
-    TracksInJetsQAMakerHistDef m_hist;
+    TrksInJetQAConfig m_config;
+    TrksInJetQAHist   m_hist;
 
-};  // end TracksInJetsQAMaker
+};  // end TrksInJetQA
 
 #endif
 

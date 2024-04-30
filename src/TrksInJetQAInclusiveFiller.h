@@ -1,11 +1,10 @@
 // ----------------------------------------------------------------------------
-// 'InclusiveQAHistFiller.h'
+// 'TrksInJetQAInclusiveFiller.h'
 // Derek Anderson
 // 04.03.2024
 //
-// A submodule for the TracksInJetsQAMaker F4A module
-// to produce QA histograms for tracks and more in
-// jets
+// A submodule for the TrksInJetQA F4A module to produce
+// QA histograms for tracks and more in jets
 // ----------------------------------------------------------------------------
 
 #ifndef TRACKSINJETSQAMAKER_INCLUSIVEQAHISTFILLER_H
@@ -31,19 +30,19 @@
 #include <jetbase/Jet.h>
 #include <jetbase/JetContainer.h>
 // submodule definitions
-#include "BaseQAHistFiller.h"
+#include "TrksInJetQABaseFiller.h"
 
 
 
-// InclusiveQAHistFiller ------------------------------------------------------
+// TrksInJetQAInclusiveFiller -------------------------------------------------
 
-class InclusiveQAHistFiller : public BaseQAHistFiller {
+class TrksInJetQAInclusiveFiller : public TrksInJetQABaseFiller {
 
   public:
 
     // ctor/dtor
-    using BaseQAHistFiller::BaseQAHistFiller;
-    ~InclusiveQAHistFiller() {};
+    using TrksInJetQABaseFiller::TrksInJetQABaseFiller;
+    ~TrksInJetQAInclusiveFiller() {};
 
     // inherited public methods
     void Fill(PHCompositeNode* topNode) override;
@@ -56,7 +55,7 @@ class InclusiveQAHistFiller : public BaseQAHistFiller {
     void FillTrackQAHists();
     void FillJetQAHists();
 
-};  // end InclusiveQAHistFiller
+};  // end TrksInJetQAInclusiveFiller
 
 #endif
 

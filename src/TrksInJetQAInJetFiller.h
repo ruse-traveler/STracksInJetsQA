@@ -1,15 +1,14 @@
 // ----------------------------------------------------------------------------
-// 'InJetQAHistFiller.h'
+// 'TrksInJetQAInJetFiller.h'
 // Derek Anderson
 // 04.03.2024
 //
-// A submodule for the TracksInJetsQAMaker F4A module
-// to produce QA histograms for tracks and more in
-// jets
+// A submodule for the TrksInJetsQA F4A module to produce
+// QA histograms for tracks and more in jets
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKER_INJETQAHISTFILLER_H
-#define TRACKSINJETSQAMAKER_INJETQAHISTFILLER_H
+#ifndef TRKSINJETQAINJETFILLER_H
+#define TRKSINJETQAINJETFILLER_H
 
 // c+ utilities
 #include <vector>
@@ -38,21 +37,16 @@
 #include <jetbase/JetContainer.h>
 // g4eval libraries
 #include <g4eval/ClusKeyIter.h>
+// module utilities
+#include "TrksInJetQATypes.h"
 // submodule definitions
-#include "BaseQAHistFiller.h"
+#include "TrksInJetQABaseFiller.h"
 
 
 
-// type definitions for brevity -----------------------------------------------
+// TrksInJetQAInJetFiller -----------------------------------------------------
 
-typedef ParticleFlowElement PFObject;
-typedef ParticleFlowElementContainer PFObjectStore;
-
-
-
-// InJetQAHistFiller ----------------------------------------------------------
-
-class InJetQAHistFiller : public BaseQAHistFiller {
+class TrksInJetQAInJetFiller : public TrksInJetQABaseFiller {
 
   public:
 
@@ -60,8 +54,8 @@ class InJetQAHistFiller : public BaseQAHistFiller {
     enum Node {Flow};
 
     // ctor/dtor
-    using BaseQAHistFiller::BaseQAHistFiller;
-    ~InJetQAHistFiller() {};
+    using TrksInJetQABaseFiller::TrksInJetQABaseFiller;
+    ~TrksInJetQAInJetFiller() {};
 
     // inherited public methods
     void Fill(PHCompositeNode* topNode) override;
@@ -86,7 +80,7 @@ class InJetQAHistFiller : public BaseQAHistFiller {
     // for tracks in jet
     std::vector<SvtxTrack*> m_trksInJet;
 
-};  // end InJetQAHistFiller
+};  // end TrksInJetQAInJetFiller
 
 #endif
 

@@ -1,22 +1,22 @@
 // ----------------------------------------------------------------------------
-// 'HitQAHistManager.cc'
+// 'TrksInJetQAHitManager.cc'
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TracksInJetsQAMaker module
+// A submodule for the TrksInJetQA module
 // to generate QA plots for track hits
 // ----------------------------------------------------------------------------
 
-#define TRACKSINJETSQAMAKER_HITQAHISTMANAGER_CC
+#define TRKSINJETQAHITMANAGER_CC
 
 // submodule definition
-#include "HitQAHistManager.h"
+#include "TrksInJetQAHitManager.h"
 
 
 
 // public methods -------------------------------------------------------------
 
-void HitQAHistManager::GetInfo(TrkrHit* hit, TrkrDefs::hitsetkey& setKey, TrkrDefs::hitkey& hitKey) {
+void TrksInJetQAHitManager::GetInfo(TrkrHit* hit, TrkrDefs::hitsetkey& setKey, TrkrDefs::hitkey& hitKey) {
 
   // check which subsystem hit is in
   const uint16_t layer  = TrkrDefs::getLayer(setKey);
@@ -66,7 +66,7 @@ void HitQAHistManager::GetInfo(TrkrHit* hit, TrkrDefs::hitsetkey& setKey, TrkrDe
 
 // private methods ------------------------------------------------------------
 
-void HitQAHistManager::FillHistograms(const int type, HitQAContent& content) {
+void TrksInJetQAHitManager::FillHistograms(const int type, HitQAContent& content) {
 
   // fill 1d histograms
   m_vecHist1D.at(type).at(H1D::Ene)    -> Fill(content.ene);
@@ -85,7 +85,7 @@ void HitQAHistManager::FillHistograms(const int type, HitQAContent& content) {
 
 
 
-void HitQAHistManager::DefineHistograms() {
+void TrksInJetQAHitManager::DefineHistograms() {
 
   // grab binning schemes
   std::vector<BinDef> vecBins = m_hist.GetVecHistBins();
@@ -97,32 +97,32 @@ void HitQAHistManager::DefineHistograms() {
   m_vecHistTypes.push_back( "All"  );
 
   // define 1d histograms
-  m_vecHistDef1D.push_back( std::make_tuple( "HitEne",    vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene)    ));
-  m_vecHistDef1D.push_back( std::make_tuple( "HitAdc",    vecBins.at(TracksInJetsQAMakerHistDef::Var::Adc)    ));
-  m_vecHistDef1D.push_back( std::make_tuple( "HitLayer",  vecBins.at(TracksInJetsQAMakerHistDef::Var::Layer)  ));
-  m_vecHistDef1D.push_back( std::make_tuple( "HitPhiBin", vecBins.at(TracksInJetsQAMakerHistDef::Var::PhiBin) ));
-  m_vecHistDef1D.push_back( std::make_tuple( "HitZBin",   vecBins.at(TracksInJetsQAMakerHistDef::Var::ZBin)   ));
+  m_vecHistDef1D.push_back( std::make_tuple( "HitEne",    vecBins.at(TrksInJetQAHist::Var::Ene)    ));
+  m_vecHistDef1D.push_back( std::make_tuple( "HitAdc",    vecBins.at(TrksInJetQAHist::Var::Adc)    ));
+  m_vecHistDef1D.push_back( std::make_tuple( "HitLayer",  vecBins.at(TrksInJetQAHist::Var::Layer)  ));
+  m_vecHistDef1D.push_back( std::make_tuple( "HitPhiBin", vecBins.at(TrksInJetQAHist::Var::PhiBin) ));
+  m_vecHistDef1D.push_back( std::make_tuple( "HitZBin",   vecBins.at(TrksInJetQAHist::Var::ZBin)   ));
 
   // define 2d histograms
   m_vecHistDef2D.push_back(
     std::make_tuple(
       "HitEneVsLayer",
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::Layer),
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene)
+      vecBins.at(TrksInJetQAHist::Var::Layer),
+      vecBins.at(TrksInJetQAHist::Var::Ene)
     )
   );
   m_vecHistDef2D.push_back(
     std::make_tuple(
       "HitEneVsADC",
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::Adc),
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene)
+      vecBins.at(TrksInJetQAHist::Var::Adc),
+      vecBins.at(TrksInJetQAHist::Var::Ene)
     )
   );
   m_vecHistDef2D.push_back(
     std::make_tuple(
       "HitPhiVsZBin",
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::ZBin),
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::PhiBin)
+      vecBins.at(TrksInJetQAHist::Var::ZBin),
+      vecBins.at(TrksInJetQAHist::Var::PhiBin)
     )
   );
   return;

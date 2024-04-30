@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------------------
-// 'TracksInJetsQAMaker.cc'
+// 'TrksInJetQA.cc'
 // Derek Anderson
 // 03.25.2024
 //
@@ -7,16 +7,16 @@
 // hits, and more.
 // ----------------------------------------------------------------------------
 
-#define TRACKSINJETSQAMAKER_CC
+#define TRKSINJETQA_CC
 
 // module defintion
-#include "TracksInJetsQAMaker.h"
+#include "TrksInJetQA.h"
 
 
 
 // ctor/dtor ------------------------------------------------------------------
 
-TracksInJetsQAMaker::TracksInJetsQAMaker(const std::string& name) : SubsysReco(name) {
+TrksInJetQA::TrksInJetQA(const std::string& name) : SubsysReco(name) {
 
   /* nothing to do */
 
@@ -24,11 +24,11 @@ TracksInJetsQAMaker::TracksInJetsQAMaker(const std::string& name) : SubsysReco(n
 
 
 
-TracksInJetsQAMaker::~TracksInJetsQAMaker() {
+TrksInJetQA::~TrksInJetQA() {
 
   // print debug messages
   if (m_config.doDebug && (m_config.verbose > 4)) {
-    std::cout << "TracksInJetsQAMaker::~TracksInJetsQAMaker() Calling dtor" << std::endl;
+    std::cout << "TrksInJetQA::~TrksInJetQA() Calling dtor" << std::endl;
   }
 
   // clean up any dangling pointers
@@ -48,14 +48,14 @@ TracksInJetsQAMaker::~TracksInJetsQAMaker() {
 
 // public methods -------------------------------------------------------------
 
-void TracksInJetsQAMaker::Configure(
-  TracksInJetsQAMakerConfig config,
-  std::optional<TracksInJetsQAMakerHistDef> hist
+void TrksInJetQA::Configure(
+  TrksInJetQAConfig config,
+  std::optional<TrksInJetQAHist> hist
 ) {
 
   // print debug messages
   if (m_config.doDebug && (m_config.verbose > 3)) {
-    std::cout << "TracksInJetsQAMaker::~TracksInJetsQAMaker() Calling dtor" << std::endl;
+    std::cout << "TrksInJetQA::~TrksInJetQA() Calling dtor" << std::endl;
   }
 
   m_config = config;
@@ -64,17 +64,17 @@ void TracksInJetsQAMaker::Configure(
   }
   return;
 
-}  // end 'Configure(TracksInJetsQAMakerConfig, std::optional<TracksInJetsQAMakerHistDef>)'
+}  // end 'Configure(TrksInJetQAConfig, std::optional<TrksInJetQAHist>)'
 
 
 
 // fun4all methods ------------------------------------------------------------
 
-int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
+int TrksInJetQA::Init(PHCompositeNode* topNode) {
 
   // print debug message
   if (m_config.doDebug && (m_config.verbose > 0)) {
-    std::cout << "TracksInJetsQAMaker::Init(PHCompositeNode* topNode) Initializing" << std::endl;
+    std::cout << "TrksInJetQA::Init(PHCompositeNode* topNode) Initializing" << std::endl;
   }
 
   // initialize relevent outputs
@@ -116,11 +116,11 @@ int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
 
   // initialize submodules, as needed
   if (m_config.doInJet) {
-    m_inJet = std::make_unique<InJetQAHistFiller>(m_config, m_hist);
+    m_inJet = std::make_unique<TrksInJetQAInJetFiller>(m_config, m_hist);
     m_inJet -> MakeHistograms(inJetLabel);
   }
   if (m_config.doInclusive) {
-    m_inclusive = std::make_unique<InclusiveQAHistFiller>(m_config, m_hist);
+    m_inclusive = std::make_unique<TrksInJetQAInclusiveFiller>(m_config, m_hist);
     m_inclusive -> MakeHistograms(inclusiveLabel);
   }
 
@@ -147,11 +147,11 @@ int TracksInJetsQAMaker::Init(PHCompositeNode* topNode) {
 
 
 
-int TracksInJetsQAMaker::process_event(PHCompositeNode* topNode) {
+int TrksInJetQA::process_event(PHCompositeNode* topNode) {
 
   // print debug message
   if (m_config.doDebug && (m_config.verbose > 2)) {
-    std::cout << "TracksInJetsQAMaker::process_event(PHCompositeNode* topNode) Processing Event" << std::endl;
+    std::cout << "TrksInJetQA::process_event(PHCompositeNode* topNode) Processing Event" << std::endl;
   }
 
   // run submodules
@@ -163,11 +163,11 @@ int TracksInJetsQAMaker::process_event(PHCompositeNode* topNode) {
 
 
 
-int TracksInJetsQAMaker::End(PHCompositeNode* topNode) {
+int TrksInJetQA::End(PHCompositeNode* topNode) {
 
   // print debug message
   if (m_config.doDebug && (m_config.verbose > 0)) {
-    std::cout << "TracksInJetsQAMaker::End(PHCompositeNode* topNode) This is the End..." << std::endl;
+    std::cout << "TrksInJetQA::End(PHCompositeNode* topNode) This is the End..." << std::endl;
   }
 
   // save hists to file if needed

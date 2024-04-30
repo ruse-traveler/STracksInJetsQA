@@ -9,9 +9,9 @@
 # -----------------------------------------------------------------------------
 
 if ARGV[0] == "local"
-  exec("root -b -q Fun4All_MakeTracksInJetsQA.C")
+  exec("root -b -q Fun4All_MakeTrksInJetQA.C")
 else
-  exec("condor_submit RunTracksInJetsQAMakerOnCondor.job")
+  exec("condor_submit RunTrksInJetQAOnCondor.job")
 end
 
 # end -------------------------------------------------------------------------

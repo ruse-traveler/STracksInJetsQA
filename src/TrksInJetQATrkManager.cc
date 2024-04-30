@@ -1,22 +1,22 @@
 // ----------------------------------------------------------------------------
-// 'TrackQAHistManager.cc'
+// 'TrksInJetQATrkManager.cc'
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TracksInJetsQAMaker module
-// to generate QA plots for track hits
+// A submodule for the TrksInJetQA module to generate
+// QA plots for tracks
 // ----------------------------------------------------------------------------
 
-#define TRACKJETQAMAKER_TRACKQAHISTMANAGER_CC
+#define TRKSINJETQATRKMANAGER_CC
 
 // submodule definition
-#include "TrackQAHistManager.h"
+#include "TrksInJetQATrkManager.h"
 
 
 
 // public methods -------------------------------------------------------------
 
-void TrackQAHistManager::GetInfo(SvtxTrack* track) {
+void TrksInJetQATrkManager::GetInfo(SvtxTrack* track) {
 
   // collect track info
   TrackQAContent content = {
@@ -36,7 +36,7 @@ void TrackQAHistManager::GetInfo(SvtxTrack* track) {
 
 // private methods ------------------------------------------------------------
 
-void TrackQAHistManager::FillHistograms(const int type, TrackQAContent& content) {
+void TrksInJetQATrkManager::FillHistograms(const int type, TrackQAContent& content) {
 
   // fill 1d histograms
   m_vecHist1D.at(type).at(H1D::Eta)  -> Fill(content.eta);
@@ -53,7 +53,7 @@ void TrackQAHistManager::FillHistograms(const int type, TrackQAContent& content)
 
 
 
-void TrackQAHistManager::DefineHistograms() {
+void TrksInJetQATrkManager::DefineHistograms() {
 
   // grab binning schemes
   std::vector<BinDef> vecBins = m_hist.GetVecHistBins();
@@ -62,24 +62,24 @@ void TrackQAHistManager::DefineHistograms() {
   m_vecHistTypes.push_back( "All" );
 
   // define 1d histograms
-  m_vecHistDef1D.push_back( std::make_tuple( "TrackEta",  vecBins.at(TracksInJetsQAMakerHistDef::Var::Eta)  ));
-  m_vecHistDef1D.push_back( std::make_tuple( "TrackPhi",  vecBins.at(TracksInJetsQAMakerHistDef::Var::Phi)  ));
-  m_vecHistDef1D.push_back( std::make_tuple( "TrackPt",   vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene)  ));
-  m_vecHistDef1D.push_back( std::make_tuple( "TrackQual", vecBins.at(TracksInJetsQAMakerHistDef::Var::Qual) ));
+  m_vecHistDef1D.push_back( std::make_tuple( "TrackEta",  vecBins.at(TrksInJetQAHist::Var::Eta)  ));
+  m_vecHistDef1D.push_back( std::make_tuple( "TrackPhi",  vecBins.at(TrksInJetQAHist::Var::Phi)  ));
+  m_vecHistDef1D.push_back( std::make_tuple( "TrackPt",   vecBins.at(TrksInJetQAHist::Var::Ene)  ));
+  m_vecHistDef1D.push_back( std::make_tuple( "TrackQual", vecBins.at(TrksInJetQAHist::Var::Qual) ));
 
   // define 2d histograms
   m_vecHistDef2D.push_back(
     std::make_tuple(
       "TrackEtaVsPhi",
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::Phi),
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::Eta)
+      vecBins.at(TrksInJetQAHist::Var::Phi),
+      vecBins.at(TrksInJetQAHist::Var::Eta)
     )
   );
   m_vecHistDef2D.push_back(
     std::make_tuple(
       "TrackPtVsQual",
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::Qual),
-      vecBins.at(TracksInJetsQAMakerHistDef::Var::Ene)
+      vecBins.at(TrksInJetQAHist::Var::Qual),
+      vecBins.at(TrksInJetQAHist::Var::Ene)
     )
   );
   return;

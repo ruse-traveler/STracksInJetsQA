@@ -1,15 +1,14 @@
 // ----------------------------------------------------------------------------
-// 'BaseQAHistFiller.h'
+// 'TrksInJetQABaseFiller.h'
 // Derek Anderson
 // 04.11.2024
 //
-// A submodule for the TracksInJetsQAMaker F4A module
-// to produce QA histograms for tracks and more in
-// jets
+// A submodule for the TrksInJetQA F4A module to produce
+// QA histograms for tracks and more in jets
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKER_BASEQAHISTFILLER_H
-#define TRACKSINJETSQAMAKER_BASEQAHISTFILLER_H
+#ifndef TRKSINJETQABASEFILLER_H
+#define TRKSINJETQABASEFILLER_H
 
 // c++ utilities
 #include <string>
@@ -27,25 +26,25 @@
 // jet libraries
 #include <jetbase/JetContainer.h>
 // submodule definitions
-#include "HitQAHistManager.h"
-#include "ClustQAHistManager.h"
-#include "TrackQAHistManager.h"
-#include "JetQAHistManager.h"
+#include "TrksInJetQAHitManager.h"
+#include "TrksInJetQAClustManager.h"
+#include "TrksInJetQATrkManager.h"
+#include "TrksInJetQAJetManager.h"
 // module utilties
-#include "TracksInJetsQAMakerConfig.h"
-#include "TracksInJetsQAMakerHistDef.h"
+#include "TrksInJetQAHist.h"
+#include "TrksInJetQAConfig.h"
 
 
 
-// BaseQAHistFiller -----------------------------------------------------------
+// TrksInJetQABaseFiller ------------------------------------------------------
 
-class BaseQAHistFiller {
+class TrksInJetQABaseFiller {
 
   public:
 
     // ctor/dtor
-    BaseQAHistFiller(TracksInJetsQAMakerConfig& config, TracksInJetsQAMakerHistDef& hist);
-    ~BaseQAHistFiller();
+    TrksInJetQABaseFiller(TrksInJetQAConfig& config, TrksInJetQAHist& hist);
+    ~TrksInJetQABaseFiller();
 
     // public methods
     void MakeHistograms(std::string label = "");
@@ -68,16 +67,16 @@ class BaseQAHistFiller {
     JetContainer*         m_jetMap   = NULL;
 
     // submodules to use
-    std::unique_ptr<HitQAHistManager>   m_hitManager   = NULL;
-    std::unique_ptr<ClustQAHistManager> m_clustManager = NULL;
-    std::unique_ptr<TrackQAHistManager> m_trackManager = NULL;
-    std::unique_ptr<JetQAHistManager>   m_jetManager   = NULL;
+    std::unique_ptr<TrksInJetQAHitManager>   m_hitManager   = NULL;
+    std::unique_ptr<TrksInJetQAClustManager> m_clustManager = NULL;
+    std::unique_ptr<TrksInJetQATrkManager>   m_trackManager = NULL;
+    std::unique_ptr<TrksInJetQAJetManager>   m_jetManager   = NULL;
 
     // module utilities
-    TracksInJetsQAMakerConfig  m_config;
-    TracksInJetsQAMakerHistDef m_hist;
+    TrksInJetQAConfig m_config;
+    TrksInJetQAHist   m_hist;
 
-};  // end BaseQAHistFiller
+};  // end TrksInJetQABaseFiller
 
 #endif
 

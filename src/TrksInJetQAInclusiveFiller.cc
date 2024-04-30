@@ -1,23 +1,22 @@
 // ----------------------------------------------------------------------------
-// 'InclusiveQAHistFiller.cc'
+// 'TrksInJetQAInclusiveFiller.cc'
 // Derek Anderson
 // 04.03.2024
 //
-// A submodule for the TracksInJetsQAMaker F4A module
-// to produce QA histograms for tracks and more in
-// jets
+// A submodule for the TrksInJetQA F4A module to produce
+// QA histograms for tracks and more in jets
 // ----------------------------------------------------------------------------
 
-#define TRACKSINJETSQAMAKER_INCLUSIVEQAHISTFILLER_CC
+#define TRKSINJETQAINCLUSIVEFILLER_CC
 
 // submodule definition
-#include "InclusiveQAHistFiller.h"
+#include "TrksInJetQAInclusiveFiller.h"
 
 
 
 // inherited public methods ---------------------------------------------------
 
-void InclusiveQAHistFiller::Fill(PHCompositeNode* topNode) {
+void TrksInJetQAInclusiveFiller::Fill(PHCompositeNode* topNode) {
 
   GetNodes(topNode);
   
@@ -33,7 +32,7 @@ void InclusiveQAHistFiller::Fill(PHCompositeNode* topNode) {
 
 // private methods ------------------------------------------------------------
 
-void InclusiveQAHistFiller::FillHitQAHists() {
+void TrksInJetQAInclusiveFiller::FillHitQAHists() {
 
   // loop over hit sets
   TrkrHitSetContainer::ConstRange hitSets = m_hitMap -> getHitSets();
@@ -70,7 +69,7 @@ void InclusiveQAHistFiller::FillHitQAHists() {
 
 
 
-void InclusiveQAHistFiller::FillClustQAHists() {
+void TrksInJetQAInclusiveFiller::FillClustQAHists() {
 
   // loop over hit sets
   TrkrHitSetContainer::ConstRange hitSets = m_hitMap -> getHitSets();
@@ -104,7 +103,7 @@ void InclusiveQAHistFiller::FillClustQAHists() {
 
 
 
-void InclusiveQAHistFiller::FillTrackQAHists() {
+void TrksInJetQAInclusiveFiller::FillTrackQAHists() {
 
   // loop over tracks
   for (
@@ -126,7 +125,7 @@ void InclusiveQAHistFiller::FillTrackQAHists() {
 
 
 
-void InclusiveQAHistFiller::FillJetQAHists() {
+void TrksInJetQAInclusiveFiller::FillJetQAHists() {
 
   // loop over jets
   for (

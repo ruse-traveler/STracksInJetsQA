@@ -1,24 +1,23 @@
 // ----------------------------------------------------------------------------
-// 'BaseQAHistFiller.cc'
+// 'TrksInJetQABaseFiller.cc'
 // Derek Anderson
 // 04.11.2024
 //
-// A submodule for the TracksInJetsQAMaker F4A module
-// to produce QA histograms for tracks and more in
-// jets
+// A submodule for the TrksInJetQA F4A module to produce
+// QA histograms for tracks and more in jets
 // ----------------------------------------------------------------------------
 
-#define TRACKSINJETSQAMAKER_BASEQAHISTFILLER_CC
+#define TRKSINJETQABASEFILLER_CC
 
-#include "BaseQAHistFiller.h"
+#include "TrksInJetQABaseFiller.h"
 
 
 
 // ctor/dtor ------------------------------------------------------------------
 
-BaseQAHistFiller::BaseQAHistFiller(
-  TracksInJetsQAMakerConfig& config,
-  TracksInJetsQAMakerHistDef& hist
+TrksInJetQABaseFiller::TrksInJetQABaseFiller(
+  TrksInJetQAConfig& config,
+  TrksInJetQAHist& hist
 ) {
 
   // grab utilities
@@ -26,16 +25,16 @@ BaseQAHistFiller::BaseQAHistFiller(
   m_hist   = hist;
 
   // initialize managers
-  if (m_config.doHitQA)   m_hitManager   = std::make_unique<HitQAHistManager>(m_config, m_hist);
-  if (m_config.doClustQA) m_clustManager = std::make_unique<ClustQAHistManager>(m_config, m_hist);
-  if (m_config.doTrackQA) m_trackManager = std::make_unique<TrackQAHistManager>(m_config, m_hist);
-  if (m_config.doJetQA)   m_jetManager   = std::make_unique<JetQAHistManager>(m_config, m_hist);
+  if (m_config.doHitQA)   m_hitManager   = std::make_unique<TrksInJetQAHitManager>(m_config, m_hist);
+  if (m_config.doClustQA) m_clustManager = std::make_unique<TrksInJetQAClustManager>(m_config, m_hist);
+  if (m_config.doTrackQA) m_trackManager = std::make_unique<TrksInJetQATrkManager>(m_config, m_hist);
+  if (m_config.doJetQA)   m_jetManager   = std::make_unique<TrksInJetQAJetManager>(m_config, m_hist);
 
 }  // end ctor()'
 
 
 
-BaseQAHistFiller::~BaseQAHistFiller() {
+TrksInJetQABaseFiller::~TrksInJetQABaseFiller() {
 
   // remove dangling pointers
   if (m_actsGeom) {
@@ -65,7 +64,7 @@ BaseQAHistFiller::~BaseQAHistFiller() {
 
 // public methods -------------------------------------------------------------
 
-void BaseQAHistFiller::MakeHistograms(std::string label) {
+void TrksInJetQABaseFiller::MakeHistograms(std::string label) {
 
   // initialize relevant submodules
   if (m_config.doHitQA)   m_hitManager   -> MakeHistograms(label);
@@ -78,7 +77,7 @@ void BaseQAHistFiller::MakeHistograms(std::string label) {
 
 
 
-void BaseQAHistFiller::SaveHistograms(TFile* outFile, std::string outDirName) {
+void TrksInJetQABaseFiller::SaveHistograms(TFile* outFile, std::string outDirName) {
 
   TDirectory* outDir = outFile -> mkdir(outDirName.data());
   if (!outDir) {
@@ -96,7 +95,7 @@ void BaseQAHistFiller::SaveHistograms(TFile* outFile, std::string outDirName) {
 
 
 
-void BaseQAHistFiller::GrabHistograms(
+void TrksInJetQABaseFiller::GrabHistograms(
   std::vector<TH1D*>& vecOutHist1D,
   std::vector<TH2D*>& vecOutHist2D
 ) {
@@ -113,7 +112,7 @@ void BaseQAHistFiller::GrabHistograms(
 
 // private methods ------------------------------------------------------------
 
-void BaseQAHistFiller::GetNodes(PHCompositeNode* topNode) {
+void TrksInJetQABaseFiller::GetNodes(PHCompositeNode* topNode) {
 
   // grab necessary jet nodes
   if (m_config.doJetQA) {

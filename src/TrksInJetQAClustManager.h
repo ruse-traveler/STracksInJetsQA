@@ -1,14 +1,14 @@
 // ----------------------------------------------------------------------------
-// 'ClustQAHistManager.h'
+// 'TrksInJetQAClustManager.h'
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TracksInJetsQAMaker module
-// to generate QA plots for track clusters
+// A submodule for the TrksInJetQA module to generate
+// QA plots for track clusters
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKSINJETSQAMAKER_CLUSTQAHISTMANAGER_H
-#define TRACKSINJETSQAMAKER_CLUSTQAHISTMANAGER_H
+#ifndef TRKSINJETQACLUSTMANAGER_H
+#define TRKSINJETQACLUSTMANAGER_H
 
 // c++ utilities
 #include <limits>
@@ -23,13 +23,13 @@
 #include <trackbase/TrkrCluster.h>
 #include <trackbase/ActsGeometry.h>
 // submodule definitions
-#include "BaseQAHistManager.h"
+#include "TrksInJetQABaseManager.h"
 
 
 
-// ClustQAHistManager definition ----------------------------------------------
+// TrksInJetQAClustManager definition -----------------------------------------
 
-class ClustQAHistManager : public BaseQAHistManager {
+class TrksInJetQAClustManager : public TrksInJetQABaseManager {
 
   public:
 
@@ -47,8 +47,8 @@ class ClustQAHistManager : public BaseQAHistManager {
     };
 
     // ctor/dtor
-    using BaseQAHistManager::BaseQAHistManager;
-    ~ClustQAHistManager() {};
+    using TrksInJetQABaseManager::TrksInJetQABaseManager;
+    ~TrksInJetQAClustManager() {};
 
     // public methods
     void GetInfo(TrkrCluster* cluster, TrkrDefs::cluskey& clustKey, ActsGeometry* actsGeom);
@@ -61,9 +61,8 @@ class ClustQAHistManager : public BaseQAHistManager {
     // inherited private methods
     void DefineHistograms() override;
 
-};  // end ClustQAHistManager
+};  // end TrksInJetQAClustManager
 
 #endif
 
 // end ------------------------------------------------------------------------
-

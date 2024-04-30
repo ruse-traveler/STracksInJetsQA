@@ -1,23 +1,22 @@
 // ----------------------------------------------------------------------------
-// 'InJetQAHistFiller.cc'
+// 'TrksInJetQAInJetFiller.cc'
 // Derek Anderson
 // 04.03.2024
 //
-// A submodule for the TracksInJetsQAMaker F4A module
-// to produce QA histograms for tracks and more in
-// jets
+// A submodule for the TrksInJetsQAM F4A module to produce
+// QA histograms for tracks and more in jets
 // ----------------------------------------------------------------------------
 
-#define TRACKSINJETSQAMAKER_INJETQAHISTFILLER_CC
+#define TRKSINJETQAINJETFILLER_CC
 
 // submodule definition
-#include "InJetQAHistFiller.h"
+#include "TrksInJetQAInJetFiller.h"
 
 
 
 // inherited public methods ---------------------------------------------------
 
-void InJetQAHistFiller::Fill(PHCompositeNode* topNode) {
+void TrksInJetQAInJetFiller::Fill(PHCompositeNode* topNode) {
 
   GetNodes(topNode);
 
@@ -30,7 +29,7 @@ void InJetQAHistFiller::Fill(PHCompositeNode* topNode) {
 
 // private methods ------------------------------------------------------------
 
-void InJetQAHistFiller::GetNode(const int node, PHCompositeNode* topNode) {
+void TrksInJetQAInJetFiller::GetNode(const int node, PHCompositeNode* topNode) {
 
   // jump to relevant node
   switch (node) {
@@ -53,7 +52,7 @@ void InJetQAHistFiller::GetNode(const int node, PHCompositeNode* topNode) {
 
 
 
-void InJetQAHistFiller::FillJetAndTrackQAHists(PHCompositeNode* topNode) {
+void TrksInJetQAInJetFiller::FillJetAndTrackQAHists(PHCompositeNode* topNode) {
 
   // loop over jets
   for (
@@ -91,7 +90,7 @@ void InJetQAHistFiller::FillJetAndTrackQAHists(PHCompositeNode* topNode) {
 
 
 
-void InJetQAHistFiller::FillClustAndHitQAHists(SvtxTrack* track, PHCompositeNode* topNode) {
+void TrksInJetQAInJetFiller::FillClustAndHitQAHists(SvtxTrack* track, PHCompositeNode* topNode) {
 
   // get cluster keys
   for (auto clustKey : ClusKeyIter(track)) {
@@ -137,7 +136,7 @@ void InJetQAHistFiller::FillClustAndHitQAHists(SvtxTrack* track, PHCompositeNode
 
 
 
-void InJetQAHistFiller::GetCstTracks(Jet* jet, PHCompositeNode* topNode) {
+void TrksInJetQAInJetFiller::GetCstTracks(Jet* jet, PHCompositeNode* topNode) {
 
   // loop over consituents
   auto csts = jet -> get_comp_vec();
@@ -171,7 +170,7 @@ void InJetQAHistFiller::GetCstTracks(Jet* jet, PHCompositeNode* topNode) {
 
 
 
-void InJetQAHistFiller::GetNonCstTracks(Jet* jet, PHCompositeNode* topNode) {
+void TrksInJetQAInJetFiller::GetNonCstTracks(Jet* jet, PHCompositeNode* topNode) {
 
   // loop over tracks
   for (
@@ -206,7 +205,7 @@ void InJetQAHistFiller::GetNonCstTracks(Jet* jet, PHCompositeNode* topNode) {
 
 
 
-bool InJetQAHistFiller::IsCstNotRelevant(const uint32_t type) {
+bool TrksInJetQAInJetFiller::IsCstNotRelevant(const uint32_t type) {
 
   const bool isVoid   = (type == Jet::SRC::VOID);
   const bool isImport = (type == Jet::SRC::HEPMC_IMPORT);
@@ -217,7 +216,7 @@ bool InJetQAHistFiller::IsCstNotRelevant(const uint32_t type) {
 
 
 
-bool InJetQAHistFiller::IsTrkInList(const uint32_t id) {
+bool TrksInJetQAInJetFiller::IsTrkInList(const uint32_t id) {
 
   bool isAdded = false;
   for (SvtxTrack* trkInJet : m_trksInJet) {
@@ -232,7 +231,7 @@ bool InJetQAHistFiller::IsTrkInList(const uint32_t id) {
 
 
 
-double InJetQAHistFiller::GetTrackJetDist(SvtxTrack* track, Jet* jet) {
+double TrksInJetQAInJetFiller::GetTrackJetDist(SvtxTrack* track, Jet* jet) {
 
   // get delta eta
   const double dEta = (track -> get_eta()) - (jet -> get_eta());
@@ -249,7 +248,7 @@ double InJetQAHistFiller::GetTrackJetDist(SvtxTrack* track, Jet* jet) {
 
 
 
-PFObject* InJetQAHistFiller::GetPFObject(const uint32_t id, PHCompositeNode* topNode) {
+PFObject* TrksInJetQAInJetFiller::GetPFObject(const uint32_t id, PHCompositeNode* topNode) {
 
   // pointer to pfo 
   PFObject* pfoToFind = NULL;
@@ -279,7 +278,7 @@ PFObject* InJetQAHistFiller::GetPFObject(const uint32_t id, PHCompositeNode* top
 
 
 
-SvtxTrack* InJetQAHistFiller::GetTrkFromPFO(PFObject* pfo) {
+SvtxTrack* TrksInJetQAInJetFiller::GetTrkFromPFO(PFObject* pfo) {
 
   // pointer to track
   SvtxTrack* track = NULL;

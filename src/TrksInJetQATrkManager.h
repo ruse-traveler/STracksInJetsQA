@@ -1,15 +1,14 @@
 // ----------------------------------------------------------------------------
-// 'TrackQAHistManager.h'
+// 'TrksInJetQATrkManager.h'
 // Derek Anderson
 // 03.25.2024
 //
-// A submodule for the TrackJetQAMaker module
-// to generate QA plots for tracks, inclusive
-// and in jets
+// A submodule for the TrksInJetQA module to generate
+// QA plots for tracks
 // ----------------------------------------------------------------------------
 
-#ifndef TRACKJETQAMAKER_TRACKQAHISTMANAGER_H
-#define TRACKJETQAMAKER_TRACKQAHISTMANAGER_H
+#ifndef TRKSINJETQATRKMANAGER_H
+#define TRKSINJETQATRKMANAGER_H
 
 // c++ utilities
 #include <limits>
@@ -21,13 +20,13 @@
 // tracking libraries
 #include <trackbase_historic/SvtxTrack.h>
 // submodule definitions
-#include "BaseQAHistManager.h"
+#include "TrksInJetQABaseManager.h"
 
 
 
-// TrackQAHistManager definition ----------------------------------------------
+// TrksInJetQATrkManager definition -------------------------------------------
 
-class TrackQAHistManager : public BaseQAHistManager {
+class TrksInJetQATrkManager : public TrksInJetQABaseManager {
 
   public:
 
@@ -46,8 +45,8 @@ class TrackQAHistManager : public BaseQAHistManager {
     };
 
     // ctor/dtor
-    using BaseQAHistManager::BaseQAHistManager;
-    ~TrackQAHistManager() {};
+    using TrksInJetQABaseManager::TrksInJetQABaseManager;
+    ~TrksInJetQATrkManager() {};
 
     // public methods
     void GetInfo(SvtxTrack* track);
@@ -60,7 +59,7 @@ class TrackQAHistManager : public BaseQAHistManager {
     // inherited private methods
     void DefineHistograms() override;
 
-};  // end TrackQAHistManager
+};  // end TrksInJetQATrkManager
 
 #endif
 

@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------------
-// 'Fun4All_MakeTracksInJetsQA.C'
+// 'Fun4All_MakeTrksInJetQA.C'
 // Derek Anderson
 // 03.25.2024
 //
-// A Fun4All macro to run the TracksInJetsQAMaker module.
+// A Fun4All macro to run the TrksInJetQA module.
 // ----------------------------------------------------------------------------
 
 #define FUN4ALL_MAKETRACKSINJETSQA_C
@@ -32,7 +32,7 @@
 #include <jetbase/FastJetAlgo.h>
 #include <jetbase/TrackJetInput.h>
 // module definition
-#include </sphenix/u/danderson/install/include/tracksinjetsqamaker/TracksInJetsQAMaker.h>
+#include </sphenix/u/danderson/install/include/trksinjetqa/TrksInJetQA.h>
 // f4a macros
 #include <G4_Magnet.C>
 #include <G4_ActsGeom.C>
@@ -46,13 +46,13 @@ R__LOAD_LIBRARY(libfun4all.so)
 R__LOAD_LIBRARY(libjetbase.so)
 R__LOAD_LIBRARY(libqautils.so)
 R__LOAD_LIBRARY(libffamodules.so)
-R__LOAD_LIBRARY(/sphenix/u/danderson/install/lib/libtracksinjetsqamaker.so)
+R__LOAD_LIBRARY(/sphenix/u/danderson/install/lib/libtrksinjetqa.so)
 
 
 
 // macro body -----------------------------------------------------------------
 
-void Fun4All_MakeTracksInJetsQA(
+void Fun4All_MakeTrksInJetQA(
   const int         verb           = 10,
   const int64_t     nEvts          = 10,
   const std::string outFileBase    = "test",
@@ -131,12 +131,12 @@ void Fun4All_MakeTracksInJetsQA(
   const std::string outCalFile = outFileBase + ".clust.root";
 
   // initialize and register track jet qa module
-  TracksInJetsQAMaker* trkJetQAMaker = new TracksInJetsQAMaker("TracksInJetsQAMaker_TrackJets");
-  trkJetQAMaker -> SetOutFileName(outTrkFile);
-  trkJetQAMaker -> SetHistSuffix("TrackJetSubsysReco");
-  trkJetQAMaker -> Configure(
+  TrksInJetQA* trkJetQAReco = new TrksInJetQA("TrksInJetQA_TrackJets");
+  trkJetQAReco -> SetOutFileName(outTrkFile);
+  trkJetQAReco -> SetHistSuffix("TrackJetRecoReco");
+  trkJetQAReco -> Configure(
     {
-      .outMode     = TracksInJetsQAMaker::OutMode::File,
+      .outMode     = TrksInJetQA::OutMode::File,
       .verbose     = verb,
       .doDebug     = true,
       .doInclusive = true,
@@ -149,15 +149,15 @@ void Fun4All_MakeTracksInJetsQA(
       .jetInNode   = "AntiKt_Track_r04"
     }
   );
-  f4a -> registerSubsystem(trkJetQAMaker);
+  f4a -> registerSubsystem(trkJetQAReco);
 
   // initialize and register track jet qa module
-  TracksInJetsQAMaker* clustJetQAMaker = new TracksInJetsQAMaker("TracksInJetsQAMaker_ClustJets");
-  clustJetQAMaker -> SetOutFileName(outCalFile);
-  clustJetQAMaker -> SetHistSuffix("ClustJetSubsysReco");
-  clustJetQAMaker -> Configure(
+  TrksInJetQA* clustJetQAReco = new TrksInJetQA("TrksInJetQA_ClustJets");
+  clustJetQAReco -> SetOutFileName(outCalFile);
+  clustJetQAReco -> SetHistSuffix("ClustJetRecoReco");
+  clustJetQAReco -> Configure(
     {
-      .outMode     = TracksInJetsQAMaker::OutMode::File,
+      .outMode     = TrksInJetQA::OutMode::File,
       .verbose     = verb,
       .doDebug     = true,
       .doInclusive = true,
@@ -170,18 +170,18 @@ void Fun4All_MakeTracksInJetsQA(
       .jetInNode   = "AntiKt_Cluster_r04"
     }
   );
-  f4a -> registerSubsystem(clustJetQAMaker);
+  f4a -> registerSubsystem(clustJetQAReco);
 
   // example of how to use module with qa framework ---------------------------
 
   const std::string outQAFile = outFileBase + ".qa.root";
 
   // initialize and register track jet qa module
-  TracksInJetsQAMaker* trkJetQANode = new TracksInJetsQAMaker("TracksInJetsQANode_TrackJets");
+  TrksInJetQA* trkJetQANode = new TrksInJetQA("TrksInJetQANode_TrackJets");
   trkJetQANode -> SetHistSuffix("TrackJetQANode");
   trkJetQANode -> Configure(
     {
-      .outMode     = TracksInJetsQAMaker::OutMode::QA,
+      .outMode     = TrksInJetQA::OutMode::QA,
       .verbose     = verb,
       .doDebug     = true,
       .doInclusive = true,
@@ -197,11 +197,11 @@ void Fun4All_MakeTracksInJetsQA(
   f4a -> registerSubsystem(trkJetQANode);
 
   // initialize and register track jet qa module
-  TracksInJetsQAMaker* clustJetQANode = new TracksInJetsQAMaker("TracksInJetsQANode_ClustJets");
+  TrksInJetQA* clustJetQANode = new TrksInJetQA("TrksInJetQANode_ClustJets");
   clustJetQANode -> SetHistSuffix("ClustJetQANode");
   clustJetQANode -> Configure(
     {
-      .outMode     = TracksInJetsQAMaker::OutMode::QA,
+      .outMode     = TrksInJetQA::OutMode::QA,
       .verbose     = verb,
       .doDebug     = true,
       .doInclusive = true,
