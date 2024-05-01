@@ -13,12 +13,12 @@ require 'fileutils'
 
 # top directory to copy from/to
 copy_from = "/sphenix/user/danderson/tracking/TracksInJetQA"
-copy_to   = "/sphenix/user/danderson/sphenix/analysis/JS-Jet/TracksInJetsQAMaker"
+copy_to   = "/sphenix/user/danderson/sphenix/analysis/JS-Jet/TrackJetQAMaker"
 
 # what files to copy
 to_copy = [
   "README.md",
-  "Fun4All_MakeTracksInJetsQA.C",
+  "Fun4All_MakeTrksInJetQA.C",
   "RunTrksInJetQA.rb",
   "RunTrksInJetQAOnCondor.sh",
   "RunTrksInJetQAOnCondor.job",
@@ -34,8 +34,8 @@ to_copy = [
   "src/TrksInJetQAHitManager.h",
   "src/TrksInJetQAJetManager.cc",
   "src/TrksInJetQAJetManager.h",
-  "src/TrksInJetQATrackManager.cc",
-  "src/TrksInJetQATrackManager.h",
+  "src/TrksInJetQATrkManager.cc",
+  "src/TrksInJetQATrkManager.h",
   "src/TrksInJetQABaseFiller.cc",
   "src/TrksInJetQABaseFiller.h",
   "src/TrksInJetQAInJetFiller.cc",
@@ -47,7 +47,7 @@ to_copy = [
   "src/TrksInJetQA.cc",
   "src/TrksInJetQA.h",
   "src/TrksInJetQAConfig.h",
-  "src/TrksInJetQATypes.h"
+  "src/TrksInJetQATypes.h",
   "src/TrksInJetQAHist.h",
   "src/autogen.sh",
   "src/configure.ac",
