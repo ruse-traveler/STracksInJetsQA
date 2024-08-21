@@ -1,5 +1,8 @@
 # TrksInJetQA
 
+**NOTE:** this is a public archive. This module is now a part of
+[`sPHENIX-Collaboration/coresoftware`](https://github.com/sPHENIX-Collaboration/coresoftware).
+
 A Fun4All package to generate QA plots for tracks in jets and related objects. Can be
 run as a plain `SubsysReco` module or as a QA module.
 
